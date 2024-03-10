@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>CronBlocks.$(MSBuildProjectName.Replace(" ", "_").Replace(".WpfApp", ""))</RootNamespace>
+    <ApplicationIcon>Resources\UTM.ico</ApplicationIcon>
+    <AssemblyName>$(MSBuildProjectName.Replace(".WpfApp", ""))</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\UTM.png" />
+    <None Remove="Resources\ttech.png" />
+    <None Remove="Resources\ttech2.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\UTM.ico" />
+    <Content Include="Resources\UTM.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\ttech.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\ttech2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CronBlocks.Helpers\CronBlocks.Helpers.csproj" />
+    <ProjectReference Include="..\CronBlocks.SerialPortInterface\CronBlocks.SerialPortInterface.csproj" />
+    <ProjectReference Include="..\CronBlocks.UserControls.Wpf\CronBlocks.UserControls.Wpf.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,92 @@
+﻿<Window x:Class="CronBlocks.UTM.Windows.DeviceConnectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CronBlocks.UTM.Windows"
+        mc:Ignorable="d"
+        Title="Connect to Device"
+        FontFamily="Segoe UI Light"
+        FontSize="14"
+        MinHeight="450" MinWidth="400"
+        MaxHeight="750" MaxWidth="600"
+        Height="650" Width="500">
+
+    <Window.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,5,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,5,0,0" />
+            <Setter Property="Padding" Value="3,5" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="Padding" Value="25,8" />
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+
+            <StackPanel>
+
+                <!-- Port -->
+                <TextBlock x:Name="PortHeading" Text="Comm Port" />
+                <ComboBox x:Name="PortInput" SelectionChanged="OnInputSelectionChanged" />
+
+                <!-- Baud-rate -->
+                <TextBlock x:Name="BaudRateHeading" Text="Baud Rate" />
+                <ComboBox x:Name="BaudRateInput" SelectionChanged="OnInputSelectionChanged" />
+
+                <!-- Data Bits -->
+                <TextBlock x:Name="DataBitsHeading" Text="Data Bits" />
+                <ComboBox x:Name="DataBitsInput" SelectionChanged="OnInputSelectionChanged" />
+
+                <!-- Parity -->
+                <TextBlock x:Name="ParityHeading" Text="Parity" />
+                <ComboBox x:Name="ParityInput" SelectionChanged="OnInputSelectionChanged" />
+
+                <!-- Stop Bits -->
+                <TextBlock x:Name="StopBitsHeading" Text="Stop Bits" />
+                <ComboBox x:Name="StopBitsInput" SelectionChanged="OnInputSelectionChanged" />
+
+                <!-- Device address -->
+                <TextBlock x:Name="DeviceAddressHeading" Text="Device Address (Decimal)" />
+                <TextBox x:Name="DeviceAddressInput" TextChanged="OnInputTextChanged" />
+
+                <!-- Registers start address -->
+                <TextBlock x:Name="RegistersStartAddressHeading" Text="Registers' Start Address (HEX)" />
+                <TextBox x:Name="RegistersStartAddressInput" TextChanged="OnInputTextChanged" />
+                
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            
+            <Button x:Name="ConnectButton" Content="Connect"
+                    Background="LightGreen"
+                    Click="ConnectButtonClicked" />
+        </StackPanel>
+                    
+    </Grid>
+</Window>

@@ -1,0 +1,462 @@
+﻿<Window x:Class="CronBlocks.UTM.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CronBlocks.UTM.Windows"
+        xmlns:cblk3pd="clr-namespace:CronBlocks.UserControls.Wpf.ThreePointerDial;assembly=CronBlocks.UserControls.Wpf"
+        xmlns:timedPlot="clr-namespace:CronBlocks.UserControls.Wpf.TimedPlot;assembly=CronBlocks.UserControls.Wpf"
+        xmlns:xyPlot="clr-namespace:CronBlocks.UserControls.Wpf.XYPlot;assembly=CronBlocks.UserControls.Wpf"
+        mc:Ignorable="d"
+        Title="Fuel Cell Monitor"
+        FontFamily="Segoe UI Light"
+        FontSize="14"
+        Width="800" Height="450"
+        WindowState="Maximized"
+        MinWidth="800" MinHeight="450">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="FuelCellTpdBackgroundColor" Color="#FFF1EBF5"/>
+        <SolidColorBrush x:Key="FuelCellTpdBorderColor" Color="#FF7F8C08"/>
+        <SolidColorBrush x:Key="FuelCellTpdDial1Color" Color="#FF5656E8"/>
+        <SolidColorBrush x:Key="FuelCellTpdDial1BorderColor" Color="#FF75A1F9"/>
+        <SolidColorBrush x:Key="FuelCellTpdDial2Color" Color="#FF383838"/>
+        <SolidColorBrush x:Key="FuelCellTpdDial2BorderColor" Color="#FF1D1D1D"/>
+        <SolidColorBrush x:Key="FuelCellTpdDial3Color" Color="#FFB6C107"/>
+        <SolidColorBrush x:Key="FuelCellTpdDial3BorderColor" Color="#FF9A9404"/>
+
+        <SolidColorBrush x:Key="ElectrolyzerTpdBackgroundColor" Color="#FFF5F5EB"/>
+        <SolidColorBrush x:Key="ElectrolyzerTpdBorderColor" Color="#FF7F8C08"/>
+        <SolidColorBrush x:Key="ElectrolyzerTpdDial1Color" Color="#FF5656E8"/>
+        <SolidColorBrush x:Key="ElectrolyzerTpdDial1BorderColor" Color="#FF75A1F9"/>
+        <SolidColorBrush x:Key="ElectrolyzerTpdDial2Color" Color="#FF383838"/>
+        <SolidColorBrush x:Key="ElectrolyzerTpdDial2BorderColor" Color="#FF1D1D1D"/>
+        <SolidColorBrush x:Key="ElectrolyzerTpdDial3Color" Color="#FFB6C107"/>
+        <SolidColorBrush x:Key="ElectrolyzerTpdDial3BorderColor" Color="#FF9A9404"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" Background="{x:Null}">
+            <MenuItem Header="File">
+                <MenuItem Header="Save CSV" x:Name="SaveCsvMenuItem" IsEnabled="False" Click="OnMenuItemClicked" />
+            </MenuItem>
+            <MenuItem Header="Connect / Disconnect" Click="OnMenuItemClicked" />
+            <MenuItem Header="Measurement">
+                <MenuItem Header="Fuel Cell Current">
+                    <RadioButton x:Name="FuelCellCurrentDisableOverride" Content="Automatic" IsChecked="True" Click="OnMenuItemClicked" />
+                    <RadioButton x:Name="FuelCellCurrentEnableOverride" Content="Regulated" Click="OnMenuItemClicked" />
+                </MenuItem>
+                <MenuItem Header="Electrolyzer Current">
+                    <RadioButton x:Name="ElectrolyzerCurrentDisableOverride" Content="Automatic" IsChecked="True" Click="OnMenuItemClicked" />
+                    <RadioButton x:Name="ElectrolyzerCurrentEnableOverride" Content="Regulated" Click="OnMenuItemClicked" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Set Zero Current" Click="OnMenuItemClicked" />
+                <MenuItem Header="Unset Zero Current" Click="OnMenuItemClicked" />
+            </MenuItem>
+            <MenuItem Header="Settings">
+                <MenuItem Header="Measurement Settings" Click="OnMenuItemClicked" />
+                <MenuItem Header="Calibrate" Click="OnMenuItemClicked" />
+            </MenuItem>
+            <MenuItem Header="About" Click="OnMenuItemClicked" />
+        </Menu>
+
+        <TabControl Grid.Row="1" Margin="2">
+            <!-- Fuel Cell -->
+            <TabItem Header="Fuel Cell" x:Name="FuelCellTabItem">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Plots -->
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <xyPlot:XYPlot x:Name="FuelCellVIPlot"
+                                       XAxisTitle="Current (A)"
+                                       YAxisTitle="Voltage (V)"
+                                       PlotVisibility2="Hidden"
+                                       IsAutoRangeEnabled="True"
+                                       Grid.Row="0" Grid.Column="0" />
+                        
+                        <timedPlot:TimedPlot x:Name="FuelCellPTPlot"
+                                             XAxisTitle="Time (min : sec)"
+                                             YAxisTitle="Power (W)"
+                                             PlotVisibility2="Hidden"
+                                             IsAutoYRangeEnabled="True"
+                                             Grid.Row="0" Grid.Column="1" />
+                        
+                        <xyPlot:XYPlot x:Name="FuelCellPIPlot"
+                                       XAxisTitle="Current (A)"
+                                       YAxisTitle="Power (W)"
+                                       PlotVisibility2="Hidden"
+                                       IsAutoRangeEnabled="True"
+                                       Grid.Row="1" Grid.Column="0" />
+                        
+                        <xyPlot:XYPlot x:Name="FuelCellPVPlot"
+                                       XAxisTitle="Voltage (V)"
+                                       YAxisTitle="Power (W)"
+                                       PlotVisibility2="Hidden"
+                                       IsAutoRangeEnabled="True"
+                                       Grid.Row="1" Grid.Column="1" />
+                    </Grid>
+
+                    <!-- Gauges -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <cblk3pd:ThreePointerDial x:Name="FuelCellVoltageGauge"
+                                                  Grid.Row="0"
+                                                  Margin="3"
+                                                  GaugeTitle="Voltage (V)"
+                                                  BackgroundColor="{StaticResource FuelCellTpdBackgroundColor}"
+                                                  BorderColor="{StaticResource FuelCellTpdBorderColor}"
+                                                  Dial1Color="{StaticResource FuelCellTpdDial1Color}" Dial1BorderColor="{StaticResource FuelCellTpdDial1BorderColor}"
+                                                  Dial2Color="{StaticResource FuelCellTpdDial2Color}" Dial2BorderColor="{StaticResource FuelCellTpdDial2BorderColor}"
+                                                  Dial3Color="{StaticResource FuelCellTpdDial3Color}" Dial3BorderColor="{StaticResource FuelCellTpdDial3BorderColor}"
+                                                  GaugeMinValue="0" GaugeMaxValue="10"
+                                                  Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
+
+                        <cblk3pd:ThreePointerDial x:Name="FuelCellCurrentGauge"
+                                                  Grid.Row="1"
+                                                  Margin="3"
+                                                  GaugeTitle="Current (A)"
+                                                  BackgroundColor="{StaticResource FuelCellTpdBackgroundColor}"
+                                                  BorderColor="{StaticResource FuelCellTpdBorderColor}"
+                                                  Dial1Color="{StaticResource FuelCellTpdDial1Color}" Dial1BorderColor="{StaticResource FuelCellTpdDial1BorderColor}"
+                                                  Dial2Color="{StaticResource FuelCellTpdDial2Color}" Dial2BorderColor="{StaticResource FuelCellTpdDial2BorderColor}"
+                                                  Dial3Color="{StaticResource FuelCellTpdDial3Color}" Dial3BorderColor="{StaticResource FuelCellTpdDial3BorderColor}"
+                                                  GaugeMinValue="0" GaugeMaxValue="5"
+                                                  Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
+
+                        <cblk3pd:ThreePointerDial x:Name="FuelCellPowerGauge"
+                                                  Grid.Row="2"
+                                                  Margin="3"
+                                                  GaugeTitle="Power (W)"
+                                                  BackgroundColor="{StaticResource FuelCellTpdBackgroundColor}"
+                                                  BorderColor="{StaticResource FuelCellTpdBorderColor}"
+                                                  Dial1Color="{StaticResource FuelCellTpdDial1Color}" Dial1BorderColor="{StaticResource FuelCellTpdDial1BorderColor}"
+                                                  Dial2Color="{StaticResource FuelCellTpdDial2Color}" Dial2BorderColor="{StaticResource FuelCellTpdDial2BorderColor}"
+                                                  Dial3Color="{StaticResource FuelCellTpdDial3Color}" Dial3BorderColor="{StaticResource FuelCellTpdDial3BorderColor}"
+                                                  GaugeMinValue="0" GaugeMaxValue="10"
+                                                  Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
+
+                        <Grid Grid.Row="3" Margin="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Current: " VerticalAlignment="Center" />
+                            <TextBox Grid.Column="1" x:Name="FuelCellCurrentOverrideValue" IsEnabled="{Binding Path=IsChecked, ElementName=FuelCellCurrentEnableOverride}" Text="" Margin="2,5" MinHeight="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="OnCurrentOverrideTextKeyDown" TextChanged="OnCurrentOverrideTextChanged" />
+                        </Grid>
+                        
+                        <Button Grid.Row="4"
+                                Margin="3" MinHeight="30"
+                                Content="Start"
+                                x:Name="FuelCellStartButton"
+                                Click="OnStartButtonClicked" />
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+
+            <!-- Fuel Cell Series -->
+            <TabItem Header="Fuel Cell - Series" x:Name="FuelCellSeriesTabItem">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Plots -->
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Plots -->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <xyPlot:XYPlot x:Name="FuelCellSeriesVIPlot"
+                                           XAxisTitle="Current (A)"
+                                           YAxisTitle="Voltage (V)"
+                                           PlotVisibility2="Hidden"
+                                           IsAutoRangeEnabled="True"
+                                           Grid.Column="0" />
+
+                            <timedPlot:TimedPlot x:Name="FuelCellSeriesPTPlot"
+                                                 XAxisTitle="Time (min : sec)"
+                                                 YAxisTitle="Power (W)"
+                                                 PlotVisibility2="Hidden"
+                                                 IsAutoYRangeEnabled="True"
+                                                 Grid.Column="1" />
+                        </Grid>
+
+                        <!-- Individual Cell Voltage -->
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.Resources>
+                                <Style TargetType="ProgressBar">
+                                    <Setter Property="Margin" Value="1,2,1,2" />
+                                    <Setter Property="Minimum" Value="0" />
+                                    <Setter Property="Maximum" Value="1" />
+                                    <Setter Property="BorderThickness" Value="2,1,2,1" />
+                                    <Setter Property="Background" Value="#FF525252" />
+                                    <Setter Property="Foreground" Value="#FF9E2A99" />
+                                    <Setter Property="Orientation" Value="Vertical" />
+                                </Style>
+                                <Style x:Key="CellHeading" TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Top" />
+                                    <Setter Property="Margin" Value="0,15" />
+                                    <Setter Property="FontFamily" Value="Lucida Console" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="Foreground" Value="AliceBlue" />
+                                </Style>
+                                <Style x:Key="CellVoltage" TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="0,15" />
+                                    <Setter Property="FontFamily" Value="Calibri Light" />
+                                    <Setter Property="FontWeight" Value="DemiBold" />
+                                    <Setter Property="Foreground" Value="AliceBlue" />
+                                </Style>
+                            </Grid.Resources>
+
+                            <ProgressBar x:Name="FuelCellNo1Voltage" Grid.Column="0" d:Value="0.5" />
+                            <ProgressBar x:Name="FuelCellNo2Voltage" Grid.Column="1" d:Value="0.5" />
+                            <ProgressBar x:Name="FuelCellNo3Voltage" Grid.Column="2" d:Value="0.5" />
+                            <ProgressBar x:Name="FuelCellNo4Voltage" Grid.Column="3" d:Value="0.5" />
+                            <ProgressBar x:Name="FuelCellNo5Voltage" Grid.Column="4" d:Value="0.5" />
+                            <ProgressBar x:Name="FuelCellNo6Voltage" Grid.Column="5" d:Value="0.5" />
+                            <ProgressBar x:Name="FuelCellNo7Voltage" Grid.Column="6" d:Value="0.5" />
+                            <ProgressBar x:Name="FuelCellNo8Voltage" Grid.Column="7" d:Value="0.5" />
+                            <ProgressBar x:Name="FuelCellNo9Voltage" Grid.Column="8" d:Value="0.5" />
+                            <ProgressBar x:Name="FuelCellNo10Voltage" Grid.Column="9" d:Value="0.5" />
+
+                            <TextBlock Grid.Column="0" Text="{Binding ElementName=FuelCellNo1Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+                            <TextBlock Grid.Column="1" Text="{Binding ElementName=FuelCellNo2Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+                            <TextBlock Grid.Column="2" Text="{Binding ElementName=FuelCellNo3Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+                            <TextBlock Grid.Column="3" Text="{Binding ElementName=FuelCellNo4Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+                            <TextBlock Grid.Column="4" Text="{Binding ElementName=FuelCellNo5Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+                            <TextBlock Grid.Column="5" Text="{Binding ElementName=FuelCellNo6Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+                            <TextBlock Grid.Column="6" Text="{Binding ElementName=FuelCellNo7Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+                            <TextBlock Grid.Column="7" Text="{Binding ElementName=FuelCellNo8Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+                            <TextBlock Grid.Column="8" Text="{Binding ElementName=FuelCellNo9Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+                            <TextBlock Grid.Column="9" Text="{Binding ElementName=FuelCellNo10Voltage, Path=Value, StringFormat={}{0:0.00}}" Style="{StaticResource CellVoltage}" />
+
+                            <TextBlock Grid.Column="0" Text="#1" Style="{StaticResource CellHeading}" />
+                            <TextBlock Grid.Column="1" Text="#2" Style="{StaticResource CellHeading}" />
+                            <TextBlock Grid.Column="2" Text="#3" Style="{StaticResource CellHeading}" />
+                            <TextBlock Grid.Column="3" Text="#4" Style="{StaticResource CellHeading}" />
+                            <TextBlock Grid.Column="4" Text="#5" Style="{StaticResource CellHeading}" />
+                            <TextBlock Grid.Column="5" Text="#6" Style="{StaticResource CellHeading}" />
+                            <TextBlock Grid.Column="6" Text="#7" Style="{StaticResource CellHeading}" />
+                            <TextBlock Grid.Column="7" Text="#8" Style="{StaticResource CellHeading}" />
+                            <TextBlock Grid.Column="8" Text="#9" Style="{StaticResource CellHeading}" />
+                            <TextBlock Grid.Column="9" Text="#10" Style="{StaticResource CellHeading}" />
+
+                        </Grid>
+                    </Grid>
+
+                    <!-- Gauges -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <cblk3pd:ThreePointerDial x:Name="FuelCellSeriesVoltageGauge"
+                                      Grid.Row="0"
+                                      Margin="3"
+                                      GaugeTitle="Voltage (V)"
+                                      BackgroundColor="{StaticResource FuelCellTpdBackgroundColor}"
+                                      BorderColor="{StaticResource FuelCellTpdBorderColor}"
+                                      Dial1Color="{StaticResource FuelCellTpdDial1Color}" Dial1BorderColor="{StaticResource FuelCellTpdDial1BorderColor}"
+                                      Dial2Color="{StaticResource FuelCellTpdDial2Color}" Dial2BorderColor="{StaticResource FuelCellTpdDial2BorderColor}"
+                                      Dial3Color="{StaticResource FuelCellTpdDial3Color}" Dial3BorderColor="{StaticResource FuelCellTpdDial3BorderColor}"
+                                      GaugeMinValue="0" GaugeMaxValue="10"
+                                      Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
+
+                        <cblk3pd:ThreePointerDial x:Name="FuelCellSeriesCurrentGauge"
+                                      Grid.Row="1"
+                                      Margin="3"
+                                      GaugeTitle="Current (A)"
+                                      BackgroundColor="{StaticResource FuelCellTpdBackgroundColor}"
+                                      BorderColor="{StaticResource FuelCellTpdBorderColor}"
+                                      Dial1Color="{StaticResource FuelCellTpdDial1Color}" Dial1BorderColor="{StaticResource FuelCellTpdDial1BorderColor}"
+                                      Dial2Color="{StaticResource FuelCellTpdDial2Color}" Dial2BorderColor="{StaticResource FuelCellTpdDial2BorderColor}"
+                                      Dial3Color="{StaticResource FuelCellTpdDial3Color}" Dial3BorderColor="{StaticResource FuelCellTpdDial3BorderColor}"
+                                      GaugeMinValue="0" GaugeMaxValue="5"
+                                      Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
+
+                        <cblk3pd:ThreePointerDial x:Name="FuelCellSeriesPowerGauge"
+                                      Grid.Row="2"
+                                      Margin="3"
+                                      GaugeTitle="Power (W)"
+                                      BackgroundColor="{StaticResource FuelCellTpdBackgroundColor}"
+                                      BorderColor="{StaticResource FuelCellTpdBorderColor}"
+                                      Dial1Color="{StaticResource FuelCellTpdDial1Color}" Dial1BorderColor="{StaticResource FuelCellTpdDial1BorderColor}"
+                                      Dial2Color="{StaticResource FuelCellTpdDial2Color}" Dial2BorderColor="{StaticResource FuelCellTpdDial2BorderColor}"
+                                      Dial3Color="{StaticResource FuelCellTpdDial3Color}" Dial3BorderColor="{StaticResource FuelCellTpdDial3BorderColor}"
+                                      GaugeMinValue="0" GaugeMaxValue="10"
+                                      Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
+
+                        <Grid Grid.Row="3" Margin="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Current" VerticalAlignment="Center" />
+                            <TextBox Grid.Column="1" x:Name="FuelCellSeriesCurrentOverrideValue" IsEnabled="{Binding Path=IsChecked, ElementName=FuelCellCurrentEnableOverride}" Text="" Margin="2,5" MinHeight="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="OnCurrentOverrideTextKeyDown" TextChanged="OnCurrentOverrideTextChanged" />
+                        </Grid>
+
+                        <Button Grid.Row="4"
+                                Margin="3" MinHeight="30"
+                                Content="Start"
+                                x:Name="FuelCellSeriesStartButton"
+                                Click="OnStartButtonClicked" />
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+
+            <!-- Electrolyzer -->
+            <TabItem Header="Electrolyzer" x:Name="ElectrolyzerTabItem">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Charts -->
+                    <Grid Grid.Column="0">
+                        <xyPlot:XYPlot x:Name="ElectrolyzerIVPlot"
+                                       XAxisTitle="Voltage (V)"
+                                       YAxisTitle="Current (A)"
+                                       PlotVisibility2="Hidden"
+                                       IsAutoRangeEnabled="True" />
+                    </Grid>
+
+                    <!-- Gauges -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <cblk3pd:ThreePointerDial x:Name="ElectrolyzerVoltageGauge"
+                                                  Grid.Row="0"
+                                                  Margin="3"
+                                                  GaugeTitle="Voltage (V)"
+                                                  BackgroundColor="{StaticResource ElectrolyzerTpdBackgroundColor}"
+                                                  BorderColor="{StaticResource ElectrolyzerTpdBorderColor}"
+                                                  Dial1Color="{StaticResource ElectrolyzerTpdDial1Color}" Dial1BorderColor="{StaticResource ElectrolyzerTpdDial1BorderColor}"
+                                                  Dial2Color="{StaticResource ElectrolyzerTpdDial2Color}" Dial2BorderColor="{StaticResource ElectrolyzerTpdDial2BorderColor}"
+                                                  Dial3Color="{StaticResource ElectrolyzerTpdDial3Color}" Dial3BorderColor="{StaticResource ElectrolyzerTpdDial3BorderColor}"
+                                                  GaugeMinValue="0" GaugeMaxValue="5"
+                                                  Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
+
+                        <cblk3pd:ThreePointerDial x:Name="ElectrolyzerCurrentGauge"
+                                                  Grid.Row="1"
+                                                  Margin="3"
+                                                  GaugeTitle="Current (A)"
+                                                  BackgroundColor="{StaticResource ElectrolyzerTpdBackgroundColor}"
+                                                  BorderColor="{StaticResource ElectrolyzerTpdBorderColor}"
+                                                  Dial1Color="{StaticResource ElectrolyzerTpdDial1Color}" Dial1BorderColor="{StaticResource ElectrolyzerTpdDial1BorderColor}"
+                                                  Dial2Color="{StaticResource ElectrolyzerTpdDial2Color}" Dial2BorderColor="{StaticResource ElectrolyzerTpdDial2BorderColor}"
+                                                  Dial3Color="{StaticResource ElectrolyzerTpdDial3Color}" Dial3BorderColor="{StaticResource ElectrolyzerTpdDial3BorderColor}"
+                                                  GaugeMinValue="0" GaugeMaxValue="5"
+                                                  Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
+
+                        <cblk3pd:ThreePointerDial x:Name="ElectrolyzerPowerGauge"
+                                                  Grid.Row="2"
+                                                  Margin="3"
+                                                  GaugeTitle="Power (W)"
+                                                  BackgroundColor="{StaticResource ElectrolyzerTpdBackgroundColor}"
+                                                  BorderColor="{StaticResource ElectrolyzerTpdBorderColor}"
+                                                  Dial1Color="{StaticResource ElectrolyzerTpdDial1Color}" Dial1BorderColor="{StaticResource ElectrolyzerTpdDial1BorderColor}"
+                                                  Dial2Color="{StaticResource ElectrolyzerTpdDial2Color}" Dial2BorderColor="{StaticResource ElectrolyzerTpdDial2BorderColor}"
+                                                  Dial3Color="{StaticResource ElectrolyzerTpdDial3Color}" Dial3BorderColor="{StaticResource ElectrolyzerTpdDial3BorderColor}"
+                                                  GaugeMinValue="0" GaugeMaxValue="20"
+                                                  Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
+
+                        <Grid Grid.Row="3" Margin="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Current" VerticalAlignment="Center" />
+                            <TextBox Grid.Column="1" x:Name="ElectrolyzerCurrentOverrideValue" IsEnabled="{Binding Path=IsChecked, ElementName=ElectrolyzerCurrentEnableOverride}" Text="" Margin="2,5" MinHeight="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="OnCurrentOverrideTextKeyDown" TextChanged="OnCurrentOverrideTextChanged" />
+                        </Grid>
+
+                        <Button Grid.Row="4"
+                                Margin="3" MinHeight="30"
+                                Content="Start"
+                                x:Name="ElectrolyzerStartButton"
+                                Click="OnStartButtonClicked" />
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
+        <!-- Message & progress bar -->
+        <StatusBar Grid.Row="2">
+            <TextBlock x:Name="MessageBar" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        </StatusBar>
+        
+        <ProgressBar Grid.Row="2" x:Name="DataProgress"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                     Background="#FF252B00"
+                     Foreground="#FFA27602"
+                     Minimum="0" Maximum="100" />
+        <TextBlock Grid.Row="2" x:Name="DataProgressMessage"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Foreground="#FFF9F9F9" />
+    </Grid>
+</Window>
