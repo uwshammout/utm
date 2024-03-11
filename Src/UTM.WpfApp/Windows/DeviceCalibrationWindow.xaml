@@ -297,7 +297,7 @@
             </TabItem>
             <TabItem Header="Distance Calibration">
             </TabItem>
-            <TabItem Header="Load Calibration">
+            <TabItem Header="Load Cell Calibration">
             </TabItem>
             <TabItem Header="Password Update">
                 <Grid Margin="5,15">
