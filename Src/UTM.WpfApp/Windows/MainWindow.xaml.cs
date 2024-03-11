@@ -17,7 +17,7 @@ public partial class MainWindow : Window
 {
     private enum PlottingState
     {
-        None, FuelCell, FuelCellSeries, Electrolyzer
+        None, StressStrain
     }
 
     private readonly App _app;
@@ -25,31 +25,16 @@ public partial class MainWindow : Window
     private readonly ISerialModbusClientService _device;
     private readonly ISerialModbusDataCalibrationService _deviceData;
 
-    private readonly Timer _timer;
+    private readonly Timer _experimentTimer;
     private DateTime _experimentStartTime = DateTime.MinValue;
 
-    private bool _isSetZeroCurrentRequested = false;
-    private double _fuelCellZeroCurrent = 0.0;
-    private double _electrolyzerZeroCurrent = 0.0;
-
-    private bool _isFuelCellCurrentOverrideEnabled = false;
-    private bool _isElectrolyzerCurrentOverrideEnabled = false;
-    private double _fuelCellCurrentOverrideValue = 0.0;
-    private double _electrolyzerCurrentOverrideValue = 0.0;
+    private bool _isSetZeroDistanceRequested = false;
+    private bool _isSetZeroLoadRequested = false;
+    private double _zeroDistanceValue = 0.0;
+    private double _zeroLoadValue = 0.0;
 
     private readonly string _csvDumpFilename;
     private StreamWriter _csvDumpFile = null!;
-
-    private Brush _currentOverrideValueInitialColor;
-
-    private Brush _fuelCellStartButtonInitialColor;
-    private Brush _fuelCellSeriesStartButtonInitialColor;
-    private Brush _electrolyzerStartButtonInitialColor;
-
-    private string _fuelCellStartButtonInitialText;
-    private string _fuelCellSeriesStartButtonInitialText;
-    private string _electrolyzerStartButtonInitialText;
-    private string _stopText = "STOP";
 
     private PlottingState _plottingState;
     private PlottingState _lastPlottingState;
@@ -67,50 +52,33 @@ public partial class MainWindow : Window
         _device = device;
         _deviceData = dataService;
 
-        _timer = new Timer(OnTimerTick, null, 500, 500);
+        _experimentTimer = new Timer(OnExperimentTimerTick, null, 500, 500);
 
         _csvDumpFilename = FilePaths.CsvDumpFilename;
         _csvDumpFilename.CreateFoldersForRelativeFilename();
-
-        FuelCellCurrentEnableOverride.IsChecked = _isFuelCellCurrentOverrideEnabled;
-        ElectrolyzerCurrentEnableOverride.IsChecked = _isElectrolyzerCurrentOverrideEnabled;
-
-        FuelCellCurrentOverrideValue.Text = _fuelCellCurrentOverrideValue.ToString();
-        FuelCellSeriesCurrentOverrideValue.Text = _fuelCellCurrentOverrideValue.ToString();
-        ElectrolyzerCurrentOverrideValue.Text = _electrolyzerCurrentOverrideValue.ToString();
-
-        _currentOverrideValueInitialColor = FuelCellCurrentOverrideValue.Background;
-
-        _fuelCellStartButtonInitialColor = FuelCellStartButton.Background;
-        _fuelCellSeriesStartButtonInitialColor = FuelCellSeriesStartButton.Background;
-        _electrolyzerStartButtonInitialColor = ElectrolyzerStartButton.Background;
-
-        _fuelCellStartButtonInitialText = (string)FuelCellStartButton.Content;
-        _fuelCellSeriesStartButtonInitialText = (string)FuelCellSeriesStartButton.Content;
-        _electrolyzerStartButtonInitialText = (string)ElectrolyzerStartButton.Content;
 
         _plottingState = PlottingState.None;
         _lastPlottingState = PlottingState.None;
         ChangePlottingState(_plottingState);
 
-        _modbus.OperationStateChanged += OnDeviceOperationStateChanged;
-        OnDeviceOperationStateChanged(_modbus.OperationState);
+        _device.OperationStateChanged += OnDeviceOperationStateChanged;
+        OnDeviceOperationStateChanged(_device.OperationState);
 
-        _modbusScaling.NewValuesReceived += OnNewValuesReceived;
+        _deviceData.NewValuesReceived += OnNewValuesReceived;
     }
 
     protected override void OnClosed(EventArgs e)
     {
-        _timer.Dispose();
+        _experimentTimer.Dispose();
 
         _dataExchange.Dispose();
-        _modbusScaling.Dispose();
-        _modbus.Dispose();
+        _deviceData.Dispose();
+        _device.Dispose();
 
         base.OnClosed(e);
     }
 
-    private void OnTimerTick(object? state)
+    private void OnExperimentTimerTick(object? state)
     {
         Dispatcher.Invoke(() =>
         {
@@ -118,23 +86,9 @@ public partial class MainWindow : Window
             {
                 case PlottingState.None: break;
 
-                case PlottingState.FuelCell:
-                case PlottingState.FuelCellSeries:
-                case PlottingState.Electrolyzer:
+                case PlottingState.StressStrain:
 
                     double secondsElapsed = (DateTime.Now - _experimentStartTime).TotalSeconds;
-                    double secondsTotal = _dataExchange.ExperimentTimeDuration;
-                    double secondsRemaining = secondsTotal - secondsElapsed;
-
-                    if (secondsElapsed >= _dataExchange.ExperimentTimeDuration)
-                    {
-                        ChangePlottingState(PlottingState.None);
-                    }
-                    else
-                    {
-                        DataProgress.Value = (secondsElapsed / secondsTotal) * 100;
-                        DataProgressMessage.Text = $"{(int)secondsRemaining} Seconds Remaining";
-                    }
 
                     break;
             }
@@ -143,6 +97,7 @@ public partial class MainWindow : Window
 
     private void OnNewValuesReceived(List<double> values)
     {
+        if (values == null) throw new ArgumentNullException(nameof(values));
         if (values.Count < CronBlocks.SerialPortInterface.Configuration.Constants.TotalRegisters)
         {
             throw new InvalidOperationException(
@@ -154,180 +109,34 @@ public partial class MainWindow : Window
         {
             //- Fuel Cell
 
-            double fcTotalVoltage = values[0];
+            double currentDistance = values[0];
+            double currentLoad = values[1];
+
             double fcTotalCurrent = Math.Abs(values[1] - values[2]) / _dataExchange.FuelCellCurrentMeasurementResistance;
 
-            if (_isSetZeroCurrentRequested)
+            if (_isSetZeroDistanceRequested)
             {
-                _fuelCellZeroCurrent = fcTotalCurrent;
-            }
-            fcTotalCurrent -= _fuelCellZeroCurrent;
-            if (fcTotalCurrent < 0) { fcTotalCurrent = 0; }
-            
-            if (_isFuelCellCurrentOverrideEnabled)
-            {
-                fcTotalCurrent = _fuelCellCurrentOverrideValue;
+                _zeroDistanceValue = currentDistance;
+                _isSetZeroDistanceRequested = false;
             }
 
-            double fcTotalPower = fcTotalVoltage * fcTotalCurrent;
-            double fcC1Voltage = values[3];  //- First cell near ground
-            double fcC2Voltage = values[4];  //- 
-            double fcC3Voltage = values[5];  //- 
-            double fcC4Voltage = values[6];  //- 
-            double fcC5Voltage = values[7];  //- 
-            double fcC6Voltage = values[8];  //- 
-            double fcC7Voltage = values[9];  //- 
-            double fcC8Voltage = values[10]; //- 
-            double fcC9Voltage = values[11]; //- Last cell near the total voltage
-
-            FuelCellVoltageGauge.Dial1Value = fcTotalVoltage;
-            FuelCellCurrentGauge.Dial1Value = fcTotalCurrent;
-            FuelCellPowerGauge.Dial1Value = fcTotalPower;
-
-            FuelCellSeriesVoltageGauge.Dial1Value = fcTotalVoltage;
-            FuelCellSeriesCurrentGauge.Dial1Value = fcTotalCurrent;
-            FuelCellSeriesPowerGauge.Dial1Value = fcTotalPower;
-
-            FuelCellNo1Voltage.Value = fcC1Voltage;
-            FuelCellNo2Voltage.Value = fcC2Voltage - fcC1Voltage;
-            FuelCellNo3Voltage.Value = fcC3Voltage - fcC2Voltage;
-            FuelCellNo4Voltage.Value = fcC4Voltage - fcC3Voltage;
-            FuelCellNo5Voltage.Value = fcC5Voltage - fcC4Voltage;
-            FuelCellNo6Voltage.Value = fcC6Voltage - fcC5Voltage;
-            FuelCellNo7Voltage.Value = fcC7Voltage - fcC6Voltage;
-            FuelCellNo8Voltage.Value = fcC8Voltage - fcC7Voltage;
-            FuelCellNo9Voltage.Value = fcC9Voltage - fcC8Voltage;
-            FuelCellNo10Voltage.Value = fcTotalVoltage - fcC9Voltage;
-
-            //- Electrolyzer
-
-            double elTotalVoltage = values[12];
-            double elTotalCurrent = Math.Abs(values[13] - values[14]) / _dataExchange.ElectrolyzerCurrentMeasurementResistance;
-
-            if (_isSetZeroCurrentRequested)
+            if (_isSetZeroLoadRequested)
             {
-                _electrolyzerZeroCurrent = elTotalCurrent;
+                _zeroLoadValue = currentLoad;
+                _isSetZeroLoadRequested = false;
             }
-            elTotalCurrent -= _electrolyzerZeroCurrent;
-            if (elTotalCurrent < 0) { elTotalCurrent = 0; }
-
-            if (_isElectrolyzerCurrentOverrideEnabled)
-            {
-                elTotalCurrent = _electrolyzerCurrentOverrideValue;
-            }
-            double elTotalPower = elTotalVoltage * elTotalCurrent;
-
-            ElectrolyzerVoltageGauge.Dial1Value = elTotalVoltage;
-            ElectrolyzerCurrentGauge.Dial1Value = elTotalCurrent;
-            ElectrolyzerPowerGauge.Dial1Value = elTotalPower;
-
-            //- Flag Reset
-            _isSetZeroCurrentRequested = false;
 
             //- Plotting
 
             switch (_plottingState)
             {
                 case PlottingState.None: break;
-
-                case PlottingState.FuelCell:
-                    {
-                        FuelCellVIPlot.Update(fcTotalCurrent, fcTotalVoltage, 0, 0);
-                        FuelCellPTPlot.Update(fcTotalPower, 0);
-                        FuelCellPIPlot.Update(fcTotalCurrent, fcTotalPower, 0, 0);
-                        FuelCellPVPlot.Update(fcTotalVoltage, fcTotalPower, 0, 0);
-
-                        if (fcTotalVoltage > FuelCellVoltageGauge.Dial2Value)
-                        {
-                            FuelCellVoltageGauge.Dial2Value = fcTotalVoltage;
-                        }
-
-                        if (fcTotalCurrent > FuelCellCurrentGauge.Dial2Value)
-                        {
-                            FuelCellCurrentGauge.Dial2Value = fcTotalCurrent;
-                        }
-
-                        if (fcTotalPower > FuelCellPowerGauge.Dial2Value)
-                        {
-                            FuelCellPowerGauge.Dial2Value = fcTotalPower;
-
-                            FuelCellVoltageGauge.Dial3Value = fcTotalVoltage;
-                            FuelCellCurrentGauge.Dial3Value = fcTotalCurrent;
-                            FuelCellPowerGauge.Dial3Value = fcTotalPower;
-                        }
-                    }
-                    break;
-
-                case PlottingState.FuelCellSeries:
-                    {
-                        FuelCellSeriesVIPlot.Update(fcTotalCurrent, fcTotalVoltage, 0, 0);
-                        FuelCellSeriesPTPlot.Update(fcTotalPower, 0);
-
-                        if (fcTotalVoltage > FuelCellSeriesVoltageGauge.Dial2Value)
-                        {
-                            FuelCellSeriesVoltageGauge.Dial2Value = fcTotalVoltage;
-                        }
-
-                        if (fcTotalCurrent > FuelCellSeriesCurrentGauge.Dial2Value)
-                        {
-                            FuelCellSeriesCurrentGauge.Dial2Value = fcTotalCurrent;
-                        }
-
-                        if (fcTotalPower > FuelCellSeriesPowerGauge.Dial2Value)
-                        {
-                            FuelCellSeriesPowerGauge.Dial2Value = fcTotalPower;
-
-                            FuelCellSeriesVoltageGauge.Dial3Value = fcTotalVoltage;
-                            FuelCellSeriesCurrentGauge.Dial3Value = fcTotalCurrent;
-                            FuelCellSeriesPowerGauge.Dial3Value = fcTotalPower;
-                        }
-                    }
-                    break;
-                case PlottingState.Electrolyzer:
-                    {
-                        ElectrolyzerIVPlot.Update(elTotalVoltage, elTotalCurrent, 0, 0);
-
-                        if (elTotalVoltage > ElectrolyzerVoltageGauge.Dial2Value)
-                        {
-                            ElectrolyzerVoltageGauge.Dial2Value = elTotalVoltage;
-                        }
-
-                        if (elTotalCurrent > ElectrolyzerCurrentGauge.Dial2Value)
-                        {
-                            ElectrolyzerCurrentGauge.Dial2Value = elTotalCurrent;
-                        }
-
-                        if (elTotalPower > ElectrolyzerPowerGauge.Dial2Value)
-                        {
-                            ElectrolyzerPowerGauge.Dial2Value = elTotalPower;
-
-                            ElectrolyzerVoltageGauge.Dial3Value = elTotalVoltage;
-                            ElectrolyzerCurrentGauge.Dial3Value = elTotalCurrent;
-                            ElectrolyzerPowerGauge.Dial3Value = elTotalPower;
-                        }
-                    }
-                    break;
+                case PlottingState.StressStrain: break;
             }
 
             //- Writing to file
 
-            WriteCsvDumpFileValues(_plottingState,
-                fcTotalVoltage,
-                fcTotalCurrent,
-                fcTotalPower,
-                FuelCellNo1Voltage.Value,
-                FuelCellNo2Voltage.Value,
-                FuelCellNo3Voltage.Value,
-                FuelCellNo4Voltage.Value,
-                FuelCellNo5Voltage.Value,
-                FuelCellNo6Voltage.Value,
-                FuelCellNo7Voltage.Value,
-                FuelCellNo8Voltage.Value,
-                FuelCellNo9Voltage.Value,
-                FuelCellNo10Voltage.Value,
-                elTotalVoltage,
-                elTotalCurrent,
-                elTotalPower);
+            WriteCsvDumpFileValues(_plottingState, currentDistance, currentLoad);
         });
     }
 
@@ -495,43 +304,20 @@ public partial class MainWindow : Window
         {
             case PlottingState.None: break;
 
-            case PlottingState.FuelCell:
-                _csvDumpFile.WriteLine($"Total Voltage (V), Total Current (A), Total Power (W)");
-                break;
-
-            case PlottingState.FuelCellSeries:
-                _csvDumpFile.WriteLine($"Total Voltage (V), Total Current (A), Total Power (W), Cell #1 Voltage, Cell #2 Voltage, Cell #3 Voltage, Cell #4 Voltage, Cell #5 Voltage, Cell #6 Voltage, Cell #7 Voltage, Cell #8 Voltage, Cell #9 Voltage, Cell #10 Voltage");
-                break;
-
-            case PlottingState.Electrolyzer:
-                _csvDumpFile.WriteLine($"Total Voltage (V), Total Current (A), Total Power (W)");
+            case PlottingState.StressStrain:
+                _csvDumpFile.WriteLine($"Distance (mm), Load (kN)");
                 break;
         }
     }
 
-    private void WriteCsvDumpFileValues(PlottingState state,
-        double fcTotalVoltage, double fcTotalCurrent, double fcTotalPower,
-        double cellVoltage1, double cellVoltage2,
-        double cellVoltage3, double cellVoltage4,
-        double cellVoltage5, double cellVoltage6,
-        double cellVoltage7, double cellVoltage8,
-        double cellVoltage9, double cellVoltage10,
-        double elTotalVoltage, double elTotalCurrent, double elTotalPower)
+    private void WriteCsvDumpFileValues(PlottingState state, double currentDistance, double currentLoad)
     {
         switch (state)
         {
             case PlottingState.None: break;
 
-            case PlottingState.FuelCell:
-                _csvDumpFile.WriteLine($"{fcTotalVoltage:0.0000}, {fcTotalCurrent:0.0000}, {fcTotalPower:0.0000}");
-                break;
-
-            case PlottingState.FuelCellSeries:
-                _csvDumpFile.WriteLine($"{fcTotalVoltage:0.0000}, {fcTotalCurrent:0.0000}, {fcTotalPower:0.0000}, {cellVoltage1:0.0000}, {cellVoltage2:0.0000}, {cellVoltage3:0.0000}, {cellVoltage4:0.0000}, {cellVoltage5:0.0000}, {cellVoltage6:0.0000}, {cellVoltage7:0.0000}, {cellVoltage8:0.0000}, {cellVoltage9:0.0000}, {cellVoltage10:0.0000}");
-                break;
-
-            case PlottingState.Electrolyzer:
-                _csvDumpFile.WriteLine($"{elTotalVoltage:0.0000}, {elTotalCurrent:0.0000}, {elTotalPower:0.0000}");
+            case PlottingState.StressStrain:
+                _csvDumpFile.WriteLine($"{currentDistance:0.0000}, {currentLoad:0.0000}");
                 break;
         }
     }
