@@ -6,9 +6,9 @@ public interface ISerialModbusDataCalibrationService : IDisposable
 {
     event Action<List<double>>? NewValuesReceived;
     
-    void LoadValuesFromFile();
-    void SaveValuesToFile();
+    void LoadCalibrationDataFromFile();
+    void SaveCalibrationDataToFile();
     
-    ImmutableDictionary<double,double> GetCalibrationValues();
-    ImmutableDictionary<double,double> SetCalibrationValue(double input, double output);
+    ImmutableDictionary<double,double> GetCalibrationValues(int dataIndex);
+    ImmutableDictionary<double,double> SetCalibrationValue(int dataIndex, int calibrationPoint, double input, double output);
 }
