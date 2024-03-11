@@ -1,6 +1,5 @@
-﻿using CronBlocks.UTM.InternalServices;
-using CronBlocks.UTM.Settings;
-using CronBlocks.SerialPortInterface.Interfaces;
+﻿using CronBlocks.SerialPortInterface.Interfaces;
+using CronBlocks.UTM.InternalServices;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
