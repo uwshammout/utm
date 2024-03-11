@@ -15,6 +15,11 @@ public class Constants
     internal const ModbusEndianness ModbusEndianness = FluentModbus.ModbusEndianness.BigEndian;
     public const int TotalRegisters = 16;
 
+    // Calibration Constants
+    public const uint TotalCalibrationPoints = 20;
+    public const double InputRangeMin = 0.0;
+    public const double InputRangeMax = 10.0;
+
     // Defaults
     public const int DefaultDeviceAddress = 1;
     public const string DefaultRegistersStartAddressHexStr = "0x0020";
