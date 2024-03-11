@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using CronBlocks.SerialPortInterface.Services;
 
 namespace CronBlocks.UTM.Windows;
 
@@ -21,8 +22,8 @@ public partial class MainWindow : Window
 
     private readonly App _app;
     private readonly DataExchangeService _dataExchange;
-    private readonly ISerialModbusClientService _modbus;
-    private readonly ISerialModbusDataScalingService _modbusScaling;
+    private readonly ISerialModbusClientService _device;
+    private readonly ISerialModbusDataCalibrationService _deviceData;
 
     private readonly Timer _timer;
     private DateTime _experimentStartTime = DateTime.MinValue;
@@ -56,15 +57,15 @@ public partial class MainWindow : Window
     public MainWindow(
         App app,
         DataExchangeService dataExchange,
-        ISerialModbusClientService modbus,
-        ISerialModbusDataScalingService scalingService)
+        ISerialModbusClientService device,
+        ISerialModbusDataCalibrationService dataService)
     {
         InitializeComponent();
 
         _app = app;
         _dataExchange = dataExchange;
-        _modbus = modbus;
-        _modbusScaling = scalingService;
+        _device = device;
+        _deviceData = dataService;
 
         _timer = new Timer(OnTimerTick, null, 500, 500);
 
