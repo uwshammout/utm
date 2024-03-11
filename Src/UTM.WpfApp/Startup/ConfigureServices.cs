@@ -59,6 +59,7 @@ internal static class ConfigureServices
             return new Windows.DeviceCalibrationWindow(
                 sp.GetRequiredService<ISerialModbusClientService>(),
                 sp.GetRequiredService<ISerialModbusDataScalingService>(),
+                sp.GetRequiredService<ISerialModbusDataCalibrationService>(),
                 sp.GetRequiredService<DataExchangeService>(),
                 new IniConfigIO(
                     FilePaths.PasswordFilename,
