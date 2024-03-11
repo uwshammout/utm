@@ -11,47 +11,30 @@
         MinHeight="450" MinWidth="650"
         MaxHeight="750" MaxWidth="900"
         Height="650" Width="700">
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="20" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <Grid.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="Margin" Value="10,3" />
-            </Style>
-            <Style TargetType="Slider">
-                <Setter Property="Margin" Value="10,3" />
-            </Style>
-        </Grid.Resources>
+    <ScrollViewer>
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="5,8" />
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="0,2" />
+                </Style>
+                <Style TargetType="Slider">
+                    <Setter Property="Margin" Value="0,5" />
+                </Style>
+            </StackPanel.Resources>
 
-        <TextBlock Text="Acquisition Interval" Grid.Row="1" />
-        <Slider Minimum="{Binding AcquisitionIntervalMinimum}"
-                Maximum="{Binding AcquisitionIntervalMaximum}"
-                Value="{Binding AcquisitionIntervalValue}"
-                SmallChange="1" LargeChange="10"
-                Grid.Row="2"
-                x:Name="AcquisitionInterval"
-                ValueChanged="OnSliderValueChanged" />
-        <TextBlock Text="{Binding ElementName=AcquisitionInterval, Path=Value, StringFormat={}{0:0 Milliseconds}}" TextAlignment="Center" Grid.Row="3" />
-
-        <TextBlock Text="Total Experiment Time" Grid.Row="5" />
-        <Slider Minimum="{Binding ExperimentTimeMinimum}"
-                Maximum="{Binding ExperimentTimeMaximum}"
-                Value="{Binding ExperimentTimeValue}"
-                SmallChange="1" LargeChange="10"
-                Grid.Row="6"
-                x:Name="ExperimentTime"
-                ValueChanged="OnSliderValueChanged" />
-        <TextBlock Text="{Binding ElementName=ExperimentTime, Path=Value, StringFormat={}{0:0 Seconds}}" TextAlignment="Center" Grid.Row="7" />
-    </Grid>
+            <!-- Acquisition Interval -->
+            <StackPanel>
+                <TextBlock Text="Acquisition Interval" />
+                <Slider Minimum="{Binding AcquisitionIntervalMinimum}" Maximum="{Binding AcquisitionIntervalMaximum}"
+                        Value="{Binding AcquisitionIntervalValue}"
+                        SmallChange="1" LargeChange="10" x:Name="AcquisitionInterval"
+                        ValueChanged="OnSliderValueChanged" />
+                <TextBlock Text="{Binding ElementName=AcquisitionInterval, Path=Value, StringFormat={}{0:0 Milliseconds}}" TextAlignment="Center" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </Window>
