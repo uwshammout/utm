@@ -77,9 +77,6 @@ public partial class DeviceCalibrationWindow : Window
             _offInputs[i].Text = ofs[i].ToString();
         }
 
-        ResistorValueFC.Text = _dataExchange.FuelCellCurrentMeasurementResistance.ToString();
-        ResistorValueEL.Text = _dataExchange.ElectrolyzerCurrentMeasurementResistance.ToString();
-
         _modbus.OperationStateChanged += OnDeviceOperationStateChanged;
         OnDeviceOperationStateChanged(_modbus.OperationState);
 
@@ -92,7 +89,7 @@ public partial class DeviceCalibrationWindow : Window
         {
             for (int i = 0; i < Math.Min(list.Count, _outputs.Length); i++)
             {
-                _outputs[i].Text = list[i].ToString("0.00");
+                _outputs[i].Text = list[i].ToString("0.000");
             }
         });
     }
@@ -129,7 +126,6 @@ public partial class DeviceCalibrationWindow : Window
 
         string mfPrefix = "MultiplicationFactorA";
         string offPrefix = "OffsetA";
-        string resPrefix = "ResistorValue";
 
         //- Let's match prefix
 
@@ -141,10 +137,6 @@ public partial class DeviceCalibrationWindow : Window
         {
             prefix = offPrefix;
         }
-        else if (name.StartsWith(resPrefix))
-        {
-            prefix = resPrefix;
-        }
         else
         {
             throw new NotImplementedException(
@@ -154,8 +146,7 @@ public partial class DeviceCalibrationWindow : Window
 
         //- Let's get the index for series of inputs only
 
-        if (prefix != null &&
-            (prefix == mfPrefix || prefix == offPrefix))
+        if (prefix == mfPrefix || prefix == offPrefix)
         {
             if (int.TryParse(name.Substring(prefix.Length), out index) &&
                 index >= 1 && index <= 16)
@@ -164,8 +155,7 @@ public partial class DeviceCalibrationWindow : Window
             }
             else
             {
-                throw new NotImplementedException(
-                    $"{nameof(OnTextChanged)}: cannot get valid index from {name}");
+                throw new ArgumentOutOfRangeException(name);
             }
         }
 
@@ -182,17 +172,6 @@ public partial class DeviceCalibrationWindow : Window
             else if (prefix == offPrefix)
             {
                 _modbusScaling.SetOffset(index, value);
-            }
-            else if (prefix == resPrefix)
-            {
-                if (textBox == ResistorValueFC)
-                {
-                    _dataExchange.FuelCellCurrentMeasurementResistance = value;
-                }
-                else if (textBox == ResistorValueEL)
-                {
-                    _dataExchange.ElectrolyzerCurrentMeasurementResistance = value;
-                }
             }
         }
         else
