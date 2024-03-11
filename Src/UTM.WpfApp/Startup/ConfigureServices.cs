@@ -35,6 +35,14 @@ internal static class ConfigureServices
                 FilePaths.DataScalingFilename,
                 sp.GetRequiredService<ILogger<IniConfigIO>>());
         });
+        services.AddSingleton<ISerialModbusDataCalibrationService>((sp) =>
+        {
+            return new SerialModbusDataCalibrationService(
+                sp.GetRequiredService<ISerialModbusDataScalingService>(),
+                sp.GetRequiredService<ILogger<SerialModbusDataCalibrationService>>(),
+                FilePaths.DataCalibrationFilename,
+                sp.GetRequiredService<ILogger<IniConfigIO>>());
+        });
         services.AddSingleton((sp) =>
         {
             return new DataExchangeService(
