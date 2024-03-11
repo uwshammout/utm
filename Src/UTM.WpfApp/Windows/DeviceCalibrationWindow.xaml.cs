@@ -17,8 +17,7 @@ public partial class DeviceCalibrationWindow : Window
 
     private readonly ISerialModbusClientService _modbus;
     private readonly ISerialModbusDataScalingService _modbusScaling;
-    private readonly ISerialModbusDataCalibrationService _distanceCalibration;
-    private readonly ISerialModbusDataCalibrationService _loadCellCalibration;
+    private readonly ISerialModbusDataCalibrationService _calibration;
     private readonly DataExchangeService _dataExchange;
     private readonly IniConfigIO _passwordFile;
     private readonly TextBox[] _mfInputs;
@@ -30,8 +29,7 @@ public partial class DeviceCalibrationWindow : Window
     public DeviceCalibrationWindow(
         ISerialModbusClientService modbus,
         ISerialModbusDataScalingService modbusScaling,
-        ISerialModbusDataCalibrationService distanceCalibration,
-        ISerialModbusDataCalibrationService loadCellCalibration,
+        ISerialModbusDataCalibrationService calibration,
         DataExchangeService dataExchange,
         IniConfigIO passwordFile)
     {
@@ -39,8 +37,7 @@ public partial class DeviceCalibrationWindow : Window
 
         _modbus = modbus;
         _modbusScaling = modbusScaling;
-        _distanceCalibration = distanceCalibration;
-        _loadCellCalibration = loadCellCalibration;
+        _calibration = calibration;
         _dataExchange = dataExchange;
         _passwordFile = passwordFile;
         _originalTextBoxBg = MultiplicationFactorA1.Background;
