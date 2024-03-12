@@ -178,9 +178,7 @@ public partial class MainWindow : Window
             switch (_lastPlottingState)
             {
                 case PlottingState.None: break;
-                case PlottingState.FuelCell: break;
-                case PlottingState.FuelCellSeries: break;
-                case PlottingState.Electrolyzer: break;
+                case PlottingState.StressStrain: break;
             }
 
             //- Current state setup
@@ -317,7 +315,6 @@ public partial class MainWindow : Window
         switch (state)
         {
             case PlottingState.None: break;
-
             case PlottingState.StressStrain:
                 _csvDumpFile.WriteLine($"{currentDistance:0.0000}, {currentLoad:0.0000}");
                 break;
@@ -381,13 +378,11 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnCurrentOverrideTextChanged(object sender, TextChangedEventArgs e)
+    private void OnTextChanged(object sender, TextChangedEventArgs e)
     {
         if (sender is TextBox tb)
         {
-            if (tb == FuelCellCurrentOverrideValue ||
-                tb == FuelCellSeriesCurrentOverrideValue ||
-                tb == ElectrolyzerCurrentOverrideValue)
+            if (tb == AreaOverrideValue)
             {
                 if (double.TryParse(tb.Text, out double _))
                 {
@@ -401,7 +396,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnCurrentOverrideTextKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         if (e.Key == System.Windows.Input.Key.Enter)
         {
