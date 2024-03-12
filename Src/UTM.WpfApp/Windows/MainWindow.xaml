@@ -19,12 +19,16 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" /> <!-- Menu        -->
-            <RowDefinition Height="80"/>    <!-- Top Content -->
             <RowDefinition Height="*"/>     <!-- Content     -->
             <RowDefinition Height="25"/>    <!-- Status Bar  -->
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" MinWidth="160" MaxWidth="210" />
+        </Grid.ColumnDefinitions>
 
-        <Menu Grid.Row="0" Background="{x:Null}">
+        <!-- Master Menu -->
+        <Menu Grid.Row="0" Grid.ColumnSpan="2" Background="{x:Null}">
             <MenuItem Header="File">
                 <MenuItem Header="Save CSV" x:Name="SaveCsvMenuItem" IsEnabled="False" Click="OnMenuItemClicked" />
             </MenuItem>
@@ -36,70 +40,70 @@
             <MenuItem Header="About" Click="OnMenuItemClicked" />
         </Menu>
 
-        <!-- Top Readings & Controls -->
-        <Grid Grid.Row="1" Margin="2">
+        <!-- Left Data Panel -->
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             
-        </Grid>
-        
-        <!-- Data Plot & Controls -->
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*" />
-                <ColumnDefinition Width="*" MinWidth="160" MaxWidth="210" />
-            </Grid.ColumnDefinitions>
+            <!-- Top Readings & Controls -->
+            <Grid Grid.Row="0" Margin="2">
 
+            </Grid>
+            
             <!-- Plot -->
             <xyPlot:XYPlot x:Name="StressStrainPlot"
                            XAxisTitle="Strain, Ɛ" YAxisTitle="Stress, σ"
                            PlotVisibility2="Hidden"
                            IsAutoRangeEnabled="True"
-                           Grid.Column="0" />
-            
-            <!-- Controls -->
-            <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style TargetType="Button">
-                            <Setter Property="Margin" Value="3" />
-                            <Setter Property="MinHeight" Value="30" />
-                        </Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Margin" Value="5 8"/>
-                            <Setter Property="Orientation" Value="Vertical"/>
-                        </Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                        <Style TargetType="TextBox">
-                            <Setter Property="Margin" Value="2,5" />
-                            <Setter Property="MinHeight" Value="28" />
-                            <Setter Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="VerticalContentAlignment" Value="Center" />
-                        </Style>
-                    </StackPanel.Resources>
-
-                    <Button Content="Start" x:Name="CompressionTestStartButton" Click="OnButtonClicked" />
-                    <Button Content="Zeroize Distance" x:Name="SetZeroDistanceButton" Click="OnButtonClicked" />
-                    <Button Content="Zeroize Load" x:Name="SetZeroLoadButton" Click="OnButtonClicked" />
-
-                    <StackPanel>
-                        <TextBlock Text="Area:" />
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="30" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="AreaOverrideValue" Text="" KeyDown="OnKeyDown" TextChanged="OnTextChanged" />
-                            <TextBlock Text="m²" Grid.Column="1" HorizontalAlignment="Center" />
-                        </Grid>
-                    </StackPanel>
-                </StackPanel>
-            </ScrollViewer>
+                           Grid.Row="1" Grid.Column="0" />
         </Grid>
+        
+        <!-- Right Controls -->
+        <ScrollViewer Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical" Margin="5,2,2,5">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="3" />
+                        <Setter Property="MinHeight" Value="30" />
+                    </Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="5 8"/>
+                        <Setter Property="Orientation" Value="Vertical"/>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Margin" Value="2,5" />
+                        <Setter Property="MinHeight" Value="28" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                    </Style>
+                </StackPanel.Resources>
 
+                <Button Content="Start" x:Name="CompressionTestStartButton" Click="OnButtonClicked" />
+                <Button Content="Zeroize Distance" x:Name="SetZeroDistanceButton" Click="OnButtonClicked" />
+                <Button Content="Zeroize Load" x:Name="SetZeroLoadButton" Click="OnButtonClicked" />
+
+                <StackPanel>
+                    <TextBlock Text="Area:" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="30" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="AreaOverrideValue" Text="" KeyDown="OnKeyDown" TextChanged="OnTextChanged" />
+                        <TextBlock Text="m²" Grid.Column="1" HorizontalAlignment="Center" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        
         <!-- Message & progress bar -->
-        <StatusBar Grid.Row="3">
+        <StatusBar Grid.Row="2" Grid.RowSpan="2">
             <TextBlock x:Name="MessageBar" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </StatusBar>
     </Grid>
