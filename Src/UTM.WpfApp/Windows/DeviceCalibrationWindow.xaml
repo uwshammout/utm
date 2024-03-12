@@ -288,7 +288,7 @@
                     <Label Grid.Row="16" Grid.Column="7" Content="-- RESERVED --" />
 
                     <!-- Information bar -->
-                    <StatusBar Grid.Row="17" Grid.ColumnSpan="7">
+                    <StatusBar Grid.Row="17" Grid.ColumnSpan="8">
                         <TextBlock x:Name="StatusMessage"
                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                    FontWeight="Normal" Margin="1" />
