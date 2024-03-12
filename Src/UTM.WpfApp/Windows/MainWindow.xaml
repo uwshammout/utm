@@ -8,7 +8,7 @@
         xmlns:timedPlot="clr-namespace:CronBlocks.UserControls.Wpf.TimedPlot;assembly=CronBlocks.UserControls.Wpf"
         xmlns:xyPlot="clr-namespace:CronBlocks.UserControls.Wpf.XYPlot;assembly=CronBlocks.UserControls.Wpf"
         mc:Ignorable="d"
-        Title="Fuel Cell Monitor"
+        Title="UTM"
         FontFamily="Segoe UI Light"
         FontSize="14"
         Width="800" Height="450"
@@ -16,53 +16,23 @@
         MinWidth="800" MinHeight="450">
 
     <Window.Resources>
-        <SolidColorBrush x:Key="FuelCellTpdBackgroundColor" Color="#FFF1EBF5"/>
-        <SolidColorBrush x:Key="FuelCellTpdBorderColor" Color="#FF7F8C08"/>
-        <SolidColorBrush x:Key="FuelCellTpdDial1Color" Color="#FF5656E8"/>
-        <SolidColorBrush x:Key="FuelCellTpdDial1BorderColor" Color="#FF75A1F9"/>
-        <SolidColorBrush x:Key="FuelCellTpdDial2Color" Color="#FF383838"/>
-        <SolidColorBrush x:Key="FuelCellTpdDial2BorderColor" Color="#FF1D1D1D"/>
-        <SolidColorBrush x:Key="FuelCellTpdDial3Color" Color="#FFB6C107"/>
-        <SolidColorBrush x:Key="FuelCellTpdDial3BorderColor" Color="#FF9A9404"/>
-
-        <SolidColorBrush x:Key="ElectrolyzerTpdBackgroundColor" Color="#FFF5F5EB"/>
-        <SolidColorBrush x:Key="ElectrolyzerTpdBorderColor" Color="#FF7F8C08"/>
-        <SolidColorBrush x:Key="ElectrolyzerTpdDial1Color" Color="#FF5656E8"/>
-        <SolidColorBrush x:Key="ElectrolyzerTpdDial1BorderColor" Color="#FF75A1F9"/>
-        <SolidColorBrush x:Key="ElectrolyzerTpdDial2Color" Color="#FF383838"/>
-        <SolidColorBrush x:Key="ElectrolyzerTpdDial2BorderColor" Color="#FF1D1D1D"/>
-        <SolidColorBrush x:Key="ElectrolyzerTpdDial3Color" Color="#FFB6C107"/>
-        <SolidColorBrush x:Key="ElectrolyzerTpdDial3BorderColor" Color="#FF9A9404"/>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="Auto" /> <!-- Menu -->
+            <RowDefinition Height="*"/>     <!-- Content -->
+            <RowDefinition Height="25"/>    <!-- Status Bar -->
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0" Background="{x:Null}">
             <MenuItem Header="File">
                 <MenuItem Header="Save CSV" x:Name="SaveCsvMenuItem" IsEnabled="False" Click="OnMenuItemClicked" />
             </MenuItem>
-            <MenuItem Header="Connect / Disconnect" Click="OnMenuItemClicked" />
-            <MenuItem Header="Measurement">
-                <MenuItem Header="Fuel Cell Current">
-                    <RadioButton x:Name="FuelCellCurrentDisableOverride" Content="Automatic" IsChecked="True" Click="OnMenuItemClicked" />
-                    <RadioButton x:Name="FuelCellCurrentEnableOverride" Content="Regulated" Click="OnMenuItemClicked" />
-                </MenuItem>
-                <MenuItem Header="Electrolyzer Current">
-                    <RadioButton x:Name="ElectrolyzerCurrentDisableOverride" Content="Automatic" IsChecked="True" Click="OnMenuItemClicked" />
-                    <RadioButton x:Name="ElectrolyzerCurrentEnableOverride" Content="Regulated" Click="OnMenuItemClicked" />
-                </MenuItem>
-                <Separator />
-                <MenuItem Header="Set Zero Current" Click="OnMenuItemClicked" />
-                <MenuItem Header="Unset Zero Current" Click="OnMenuItemClicked" />
-            </MenuItem>
+            <MenuItem Header="Connect" Click="OnMenuItemClicked" />
             <MenuItem Header="Settings">
                 <MenuItem Header="Measurement Settings" Click="OnMenuItemClicked" />
-                <MenuItem Header="Calibrate" Click="OnMenuItemClicked" />
+                <MenuItem Header="Calibration" Click="OnMenuItemClicked" />
             </MenuItem>
             <MenuItem Header="About" Click="OnMenuItemClicked" />
         </Menu>
@@ -167,15 +137,17 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Current: " VerticalAlignment="Center" />
-                            <TextBox Grid.Column="1" x:Name="FuelCellCurrentOverrideValue" IsEnabled="{Binding Path=IsChecked, ElementName=FuelCellCurrentEnableOverride}" Text="" Margin="2,5" MinHeight="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="OnCurrentOverrideTextKeyDown" TextChanged="OnCurrentOverrideTextChanged" />
+                            <TextBlock Text="Area: " VerticalAlignment="Center" />
+                            <TextBox Grid.Column="1" x:Name="AreaOverrideValue" Text="" Margin="2,5" MinHeight="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="OnAreaOverrideTextKeyDown" TextChanged="OnAreaOverrideTextChanged" />
                         </Grid>
-                        
-                        <Button Grid.Row="4"
+
+                        <Button 
                                 Margin="3" MinHeight="30"
                                 Content="Start"
-                                x:Name="FuelCellStartButton"
-                                Click="OnStartButtonClicked" />
+                                x:Name="CompressionTestStartButton"
+                                Click="OnButtonClicked" />
+                        <Button x:Name="SetZeroDistanceButton" Grid.Row="4" Click="OnButtonClicked" />
+                        <Button x:Name="SetZeroLoadButton" Grid.Row="4" Click="OnButtonClicked" />
                     </Grid>
 
                 </Grid>

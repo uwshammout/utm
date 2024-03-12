@@ -39,6 +39,8 @@ public partial class MainWindow : Window
     private PlottingState _plottingState;
     private PlottingState _lastPlottingState;
 
+    private readonly string _stopText = "STOP";
+
     public MainWindow(
         App app,
         DataExchangeService dataExchange,
@@ -324,83 +326,58 @@ public partial class MainWindow : Window
 
     private void OnMenuItemClicked(object sender, RoutedEventArgs e)
     {
-        if (sender is MenuItem mi)
+        if (sender is MenuItem mi && mi.Header is string header && !string.IsNullOrEmpty(header))
         {
-            string? header = mi.Header as string;
+            Window window = null!;
 
-            if (string.IsNullOrEmpty(header) == false)
+            switch (header)
             {
-                Window window = null!;
+                case "Save CSV":
+                    FileDialog dialog = new SaveFileDialog()
+                    {
+                        DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        Filter = "CSV File|*.csv",
+                        OverwritePrompt = true,
+                        Title = header
+                    };
 
-                switch (header)
-                {
-                    case "Save CSV":
-                        FileDialog dialog = new SaveFileDialog()
+                    if (dialog.ShowDialog() == true)
+                    {
+                        try
                         {
-                            DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                            Filter = "CSV File|*.csv",
-                            OverwritePrompt = true,
-                            Title = header
-                        };
-
-                        if (dialog.ShowDialog() == true)
-                        {
-                            try
-                            {
-                                File.Copy(_csvDumpFilename, dialog.FileName, true);
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message, "Error");
-                            }
+                            File.Copy(_csvDumpFilename, dialog.FileName, true);
                         }
-                        break;
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Error");
+                        }
+                    }
+                    break;
 
-                    case "Connect / Disconnect":
-                        window = _app.GetInstance<DeviceConnectionWindow>();
-                        break;
+                case "Connect":
+                    window = _app.GetInstance<DeviceConnectionWindow>();
+                    break;
 
-                    case "Set Zero Current":
-                        _isSetZeroCurrentRequested = true;
-                        break;
+                case "Measurement Settings":
+                    window = _app.GetInstance<MeasurementSettingsWindow>();
+                    break;
 
-                    case "Unset Zero Current":
-                        _isSetZeroCurrentRequested = false;
-                        _fuelCellZeroCurrent = 0.0;
-                        _electrolyzerZeroCurrent = 0.0;
-                        break;
+                case "Calibration":
+                    window = _app.GetInstance<DeviceCalibrationWindow>();
+                    break;
 
-                    case "Measurement Settings":
-                        window = _app.GetInstance<MeasurementSettingsWindow>();
-                        break;
+                case "About":
+                    window = _app.GetInstance<AboutWindow>();
+                    break;
+            }
 
-                    case "Calibrate":
-                        window = _app.GetInstance<DeviceCalibrationWindow>();
-                        break;
-
-                    case "About":
-                        window = _app.GetInstance<AboutWindow>();
-                        break;
-                }
-
-                if (window != null)
-                {
-                    window.ShowDialog();
-                }
+            if (window != null)
+            {
+                window.ShowDialog();
             }
         }
         else if (sender is RadioButton rb)
         {
-            if (rb == FuelCellCurrentEnableOverride ||
-                rb == FuelCellCurrentDisableOverride)
-            {
-                _isFuelCellCurrentOverrideEnabled = FuelCellCurrentEnableOverride.IsChecked == true;
-            }
-            else if (rb == ElectrolyzerCurrentEnableOverride ||
-                rb == ElectrolyzerCurrentDisableOverride)
-            {
-                _isElectrolyzerCurrentOverrideEnabled = ElectrolyzerCurrentEnableOverride.IsChecked == true;
-            }
         }
     }
 
@@ -465,7 +442,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnStartButtonClicked(object sender, RoutedEventArgs e)
+    private void OnButtonClicked(object sender, RoutedEventArgs e)
     {
         Button button = (Button)sender;
         bool doStop = ((string)button.Content) == _stopText;
@@ -476,17 +453,17 @@ public partial class MainWindow : Window
         }
         else
         {
-            if (button == FuelCellStartButton)
+            if (button == CompressionTestStartButton)
             {
                 ChangePlottingState(PlottingState.FuelCell);
             }
-            else if (button == FuelCellSeriesStartButton)
+            else if (button == SetZeroDistanceButton)
             {
-                ChangePlottingState(PlottingState.FuelCellSeries);
+                _isSetZeroDistanceRequested = true;
             }
-            else if (button == ElectrolyzerStartButton)
+            else if (button == SetZeroLoadButton)
             {
-                ChangePlottingState(PlottingState.Electrolyzer);
+                _isSetZeroLoadRequested = true;
             }
         }
     }
