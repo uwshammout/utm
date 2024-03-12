@@ -28,10 +28,9 @@ public partial class MainWindow : Window
     private readonly Timer _experimentTimer;
     private DateTime _experimentStartTime = DateTime.MinValue;
 
-    private bool _isSetZeroDistanceRequested = false;
-    private bool _isSetZeroLoadRequested = false;
-    private double _zeroDistanceValue = 0.0;
-    private double _zeroLoadValue = 0.0;
+    private bool _isSetZeroDistanceRequested = false, _isSetZeroLoadRequested = false;
+    private double _lastDistance = 0.0, _lastLoad = 0.0;
+    private double _zeroDistanceValue = 0.0, _zeroLoadValue = 0.0;
 
     private readonly string _csvDumpFilename;
     private StreamWriter _csvDumpFile = null!;
@@ -114,14 +113,11 @@ public partial class MainWindow : Window
             double currentDistance = values[0];
             double currentLoad = values[1];
 
-            double fcTotalCurrent = Math.Abs(values[1] - values[2]) / _dataExchange.FuelCellCurrentMeasurementResistance;
-
             if (_isSetZeroDistanceRequested)
             {
                 _zeroDistanceValue = currentDistance;
                 _isSetZeroDistanceRequested = false;
             }
-
             if (_isSetZeroLoadRequested)
             {
                 _zeroLoadValue = currentLoad;
@@ -139,6 +135,9 @@ public partial class MainWindow : Window
             //- Writing to file
 
             WriteCsvDumpFileValues(_plottingState, currentDistance, currentLoad);
+
+            _lastDistance = currentDistance;
+            _lastLoad = currentLoad;
         });
     }
 
@@ -151,19 +150,11 @@ public partial class MainWindow : Window
             switch (state)
             {
                 case OperationState.Running:
-                    MessageBar.Text = "Device connected";
-
-                    FuelCellStartButton.IsEnabled = true;
-                    FuelCellSeriesStartButton.IsEnabled = true;
-                    ElectrolyzerStartButton.IsEnabled = true;
+                    MessageBar.Text = "✓ Device connected";
                     break;
 
                 case OperationState.Stopped:
-                    MessageBar.Text = "Device not connected";
-
-                    FuelCellStartButton.IsEnabled = false;
-                    FuelCellSeriesStartButton.IsEnabled = false;
-                    ElectrolyzerStartButton.IsEnabled = false;
+                    MessageBar.Text = "❌ Device disconnected";
                     break;
             }
         });
@@ -186,99 +177,25 @@ public partial class MainWindow : Window
             switch (state)
             {
                 case PlottingState.None:
-                    DataProgress.Visibility = Visibility.Hidden;
-                    DataProgressMessage.Visibility = Visibility.Hidden;
-
-                    FuelCellTabItem.IsEnabled = true;
-                    FuelCellSeriesTabItem.IsEnabled = true;
-                    ElectrolyzerTabItem.IsEnabled = true;
-
-                    FuelCellStartButton.Background = _fuelCellStartButtonInitialColor;
-                    FuelCellSeriesStartButton.Background = _fuelCellSeriesStartButtonInitialColor;
-                    ElectrolyzerStartButton.Background = _electrolyzerStartButtonInitialColor;
-
-                    FuelCellStartButton.Content = _fuelCellStartButtonInitialText;
-                    FuelCellSeriesStartButton.Content = _fuelCellSeriesStartButtonInitialText;
-                    ElectrolyzerStartButton.Content = _electrolyzerStartButtonInitialText;
-
                     if (_csvDumpFile != null)
                     {
                         _csvDumpFile.Flush();
                         _csvDumpFile.Dispose();
                         _csvDumpFile = null!;
-
                         SaveCsvMenuItem.IsEnabled = true;
                     }
-
                     break;
 
-                case PlottingState.FuelCell:
-                    FuelCellTabItem.IsEnabled = true;
-                    FuelCellSeriesTabItem.IsEnabled = false;
-                    ElectrolyzerTabItem.IsEnabled = false;
-
-                    FuelCellStartButton.Background = DisplayColors.DisconnectButtonBg;
-                    FuelCellStartButton.Content = _stopText;
-
-                    FuelCellVIPlot.ClearData();
-                    FuelCellPTPlot.ClearData();
-                    FuelCellPIPlot.ClearData();
-                    FuelCellPVPlot.ClearData();
-
-                    FuelCellVoltageGauge.Dial2Value = 0;
-                    FuelCellVoltageGauge.Dial3Value = 0;
-                    FuelCellCurrentGauge.Dial2Value = 0;
-                    FuelCellCurrentGauge.Dial3Value = 0;
-                    FuelCellPowerGauge.Dial2Value = 0;
-                    FuelCellPowerGauge.Dial3Value = 0;
-                    break;
-
-                case PlottingState.FuelCellSeries:
-                    FuelCellTabItem.IsEnabled = false;
-                    FuelCellSeriesTabItem.IsEnabled = true;
-                    ElectrolyzerTabItem.IsEnabled = false;
-
-                    FuelCellSeriesStartButton.Background = DisplayColors.DisconnectButtonBg;
-                    FuelCellSeriesStartButton.Content = _stopText;
-
-                    FuelCellSeriesVIPlot.ClearData();
-                    FuelCellSeriesPTPlot.ClearData();
-
-                    FuelCellSeriesVoltageGauge.Dial2Value = 0;
-                    FuelCellSeriesVoltageGauge.Dial3Value = 0;
-                    FuelCellSeriesCurrentGauge.Dial2Value = 0;
-                    FuelCellSeriesCurrentGauge.Dial3Value = 0;
-                    FuelCellSeriesPowerGauge.Dial2Value = 0;
-                    FuelCellSeriesPowerGauge.Dial3Value = 0;
-                    break;
-
-                case PlottingState.Electrolyzer:
-                    FuelCellTabItem.IsEnabled = false;
-                    FuelCellSeriesTabItem.IsEnabled = false;
-                    ElectrolyzerTabItem.IsEnabled = true;
-
-                    ElectrolyzerStartButton.Background = DisplayColors.DisconnectButtonBg;
-                    ElectrolyzerStartButton.Content = _stopText;
-
-                    ElectrolyzerIVPlot.ClearData();
-
-                    ElectrolyzerVoltageGauge.Dial2Value = 0;
-                    ElectrolyzerVoltageGauge.Dial3Value = 0;
-                    ElectrolyzerCurrentGauge.Dial2Value = 0;
-                    ElectrolyzerCurrentGauge.Dial3Value = 0;
-                    ElectrolyzerPowerGauge.Dial2Value = 0;
-                    ElectrolyzerPowerGauge.Dial3Value = 0;
+                case PlottingState.StressStrain:
+                    _lastDistance = 0.0;
+                    _lastLoad = 0.0;
+                    StressStrainPlot.ClearData();
                     break;
             }
 
             if (state != PlottingState.None)
             {
                 SaveCsvMenuItem.IsEnabled = false;
-
-                DataProgress.Visibility = Visibility.Visible;
-                DataProgressMessage.Visibility = Visibility.Visible;
-
-                DataProgress.Value = 0;
 
                 _experimentStartTime = DateTime.Now;
 
@@ -298,6 +215,9 @@ public partial class MainWindow : Window
         });
     }
 
+    //- 
+    //- Dump file
+    //- 
     private void WriteCsvDumpFileHeader(PlottingState state)
     {
         switch (state)
@@ -309,7 +229,6 @@ public partial class MainWindow : Window
                 break;
         }
     }
-
     private void WriteCsvDumpFileValues(PlottingState state, double currentDistance, double currentLoad)
     {
         switch (state)
