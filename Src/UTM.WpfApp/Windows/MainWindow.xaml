@@ -38,8 +38,8 @@
         </Menu>
 
         <TabControl Grid.Row="1" Margin="2">
-            <!-- Fuel Cell -->
-            <TabItem Header="Fuel Cell" x:Name="FuelCellTabItem">
+            <!-- Compression Test -->
+            <TabItem Header="Compression Test" x:Name="CompressionTestTabItem">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2.5*" />
