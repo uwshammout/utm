@@ -78,7 +78,7 @@ public partial class MainWindow : Window
 
         base.OnClosed(e);
     }
-
+    
     private void OnExperimentTimerTick(object? state)
     {
         Dispatcher.Invoke(() =>
@@ -305,7 +305,7 @@ public partial class MainWindow : Window
             {
                 if (double.TryParse(tb.Text, out double _))
                 {
-                    tb.Background = _currentOverrideValueInitialColor;
+                    //tb.Background = _currentOverrideValueInitialColor;
                 }
                 else
                 {
@@ -317,40 +317,16 @@ public partial class MainWindow : Window
 
     private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
-        if (e.Key == System.Windows.Input.Key.Enter)
+        if (e.Key == System.Windows.Input.Key.Enter && sender is TextBox tb)
         {
-            if (sender is TextBox tb)
+            if (tb == AreaOverrideValue)
             {
-                if (tb == FuelCellCurrentOverrideValue ||
-                    tb == FuelCellSeriesCurrentOverrideValue)
+                if (double.TryParse(tb.Text, out double value))
                 {
-                    if (double.TryParse(tb.Text, out double value))
-                    {
-                        _fuelCellCurrentOverrideValue = value;
-
-                        FuelCellCurrentOverrideValue.Text = value.ToString();
-                        FuelCellSeriesCurrentOverrideValue.Text = value.ToString();
-
-                        FuelCellCurrentOverrideValue.Background = _currentOverrideValueInitialColor;
-                        FuelCellSeriesCurrentOverrideValue.Background = _currentOverrideValueInitialColor;
-                    }
-                    else
-                    {
-                        tb.Background = DisplayColors.ErrorBg;
-                    }
                 }
-                else if (tb == ElectrolyzerCurrentOverrideValue)
+                else
                 {
-                    if (double.TryParse(tb.Text, out double value))
-                    {
-                        _electrolyzerCurrentOverrideValue = value;
-                        tb.Text = value.ToString();
-                        tb.Background = _currentOverrideValueInitialColor;
-                    }
-                    else
-                    {
-                        tb.Background = DisplayColors.ErrorBg;
-                    }
+                    tb.Background = DisplayColors.ErrorBg;
                 }
             }
         }
@@ -358,26 +334,28 @@ public partial class MainWindow : Window
 
     private void OnButtonClicked(object sender, RoutedEventArgs e)
     {
-        Button button = (Button)sender;
-        bool doStop = ((string)button.Content) == _stopText;
+        if (sender is Button button)
+        {
+            bool doStop = ((string)button.Content) == _stopText;
 
-        if (doStop)
-        {
-            ChangePlottingState(PlottingState.None);
-        }
-        else
-        {
-            if (button == CompressionTestStartButton)
+            if (doStop)
             {
-                ChangePlottingState(PlottingState.FuelCell);
+                ChangePlottingState(PlottingState.None);
             }
-            else if (button == SetZeroDistanceButton)
+            else
             {
-                _isSetZeroDistanceRequested = true;
-            }
-            else if (button == SetZeroLoadButton)
-            {
-                _isSetZeroLoadRequested = true;
+                if (button == CompressionTestStartButton)
+                {
+                    ChangePlottingState(PlottingState.StressStrain);
+                }
+                else if (button == SetZeroDistanceButton)
+                {
+                    _isSetZeroDistanceRequested = true;
+                }
+                else if (button == SetZeroLoadButton)
+                {
+                    _isSetZeroLoadRequested = true;
+                }
             }
         }
     }

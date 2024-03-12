@@ -4,8 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CronBlocks.UTM.Windows"
-        xmlns:cblk3pd="clr-namespace:CronBlocks.UserControls.Wpf.ThreePointerDial;assembly=CronBlocks.UserControls.Wpf"
-        xmlns:timedPlot="clr-namespace:CronBlocks.UserControls.Wpf.TimedPlot;assembly=CronBlocks.UserControls.Wpf"
         xmlns:xyPlot="clr-namespace:CronBlocks.UserControls.Wpf.XYPlot;assembly=CronBlocks.UserControls.Wpf"
         mc:Ignorable="d"
         Title="UTM"
