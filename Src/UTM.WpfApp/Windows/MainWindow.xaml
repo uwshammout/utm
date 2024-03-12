@@ -43,129 +43,66 @@
             
         </Grid>
         
-        <!-- Plot Data -->
-        <Grid>
+        <!-- Data Plot & Controls -->
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2.5*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" MinWidth="160" MaxWidth="210" />
             </Grid.ColumnDefinitions>
 
             <!-- Plot -->
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <xyPlot:XYPlot x:Name="StressStrainPlot"
+                           XAxisTitle="Strain, Ɛ" YAxisTitle="Stress, σ"
+                           PlotVisibility2="Hidden"
+                           IsAutoRangeEnabled="True"
+                           Grid.Column="0" />
+            
+            <!-- Controls -->
+            <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Margin" Value="3" />
+                            <Setter Property="MinHeight" Value="30" />
+                        </Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="5 8"/>
+                            <Setter Property="Orientation" Value="Vertical"/>
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Margin" Value="2,5" />
+                            <Setter Property="MinHeight" Value="28" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
 
-                <xyPlot:XYPlot x:Name="FuelCellVIPlot"
-                       XAxisTitle="Current (A)"
-                       YAxisTitle="Voltage (V)"
-                       PlotVisibility2="Hidden"
-                       IsAutoRangeEnabled="True"
-                       Grid.Row="0" Grid.Column="0" />
+                    <Button Content="Start" x:Name="CompressionTestStartButton" Click="OnButtonClicked" />
+                    <Button Content="Zeroize Distance" x:Name="SetZeroDistanceButton" Click="OnButtonClicked" />
+                    <Button Content="Zeroize Load" x:Name="SetZeroLoadButton" Click="OnButtonClicked" />
 
-                <timedPlot:TimedPlot x:Name="FuelCellPTPlot"
-                             XAxisTitle="Time (min : sec)"
-                             YAxisTitle="Power (W)"
-                             PlotVisibility2="Hidden"
-                             IsAutoYRangeEnabled="True"
-                             Grid.Row="0" Grid.Column="1" />
-
-                <xyPlot:XYPlot x:Name="FuelCellPIPlot"
-                       XAxisTitle="Current (A)"
-                       YAxisTitle="Power (W)"
-                       PlotVisibility2="Hidden"
-                       IsAutoRangeEnabled="True"
-                       Grid.Row="1" Grid.Column="0" />
-
-                <xyPlot:XYPlot x:Name="FuelCellPVPlot"
-                       XAxisTitle="Voltage (V)"
-                       YAxisTitle="Power (W)"
-                       PlotVisibility2="Hidden"
-                       IsAutoRangeEnabled="True"
-                       Grid.Row="1" Grid.Column="1" />
-            </Grid>
-
-            <!-- Gauges -->
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <cblk3pd:ThreePointerDial x:Name="FuelCellVoltageGauge"
-                                  Grid.Row="0"
-                                  Margin="3"
-                                  GaugeTitle="Voltage (V)"
-                                  BackgroundColor="{StaticResource FuelCellTpdBackgroundColor}"
-                                  BorderColor="{StaticResource FuelCellTpdBorderColor}"
-                                  Dial1Color="{StaticResource FuelCellTpdDial1Color}" Dial1BorderColor="{StaticResource FuelCellTpdDial1BorderColor}"
-                                  Dial2Color="{StaticResource FuelCellTpdDial2Color}" Dial2BorderColor="{StaticResource FuelCellTpdDial2BorderColor}"
-                                  Dial3Color="{StaticResource FuelCellTpdDial3Color}" Dial3BorderColor="{StaticResource FuelCellTpdDial3BorderColor}"
-                                  GaugeMinValue="0" GaugeMaxValue="10"
-                                  Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
-
-                <cblk3pd:ThreePointerDial x:Name="FuelCellCurrentGauge"
-                                  Grid.Row="1"
-                                  Margin="3"
-                                  GaugeTitle="Current (A)"
-                                  BackgroundColor="{StaticResource FuelCellTpdBackgroundColor}"
-                                  BorderColor="{StaticResource FuelCellTpdBorderColor}"
-                                  Dial1Color="{StaticResource FuelCellTpdDial1Color}" Dial1BorderColor="{StaticResource FuelCellTpdDial1BorderColor}"
-                                  Dial2Color="{StaticResource FuelCellTpdDial2Color}" Dial2BorderColor="{StaticResource FuelCellTpdDial2BorderColor}"
-                                  Dial3Color="{StaticResource FuelCellTpdDial3Color}" Dial3BorderColor="{StaticResource FuelCellTpdDial3BorderColor}"
-                                  GaugeMinValue="0" GaugeMaxValue="5"
-                                  Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
-
-                <cblk3pd:ThreePointerDial x:Name="FuelCellPowerGauge"
-                                  Grid.Row="2"
-                                  Margin="3"
-                                  GaugeTitle="Power (W)"
-                                  BackgroundColor="{StaticResource FuelCellTpdBackgroundColor}"
-                                  BorderColor="{StaticResource FuelCellTpdBorderColor}"
-                                  Dial1Color="{StaticResource FuelCellTpdDial1Color}" Dial1BorderColor="{StaticResource FuelCellTpdDial1BorderColor}"
-                                  Dial2Color="{StaticResource FuelCellTpdDial2Color}" Dial2BorderColor="{StaticResource FuelCellTpdDial2BorderColor}"
-                                  Dial3Color="{StaticResource FuelCellTpdDial3Color}" Dial3BorderColor="{StaticResource FuelCellTpdDial3BorderColor}"
-                                  GaugeMinValue="0" GaugeMaxValue="10"
-                                  Dial1Value="0" Dial2Value="0" Dial3Value="0"/>
-
-                <Grid Grid.Row="3" Margin="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Area: " VerticalAlignment="Center" />
-                    <TextBox Grid.Column="1" x:Name="AreaOverrideValue" Text="" Margin="2,5" MinHeight="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="OnAreaOverrideTextKeyDown" TextChanged="OnAreaOverrideTextChanged" />
-                </Grid>
-
-                <Button 
-                Margin="3" MinHeight="30"
-                Content="Start"
-                x:Name="CompressionTestStartButton"
-                Click="OnButtonClicked" />
-                <Button x:Name="SetZeroDistanceButton" Grid.Row="4" Click="OnButtonClicked" />
-                <Button x:Name="SetZeroLoadButton" Grid.Row="4" Click="OnButtonClicked" />
-            </Grid>
+                    <StackPanel>
+                        <TextBlock Text="Area:" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="30" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="AreaOverrideValue" Text="" KeyDown="OnKeyDown" TextChanged="OnTextChanged" />
+                            <TextBlock Text="m²" Grid.Column="1" HorizontalAlignment="Center" />
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
 
         <!-- Message & progress bar -->
         <StatusBar Grid.Row="3">
             <TextBlock x:Name="MessageBar" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </StatusBar>
-        <!-- OR -->
-        <ProgressBar Grid.Row="3" x:Name="DataProgress"
-                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                     Background="#FF252B00" Foreground="#FFA27602"
-                     Minimum="0" Maximum="100" />
-        <TextBlock Grid.Row="3" x:Name="DataProgressMessage"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Foreground="#FFF9F9F9" />
     </Grid>
 </Window>
