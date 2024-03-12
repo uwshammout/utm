@@ -108,8 +108,6 @@ public partial class MainWindow : Window
 
         Dispatcher.Invoke(() =>
         {
-            //- Fuel Cell
-
             double currentDistance = values[0];
             double currentLoad = values[1];
 
