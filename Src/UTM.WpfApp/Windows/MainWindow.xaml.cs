@@ -233,7 +233,7 @@ public partial class MainWindow : Window
         {
             case PlottingState.None: break;
             case PlottingState.StressStrain:
-                _csvDumpFile.WriteLine($"{currentDistance:0.0000}, {currentLoad:0.0000}");
+                _csvDumpFile.WriteLine($"{currentDistance:0.000}, {currentLoad:0.000}");
                 break;
         }
     }
