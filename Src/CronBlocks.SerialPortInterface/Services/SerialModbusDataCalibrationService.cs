@@ -54,20 +54,23 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 	{
 		if (_iniConfig != null)
 		{
-			for (int portIndex = 0; portIndex < _calibrationData.Count; portIndex++)
+			lock (this)
 			{
-				_calibrationData[portIndex].Clear();
-
-				string section = $"Cal__{portIndex}__";
-
-				for (int pointIndex = 0; pointIndex < _iniConfig.GetInteger($"{section}/Total", 0); pointIndex++)
+				for (int portIndex = 0; portIndex < _calibrationData.Count; portIndex++)
 				{
-					double key = _iniConfig.GetDouble($"{section}/Inp__{pointIndex}__", double.NegativeInfinity);
-					double value = _iniConfig.GetDouble($"{section}/Out__{pointIndex}__", double.NegativeInfinity);
+					_calibrationData[portIndex].Clear();
 
-					if (key != double.NegativeInfinity && value != double.NegativeInfinity)
+					string section = $"Cal__{portIndex}__";
+
+					for (int pointIndex = 0; pointIndex < _iniConfig.GetInteger($"{section}/Total", 0); pointIndex++)
 					{
-						_calibrationData[portIndex].Add(key, value);
+						double key = _iniConfig.GetDouble($"{section}/Inp__{pointIndex}__", double.NegativeInfinity);
+						double value = _iniConfig.GetDouble($"{section}/Out__{pointIndex}__", double.NegativeInfinity);
+
+						if (key != double.NegativeInfinity && value != double.NegativeInfinity)
+						{
+							_calibrationData[portIndex].Add(key, value);
+						}
 					}
 				}
 			}
