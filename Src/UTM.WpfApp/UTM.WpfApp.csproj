@@ -9,6 +9,7 @@
     <RootNamespace>CronBlocks.$(MSBuildProjectName.Replace(" ", "_").Replace(".WpfApp", ""))</RootNamespace>
     <ApplicationIcon>Resources\UTM.ico</ApplicationIcon>
     <AssemblyName>$(MSBuildProjectName.Replace(".WpfApp", ""))</AssemblyName>
+    <IncludePackageReferencesDuringMarkupCompilation>false</IncludePackageReferencesDuringMarkupCompilation>
   </PropertyGroup>
 
   <ItemGroup>
