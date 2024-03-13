@@ -49,7 +49,7 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		ButtonBackgroundColor = BackgroundColor;
 		ButtonForegroundColor = new SolidColorBrush(Colors.Silver);
 		HeadingFontSize = 14;
-		ValueFontSize = 52;
+		ValueFontSize = 42;
 		MaxFontSize = 24;
 		ButtonFontSize = 10;
 		Heading = "--";
