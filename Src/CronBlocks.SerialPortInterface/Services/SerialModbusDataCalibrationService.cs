@@ -104,10 +104,15 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 
         for (int i = 0; i < Constants.TotalRegisters; i++)
         {
-            _calibratedValues[i] = scaledValues[i]; // TODO: Apply calibration data
+            _calibratedValues[i] = ApplyCalibration(i, scaledValues[i]);
         }
 
         NewValuesReceived?.Invoke(_calibratedValues.ToList());
+    }
+
+    private double ApplyCalibration(int portIndex, double scaledValue)
+    {
+        throw new NotImplementedException();
     }
 
     public ImmutableDictionary<double, double> GetCalibrationValues(int portIndex)
