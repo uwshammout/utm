@@ -26,6 +26,10 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 	private Brush _maxColor = null!;
 	private Brush _buttonBackground = null!;
 	private Brush _buttonForeground = null!;
+	private double _headingFontSize = 0.0;
+	private double _valueFontSize = 0.0;
+	private double _maxFontSize = 0.0;
+	private double _buttonFontSize = 0.0;
 	private string _heading = null!;
 	private double _value = 0.0;
 	private bool _enableMaxValue = false;
@@ -44,6 +48,10 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		MaxColor = new SolidColorBrush(Colors.Silver);
 		ButtonBackground = new SolidColorBrush(Colors.Black);
 		ButtonForeground = new SolidColorBrush(Colors.Silver);
+		HeadingFontSize = 14;
+		ValueFontSize = 22;
+		MaxFontSize = 14;
+		ButtonFontSize = 10;
 		Heading = "--";
 		Value = 0.0;
 		EnableMaxValue = false;
@@ -104,6 +112,38 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		set
 		{
 			if (_buttonForeground != value) { _buttonForeground = value; Notify(); }
+		}
+	}
+	public double HeadingFontSize
+	{
+		get { return _headingFontSize; }
+		set
+		{
+			if (_headingFontSize != value) { _headingFontSize = value; Notify(); }
+		}
+	}
+	public double ValueFontSize
+	{
+		get { return _valueFontSize; }
+		set
+		{
+			if (_valueFontSize != value) { _valueFontSize = value; Notify(); }
+		}
+	}
+	public double MaxFontSize
+	{
+		get { return _maxFontSize; }
+		set
+		{
+			if (_maxFontSize != value) { _maxFontSize = value; Notify(); }
+		}
+	}
+	public double ButtonFontSize
+	{
+		get { return _buttonFontSize; }
+		set
+		{
+			if (_buttonFontSize != value) { _buttonFontSize = value; Notify(); }
 		}
 	}
 	public string Heading
