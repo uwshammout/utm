@@ -78,14 +78,12 @@ public partial class MeasurementSettingsWindow : Window, INotifyPropertyChanged
 
     private void OnSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
-        Slider slider = (Slider)sender;
-        string name = slider.Name;
-
-        switch (name)
+        if (sender is Slider s)
         {
-            case "AcquisitionInterval":
-                _modbus.SetDataAcquisitionInterval(slider.Value);
-                break;
+            if (s == AcquisitionInterval)
+            {
+                _modbus.SetDataAcquisitionInterval(s.Value);
+            }
         }
     }
 }
