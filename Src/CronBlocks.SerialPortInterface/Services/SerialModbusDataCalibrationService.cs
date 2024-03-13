@@ -135,7 +135,12 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 
 	private double ApplyCalibration(int portIndex, double scaledValue)
 	{
-		throw new NotImplementedException();
+		lock (this)
+		{
+
+		}
+
+		return scaledValue;
 	}
 
 	public ImmutableDictionary<double, double> GetCalibrationValues(int portIndex)
