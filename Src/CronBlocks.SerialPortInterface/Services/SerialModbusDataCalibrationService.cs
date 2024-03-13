@@ -152,9 +152,23 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 
 	private double ApplyCalibration(int portIndex, double scaledValue)
 	{
+		if (portIndex < 0 || portIndex >= _calibrationData.Count) return scaledValue;
+
 		lock (this)
 		{
+			Dictionary<double, double> cd = _calibrationData[portIndex];
 
+			// We need 2 or more points to apply linear interpolation
+			if (cd != null && cd.Count > 1)
+			{
+				List<double> inp = cd.Keys.ToList();
+
+				for (int i = 1; i < inp.Count; i++)
+				{
+					double x1 = inp[i - 1], x2 = inp[i];
+					double y1 = cd[x1], y2 = cd[x2];
+				}
+			}
 		}
 
 		return scaledValue;
