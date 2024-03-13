@@ -46,7 +46,7 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		HeadingColor = new SolidColorBrush(Colors.FloralWhite);
 		ValueColor = new SolidColorBrush(Colors.Orange);
 		MaxColor = new SolidColorBrush(Colors.Silver);
-		ButtonBackgroundColor = new SolidColorBrush(Colors.Black);
+		ButtonBackgroundColor = BackgroundColor;
 		ButtonForegroundColor = new SolidColorBrush(Colors.Silver);
 		HeadingFontSize = 14;
 		ValueFontSize = 52;
