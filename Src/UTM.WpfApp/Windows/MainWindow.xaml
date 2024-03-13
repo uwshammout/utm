@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CronBlocks.UTM.Windows"
         xmlns:xyPlot="clr-namespace:CronBlocks.UserControls.Wpf.XYPlot;assembly=CronBlocks.UserControls.Wpf"
+        xmlns:luc="clr-namespace:CronBlocks.UTM.UserControls"
         mc:Ignorable="d"
         Title="UTM"
         FontFamily="Segoe UI Light"
@@ -49,7 +50,26 @@
             
             <!-- Top Readings & Controls -->
             <Grid Grid.Row="0" Margin="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
+                    <luc:DigitalValueDisplay  x:Name="DistanceDisplay" Grid.Column="0"
+                          Heading="Distance" Unit="mm"
+                          Margin="2"
+                          BackgroundColor="#FF500242" />
+                    <luc:DigitalValueDisplay  x:Name="LoadDisplay" Grid.Column="1"
+                          Heading="Load" Unit="kN"
+                          Margin="2"
+                          BackgroundColor="#FF500242" />
+                    <luc:DigitalValueDisplay  x:Name="TimeDisplay" Grid.Column="2"
+                          Heading="Time" Unit="sec"
+                          Margin="3"
+                          BackgroundColor="#FF504D02" />
+                </Grid>
             </Grid>
             
             <!-- Plot -->
