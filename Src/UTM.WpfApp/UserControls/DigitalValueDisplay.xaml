@@ -4,9 +4,55 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CronBlocks.UTM.UserControls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        
+
+    <Grid Background="{Binding Background}" d:Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Heading}" d:Text="Digital Value"
+                   Foreground="{Binding HeadingColor}" d:Foreground="FloralWhite"
+                   FontSize="{Binding HeadingFontSize}" d:FontSize="14"
+                   FontFamily="Arial Rounded MT Bold" FontWeight="Bold"
+                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                   Margin="5,5,5,3" />
+
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Value, StringFormat={}{0:0.000}}" d:Text="0.000"
+                   Foreground="{Binding ValueColor}" d:Foreground="Orange"
+                   FontSize="{Binding ValueFontSize}" d:FontSize="52"
+                   FontFamily="Cascadia Mono" FontWeight="Bold"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Margin="5,5,5,5" />
+
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" x:Name="MaxValuePanel" Margin="5,3,5,5">
+            <TextBlock Text="Max: "
+                       Foreground="{Binding MaxColor}" d:Foreground="Silver"
+                       FontSize="{Binding MaxFontSize}" d:FontSize="24"
+                       FontFamily="Calibri Light" FontWeight="Normal"
+                       VerticalAlignment="Center" />
+            <TextBlock Text="{Binding MaxValue, StringFormat={}{0:0.000}}" d:Text="0.000"
+                       Foreground="{Binding MaxColor}" d:Foreground="Silver"
+                       FontSize="{Binding MaxFontSize}" d:FontSize="24"
+                       FontFamily="Arial Black" FontWeight="Bold"
+                       VerticalAlignment="Center" Margin="5"/>
+        </StackPanel>
+
+        <Button Grid.Row="2" x:Name="ControlButton"
+                Content="{Binding ButtonText}" d:Content="--"
+                Visibility="{Binding ButtonVisibility}" d:Visibility="Visible"
+                Foreground="{Binding ButtonForeground}" d:Foreground="Silver"
+                Background="{Binding ButtonBackground}" d:Background="Black"
+                FontSize="{Binding ButtonFontSize}" d:FontSize="10"
+                FontFamily="Calibri" FontWeight="Bold"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Margin="5,3,5,5" Padding="12,2"
+                Click="ControlButton_Click" />
     </Grid>
 </UserControl>

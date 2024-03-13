@@ -18,7 +18,7 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 	}
 
 	public delegate void ButtonClickEvent(object sender, RoutedEventArgs e);
-	public event ButtonClickEvent? ButtonClicked;
+	public event ButtonClickEvent? ButtonClick;
 
 	private Brush _background = null!;
 	private Brush _headingColor = null!;
@@ -49,8 +49,8 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		ButtonBackground = new SolidColorBrush(Colors.Black);
 		ButtonForeground = new SolidColorBrush(Colors.Silver);
 		HeadingFontSize = 14;
-		ValueFontSize = 22;
-		MaxFontSize = 14;
+		ValueFontSize = 52;
+		MaxFontSize = 24;
 		ButtonFontSize = 10;
 		Heading = "--";
 		Value = 0.0;
@@ -177,6 +177,9 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		set
 		{
 			if (_enableMaxValue != value) { _enableMaxValue = value; Notify(); }
+
+			if (_enableMaxValue) MaxValuePanel.Visibility = Visibility.Visible;
+			else MaxValuePanel.Visibility = Visibility.Collapsed;
 		}
 	}
 	public double MaxValue
@@ -202,5 +205,10 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		{
 			if (_buttonText != value) { _buttonText = value; Notify(); }
 		}
+	}
+
+	private void ControlButton_Click(object sender, RoutedEventArgs e)
+	{
+		ButtonClick?.Invoke(this, e);
 	}
 }
