@@ -13,9 +13,6 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
     private readonly ISerialModbusDataScalingService _scalingService;
     private readonly ILogger<SerialModbusDataCalibrationService> _logger;
     private readonly string _filename;
-    private readonly uint _totalCalibrationPoints;
-    private readonly double _inputRangeMin;
-    private readonly double _inputRangeMax;
     private readonly IniConfigIO _iniConfig;
 
     private double[] _calibratedValues;
@@ -25,16 +22,11 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
         ISerialModbusDataScalingService scalingService,
         ILogger<SerialModbusDataCalibrationService> logger,
         string filename = null!,
-        ILogger<IniConfigIO> iniLogger = null!,
-        uint totalCalibrationPoints = Constants.TotalCalibrationPoints,
-        double inputRangeMin = Constants.InputRangeMin, double inputRangeMax = Constants.InputRangeMax)
+        ILogger<IniConfigIO> iniLogger = null!)
     {
         _scalingService = scalingService;
         _logger = logger;
         _filename = filename;
-        _totalCalibrationPoints = totalCalibrationPoints;
-        _inputRangeMin = inputRangeMin;
-        _inputRangeMax = inputRangeMax;
         _iniConfig = null!;
 
         _calibratedValues = new double[Constants.TotalRegisters];
