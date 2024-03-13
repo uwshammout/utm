@@ -140,11 +140,20 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 
 	public ImmutableDictionary<double, double> GetCalibrationValues(int portIndex)
 	{
-		throw new NotImplementedException();
+		return _calibrationData[portIndex].ToImmutableDictionary();
 	}
 
 	public ImmutableDictionary<double, double> SetCalibrationValues(int portIndex, ImmutableDictionary<double, double> calibrationPoints)
 	{
-		throw new NotImplementedException();
+		lock (this)
+		{
+			_calibrationData[portIndex].Clear();
+			foreach(KeyValuePair<double, double> p in calibrationPoints)
+			{
+				_calibrationData[portIndex].Add(p.Key, p.Value);
+			}
+		}
+
+		return _calibrationData[portIndex].ToImmutableDictionary();
 	}
 }
