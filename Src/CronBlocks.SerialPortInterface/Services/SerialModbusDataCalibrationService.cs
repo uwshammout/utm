@@ -165,8 +165,8 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 					_calibrationData[portIndex].Add(p, calibrationPoints[p]);
 				}
 			}
-		}
 
-		return _calibrationData[portIndex].ToImmutableDictionary();
+			return _calibrationData[portIndex].ToImmutableDictionary();
+		}
 	}
 }
