@@ -17,6 +17,9 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		}
 	}
 
+	public delegate void ButtonClickEvent(object sender, RoutedEventArgs e);
+	public event ButtonClickEvent? ButtonClicked;
+
 	private Brush _background = null!;
 	private string _heading = null!;
 	private double _value = 0.0;
