@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CronBlocks.UTM.Windows"
-        xmlns:uc="clr-namespace:CronBlocks.UTM.UserControls"
+        xmlns:luc="clr-namespace:CronBlocks.UTM.UserControls"
         mc:Ignorable="d"
         Title="Device Calibration"
         FontFamily="Segoe UI Light"
@@ -322,8 +322,11 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <uc:DigitalValueDisplay x:Name="DistanceScaledValue"
-                                                Heading="Scaled Value" Margin="3"/>
+                        <luc:DigitalValueDisplay x:Name="DistanceScaledValue"
+                                                 Heading="Scaled Value" Margin="3"
+                                                 BackgroundColor="#FF022C50"/>
+                        <luc:DigitalValueDisplay x:Name="DistanceCalibratedValue" Grid.Column="1"
+                                                 Heading="Calibrated Value" Margin="3" BackgroundColor="#FF234201"/>
                     </Grid>
                 </Grid>
             </TabItem>
