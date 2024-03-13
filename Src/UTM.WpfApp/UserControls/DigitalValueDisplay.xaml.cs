@@ -20,7 +20,6 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 	public delegate void ButtonClickEvent(object sender, RoutedEventArgs e);
 	public event ButtonClickEvent? ButtonClick;
 
-	private Brush _background = null!;
 	private Brush _headingColor = null!;
 	private Brush _valueColor = null!;
 	private Brush _maxColor = null!;
@@ -66,14 +65,6 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		MaxValue = 0.0;
 	}
 
-	public new Brush Background
-	{
-		get { return _background; }
-		set
-		{
-			if (_background != value) { _background = value; Notify(); }
-		}
-	}
 	public Brush HeadingColor
 	{
 		get { return _headingColor; }
