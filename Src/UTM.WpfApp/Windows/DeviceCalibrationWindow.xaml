@@ -311,7 +311,20 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <!-- Values' Display -->
+                    <Grid Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <uc:DigitalValueDisplay x:Name="DistanceScaledValue"
+                                                Heading="Scaled Value" Margin="3"/>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Load Cell Calibration">
