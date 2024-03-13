@@ -21,6 +21,11 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 	public event ButtonClickEvent? ButtonClicked;
 
 	private Brush _background = null!;
+	private Brush _headingColor = null!;
+	private Brush _valueColor = null!;
+	private Brush _maxColor = null!;
+	private Brush _buttonBackground = null!;
+	private Brush _buttonForeground = null!;
 	private string _heading = null!;
 	private double _value = 0.0;
 	private bool _enableMaxValue = false;
@@ -34,6 +39,11 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		DataContext = this;
 
 		Background = new SolidColorBrush(Colors.Black);
+		HeadingColor = new SolidColorBrush(Colors.FloralWhite);
+		ValueColor = new SolidColorBrush(Colors.Orange);
+		MaxColor = new SolidColorBrush(Colors.Silver);
+		ButtonBackground = new SolidColorBrush(Colors.Black);
+		ButtonForeground = new SolidColorBrush(Colors.Silver);
 		Heading = "--";
 		Value = 0.0;
 		EnableMaxValue = false;
@@ -54,6 +64,46 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		set
 		{
 			if (_background != value) { _background = value; Notify(); }
+		}
+	}
+	public Brush HeadingColor
+	{
+		get { return _headingColor; }
+		set
+		{
+			if (_headingColor != value) { _headingColor = value; Notify(); }
+		}
+	}
+	public Brush ValueColor
+	{
+		get { return _valueColor; }
+		set
+		{
+			if (_valueColor != value) { _valueColor = value; Notify(); }
+		}
+	}
+	public Brush MaxColor
+	{
+		get { return _maxColor; }
+		set
+		{
+			if (_maxColor != value) { _maxColor = value; Notify(); }
+		}
+	}
+	public Brush ButtonBackground
+	{
+		get { return _buttonBackground; }
+		set
+		{
+			if (_buttonBackground != value) { _buttonBackground = value; Notify(); }
+		}
+	}
+	public Brush ButtonForeground
+	{
+		get { return _buttonForeground; }
+		set
+		{
+			if (_buttonForeground != value) { _buttonForeground = value; Notify(); }
 		}
 	}
 	public string Heading
