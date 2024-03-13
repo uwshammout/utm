@@ -145,7 +145,10 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 
 	public ImmutableDictionary<double, double> GetCalibrationValues(int portIndex)
 	{
-		return _calibrationData[portIndex].ToImmutableDictionary();
+		lock (this)
+		{
+			return _calibrationData[portIndex].ToImmutableDictionary();
+		}
 	}
 
 	public ImmutableDictionary<double, double> SetCalibrationValues(int portIndex, ImmutableDictionary<double, double> calibrationPoints)
