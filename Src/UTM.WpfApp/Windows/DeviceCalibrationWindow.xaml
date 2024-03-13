@@ -60,7 +60,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
+
             <TextBlock Grid.Row="1"
                        Text="Provide password to access these settings"
                        HorizontalAlignment="Center"/>
@@ -79,20 +79,28 @@
                        Visibility="Collapsed"
                        HorizontalAlignment="Center"/>
         </Grid>
-        
+
         <!-- Normal Data -->
         <TabControl>
             <TabItem Header="Device Registers">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="42"/><!-- Ax -->
-                        <ColumnDefinition Width="68"/><!-- /1000x -->
-                        <ColumnDefinition Width="*"/><!-- Factor -->
-                        <ColumnDefinition Width="20"/><!-- + -->
-                        <ColumnDefinition Width="*"/><!-- Factor -->
-                        <ColumnDefinition Width="90"/><!-- Value -->
-                        <ColumnDefinition Width="70"/><!-- Unit -->
-                        <ColumnDefinition Width="3.5*"/><!-- Remarks -->
+                        <ColumnDefinition Width="42"/>
+                        <!-- Ax -->
+                        <ColumnDefinition Width="68"/>
+                        <!-- /1000x -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Factor -->
+                        <ColumnDefinition Width="20"/>
+                        <!-- + -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Factor -->
+                        <ColumnDefinition Width="90"/>
+                        <!-- Value -->
+                        <ColumnDefinition Width="70"/>
+                        <!-- Unit -->
+                        <ColumnDefinition Width="3.5*"/>
+                        <!-- Remarks -->
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <!-- Headings -->
@@ -322,7 +330,7 @@
                             <Setter Property="HorizontalAlignment" Value="Right" />
                         </Style>
                     </Grid.Resources>
-                    
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -340,7 +348,7 @@
 
                     <PasswordBox x:Name="PasswordNew" Grid.Row="0" Grid.Column="1" PasswordChanged="PasswordNew_PasswordChanged" />
                     <PasswordBox x:Name="PasswordNewRepeat" Grid.Row="1" Grid.Column="1" PasswordChanged="PasswordNew_PasswordChanged" />
-                    
+
                     <TextBlock x:Name="PasswordNewValidationMessage"
                                Text="" Foreground="DarkRed" HorizontalAlignment="Center"
                                Grid.Row="2" Grid.ColumnSpan="2" />
