@@ -78,21 +78,24 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 	{
 		if (_iniConfig != null)
 		{
-			int portIndex = 0;
-			foreach (Dictionary<double, double> portCalibrationData in _calibrationData)
+			lock (this)
 			{
-				string section = $"Cal__{portIndex}__";
-				_iniConfig.SetInteger($"{section}/Total", portCalibrationData.Count);
-
-				int pointIndex = 0;
-				foreach (KeyValuePair<double, double> calibrationPoint in portCalibrationData)
+				int portIndex = 0;
+				foreach (Dictionary<double, double> portCalibrationData in _calibrationData)
 				{
-					_iniConfig.SetDouble($"{section}/Inp__{pointIndex}__", calibrationPoint.Key);
-					_iniConfig.SetDouble($"{section}/Out__{pointIndex}__", calibrationPoint.Value);
-					pointIndex++;
-				}
+					string section = $"Cal__{portIndex}__";
+					_iniConfig.SetInteger($"{section}/Total", portCalibrationData.Count);
 
-				portIndex++;
+					int pointIndex = 0;
+					foreach (KeyValuePair<double, double> calibrationPoint in portCalibrationData)
+					{
+						_iniConfig.SetDouble($"{section}/Inp__{pointIndex}__", calibrationPoint.Key);
+						_iniConfig.SetDouble($"{section}/Out__{pointIndex}__", calibrationPoint.Value);
+						pointIndex++;
+					}
+
+					portIndex++;
+				}
 			}
 
 			_iniConfig.SaveFile();
