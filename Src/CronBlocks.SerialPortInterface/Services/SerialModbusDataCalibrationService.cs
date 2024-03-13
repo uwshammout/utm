@@ -62,6 +62,7 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 
 					string section = $"Cal__{portIndex}__";
 
+					Dictionary<double, double> values = new();
 					for (int pointIndex = 0; pointIndex < _iniConfig.GetInteger($"{section}/Total", 0); pointIndex++)
 					{
 						double key = _iniConfig.GetDouble($"{section}/Inp__{pointIndex}__", double.NegativeInfinity);
@@ -69,7 +70,17 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 
 						if (key != double.NegativeInfinity && value != double.NegativeInfinity)
 						{
-							_calibrationData[portIndex].Add(key, value);
+							values.Add(key, value);
+						}
+					}
+
+					if (values.Count > 0)
+					{
+						List<double> keys = values.Keys.ToList();
+						keys.Sort();
+						foreach (double key in keys)
+						{
+							_calibrationData[portIndex].Add(key, values[key]);
 						}
 					}
 				}
