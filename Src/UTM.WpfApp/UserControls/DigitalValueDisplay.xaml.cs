@@ -22,15 +22,18 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 
 	private Brush _backgroundColor = null!;
 	private Brush _headingColor = null!;
+	private Brush _unitColor = null!;
 	private Brush _valueColor = null!;
 	private Brush _maxColor = null!;
 	private Brush _buttonBackgroundColor = null!;
 	private Brush _buttonForegroundColor = null!;
 	private double _headingFontSize = 0.0;
+	private double _unitFontSize = 0.0;
 	private double _valueFontSize = 0.0;
 	private double _maxFontSize = 0.0;
 	private double _buttonFontSize = 0.0;
 	private string _heading = null!;
+	private string _unit = null!;
 	private double _value = 0.0;
 	private bool _enableMaxValue = false;
 	private double _maxValue = 0.0;
@@ -44,15 +47,18 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 
 		BackgroundColor = new SolidColorBrush(Colors.Black);
 		HeadingColor = new SolidColorBrush(Colors.FloralWhite);
+		UnitColor = new SolidColorBrush(Colors.Beige);
 		ValueColor = new SolidColorBrush(Colors.Orange);
 		MaxColor = new SolidColorBrush(Colors.Silver);
 		ButtonBackgroundColor = BackgroundColor;
 		ButtonForegroundColor = new SolidColorBrush(Colors.Silver);
 		HeadingFontSize = 14;
+		UnitFontSize = 9;
 		ValueFontSize = 42;
 		MaxFontSize = 24;
 		ButtonFontSize = 10;
 		Heading = "--";
+		Unit = "";
 		Value = 0.0;
 		EnableMaxValue = false;
 		MaxValue = 0.0;
@@ -80,6 +86,14 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		set
 		{
 			if (_headingColor != value) { _headingColor = value; Notify(); }
+		}
+	}
+	public Brush UnitColor
+	{
+		get { return _unitColor; }
+		set
+		{
+			if (_unitColor != value) { _unitColor = value; Notify(); }
 		}
 	}
 	public Brush ValueColor
@@ -122,6 +136,14 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 			if (_headingFontSize != value) { _headingFontSize = value; Notify(); }
 		}
 	}
+	public double UnitFontSize
+	{
+		get { return _unitFontSize; }
+		set
+		{
+			if (_unitFontSize != value) { _unitFontSize = value; Notify(); }
+		}
+	}
 	public double ValueFontSize
 	{
 		get { return _valueFontSize; }
@@ -152,6 +174,14 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		set
 		{
 			if (_heading != value) { _heading = value; Notify(); }
+		}
+	}
+	public string Unit
+	{
+		get { return _unit; }
+		set
+		{
+			if (_unit != value) { _unit = value; Notify(); }
 		}
 	}
 	public double Value

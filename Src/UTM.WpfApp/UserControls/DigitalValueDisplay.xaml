@@ -23,7 +23,15 @@
                    HorizontalAlignment="Left" VerticalAlignment="Center"
                    Margin="5,5,5,3" />
 
-            <TextBlock Grid.Row="1" Panel.ZIndex="1"
+            <TextBlock Grid.Row="0" Panel.ZIndex="1"
+                   Text="{Binding Unit}" d:Text="Digital Value"
+                   Foreground="{Binding UnitColor}" d:Foreground="FloralWhite"
+                   FontSize="{Binding UnitFontSize}" d:FontSize="9"
+                   FontFamily="Arial Rounded MT Bold" FontWeight="Bold"
+                   HorizontalAlignment="Right" VerticalAlignment="Center"
+                   Margin="5,5,5,3" />
+
+            <TextBlock Grid.Row="1" Panel.ZIndex="2"
                    Text="{Binding Value, StringFormat={}{0:0.000}}" d:Text="0.000"
                    Foreground="{Binding ValueColor}" d:Foreground="Orange"
                    FontSize="{Binding ValueFontSize}" d:FontSize="42"
