@@ -153,9 +153,14 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 		lock (this)
 		{
 			_calibrationData[portIndex].Clear();
-			foreach(KeyValuePair<double, double> p in calibrationPoints)
+			if (calibrationPoints != null && calibrationPoints.Count > 0)
 			{
-				_calibrationData[portIndex].Add(p.Key, p.Value);
+				List<double> values = calibrationPoints.Keys.ToList();
+				values.Sort();
+				foreach (double p in values)
+				{
+					_calibrationData[portIndex].Add(p, calibrationPoints[p]);
+				}
 			}
 		}
 
