@@ -9,6 +9,6 @@ public interface ISerialModbusDataCalibrationService : IDisposable
     void LoadCalibrationDataFromFile();
     void SaveCalibrationDataToFile();
     
-    ImmutableDictionary<double,double> GetCalibrationValues(int dataIndex);
-    ImmutableDictionary<double,double> SetCalibrationValue(int dataIndex, int calibrationPoint, double input, double output);
+    ImmutableDictionary<double,double> GetCalibrationValues(int portIndex);
+    ImmutableDictionary<double,double> SetCalibrationValues(int portIndex, ImmutableDictionary<double, double> calibrationPoints);
 }

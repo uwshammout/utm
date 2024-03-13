@@ -110,12 +110,12 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
         NewValuesReceived?.Invoke(_calibratedValues.ToList());
     }
 
-    public ImmutableDictionary<double, double> GetCalibrationValues(int dataIndex)
+    public ImmutableDictionary<double, double> GetCalibrationValues(int portIndex)
     {
         throw new NotImplementedException();
     }
 
-    public ImmutableDictionary<double, double> SetCalibrationValue(int dataIndex, int calibrationPoint, double input, double output)
+    public ImmutableDictionary<double, double> SetCalibrationValues(int portIndex, ImmutableDictionary<double, double> calibrationPoints)
     {
         throw new NotImplementedException();
     }
