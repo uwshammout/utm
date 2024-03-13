@@ -17,12 +17,12 @@ public partial class DeviceCalibrationWindow : Window
 
 	private readonly ISerialModbusClientService _modbus;
 	private readonly ISerialModbusDataScalingService _modbusScaling;
-	private readonly ISerialModbusDataCalibrationService _calibration;
+	private readonly ISerialModbusDataCalibrationService _modbusCalibration;
 	private readonly DataExchangeService _dataExchange;
 	private readonly IniConfigIO _passwordFile;
 	private readonly TextBox[] _mfInputs;
 	private readonly TextBox[] _offInputs;
-	private readonly TextBlock[] _outputs;
+	private readonly TextBlock[] _scaledOutputs;
 
 	private readonly Brush _originalTextBoxBg;
 
@@ -37,7 +37,7 @@ public partial class DeviceCalibrationWindow : Window
 
 		_modbus = modbus;
 		_modbusScaling = modbusScaling;
-		_calibration = calibration;
+		_modbusCalibration = calibration;
 		_dataExchange = dataExchange;
 		_passwordFile = passwordFile;
 		_originalTextBoxBg = MultiplicationFactorA1.Background;
@@ -60,7 +60,7 @@ public partial class DeviceCalibrationWindow : Window
 								OffsetA13,  OffsetA14,  OffsetA15,  OffsetA16
 				];
 
-		_outputs =
+		_scaledOutputs =
 				[
 						ProcessedValueA1,   ProcessedValueA2,   ProcessedValueA3,   ProcessedValueA4,
 								ProcessedValueA5,   ProcessedValueA6,   ProcessedValueA7,   ProcessedValueA8,
@@ -83,16 +83,26 @@ public partial class DeviceCalibrationWindow : Window
 		_modbus.OperationStateChanged += OnDeviceOperationStateChanged;
 		OnDeviceOperationStateChanged(_modbus.OperationState);
 
-		_modbusScaling.NewValuesReceived += OnNewValuesReceived;
+		_modbusScaling.NewValuesReceived += OnNewScaledValuesReceived;
+		_modbusCalibration.NewValuesReceived += OnNewCalibratedValuesReceived;
 	}
 
-	private void OnNewValuesReceived(List<double> list)
+	private void OnNewScaledValuesReceived(List<double> list)
 	{
 		Dispatcher.Invoke(() =>
 		{
-			for (int i = 0; i < Math.Min(list.Count, _outputs.Length); i++)
+			for (int i = 0; i < Math.Min(list.Count, _scaledOutputs.Length); i++)
 			{
-				_outputs[i].Text = list[i].ToString("0.000");
+				_scaledOutputs[i].Text = list[i].ToString("0.000");
+			}
+		});
+	}
+	private void OnNewCalibratedValuesReceived(List<double> list)
+	{
+		Dispatcher.Invoke(() =>
+		{
+			for (int i = 0; i < Math.Min(list.Count, _scaledOutputs.Length); i++)
+			{
 			}
 		});
 	}
