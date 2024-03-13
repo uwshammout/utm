@@ -323,10 +323,13 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <luc:DigitalValueDisplay x:Name="DistanceScaledValue"
-                                                 Heading="Scaled Value" Margin="3"
+                                                 Heading="Scaled Value" Unit="mm"
+                                                 Margin="3"
                                                  BackgroundColor="#FF022C50"/>
                         <luc:DigitalValueDisplay x:Name="DistanceCalibratedValue" Grid.Column="1"
-                                                 Heading="Calibrated Value" Margin="3" BackgroundColor="#FF234201"/>
+                                                 Heading="Calibrated Value" Unit="mm"
+                                                 Margin="3"
+                                                 BackgroundColor="#FF234201"/>
                     </Grid>
                 </Grid>
             </TabItem>
