@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="{Binding Background}" d:Background="Black">
+    <Grid Background="{Binding BackgroundColor}" d:Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -47,8 +47,8 @@
         <Button Grid.Row="2" x:Name="ControlButton"
                 Content="{Binding ButtonText}" d:Content="--"
                 Visibility="{Binding ButtonVisibility}" d:Visibility="Visible"
-                Foreground="{Binding ButtonForeground}" d:Foreground="Silver"
-                Background="{Binding ButtonBackground}" d:Background="Black"
+                Foreground="{Binding ButtonForegroundColor}" d:Foreground="Silver"
+                Background="{Binding ButtonBackgroundColor}" d:Background="Black"
                 FontSize="{Binding ButtonFontSize}" d:FontSize="10"
                 FontFamily="Calibri" FontWeight="Bold"
                 HorizontalAlignment="Right" VerticalAlignment="Center"

@@ -20,11 +20,12 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 	public delegate void ButtonClickEvent(object sender, RoutedEventArgs e);
 	public event ButtonClickEvent? ButtonClick;
 
+	private Brush _backgroundColor = null!;
 	private Brush _headingColor = null!;
 	private Brush _valueColor = null!;
 	private Brush _maxColor = null!;
-	private Brush _buttonBackground = null!;
-	private Brush _buttonForeground = null!;
+	private Brush _buttonBackgroundColor = null!;
+	private Brush _buttonForegroundColor = null!;
 	private double _headingFontSize = 0.0;
 	private double _valueFontSize = 0.0;
 	private double _maxFontSize = 0.0;
@@ -41,12 +42,12 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		InitializeComponent();
 		DataContext = this;
 
-		Background = new SolidColorBrush(Colors.Black);
+		BackgroundColor = new SolidColorBrush(Colors.Black);
 		HeadingColor = new SolidColorBrush(Colors.FloralWhite);
 		ValueColor = new SolidColorBrush(Colors.Orange);
 		MaxColor = new SolidColorBrush(Colors.Silver);
-		ButtonBackground = new SolidColorBrush(Colors.Black);
-		ButtonForeground = new SolidColorBrush(Colors.Silver);
+		ButtonBackgroundColor = new SolidColorBrush(Colors.Black);
+		ButtonForegroundColor = new SolidColorBrush(Colors.Silver);
 		HeadingFontSize = 14;
 		ValueFontSize = 52;
 		MaxFontSize = 24;
@@ -65,6 +66,14 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		MaxValue = 0.0;
 	}
 
+	public Brush BackgroundColor
+	{
+		get { return _backgroundColor; }
+		set
+		{
+			if (_backgroundColor != value) { _backgroundColor = value; Notify(); }
+		}
+	}
 	public Brush HeadingColor
 	{
 		get { return _headingColor; }
@@ -89,20 +98,20 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 			if (_maxColor != value) { _maxColor = value; Notify(); }
 		}
 	}
-	public Brush ButtonBackground
+	public Brush ButtonBackgroundColor
 	{
-		get { return _buttonBackground; }
+		get { return _buttonBackgroundColor; }
 		set
 		{
-			if (_buttonBackground != value) { _buttonBackground = value; Notify(); }
+			if (_buttonBackgroundColor != value) { _buttonBackgroundColor = value; Notify(); }
 		}
 	}
-	public Brush ButtonForeground
+	public Brush ButtonForegroundColor
 	{
-		get { return _buttonForeground; }
+		get { return _buttonForegroundColor; }
 		set
 		{
-			if (_buttonForeground != value) { _buttonForeground = value; Notify(); }
+			if (_buttonForegroundColor != value) { _buttonForegroundColor = value; Notify(); }
 		}
 	}
 	public double HeadingFontSize
