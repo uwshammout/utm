@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CronBlocks.UTM.Windows"
+        xmlns:uc="clr-namespace:CronBlocks.UTM.UserControls"
         mc:Ignorable="d"
         Title="Device Calibration"
         FontFamily="Segoe UI Light"
@@ -304,6 +305,14 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Distance Calibration">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
+                </Grid>
             </TabItem>
             <TabItem Header="Load Cell Calibration">
             </TabItem>
