@@ -109,22 +109,25 @@ public partial class MainWindow : Window
 
         Dispatcher.Invoke(() =>
         {
-            double currentDistance = values[0];
-            double currentLoad = values[1];
-
-            DistanceDisplay.Value = currentDistance;
-            LoadDisplay.Value = currentLoad;
+            double sensorDistance = values[0];
+            double sensorLoad = values[1];
 
             if (_isSetZeroDistanceRequested)
             {
-                _zeroDistanceValue = currentDistance;
+                _zeroDistanceValue = sensorDistance;
                 _isSetZeroDistanceRequested = false;
             }
             if (_isSetZeroLoadRequested)
             {
-                _zeroLoadValue = currentLoad;
+                _zeroLoadValue = sensorLoad;
                 _isSetZeroLoadRequested = false;
             }
+
+            double currentDistance = sensorDistance - _zeroDistanceValue;
+            double currentLoad = sensorLoad - _zeroLoadValue;
+
+            DistanceDisplay.Value = currentDistance;
+            LoadDisplay.Value = currentLoad;
 
             //- Plotting
 
