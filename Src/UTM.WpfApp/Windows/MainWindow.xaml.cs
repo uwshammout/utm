@@ -62,7 +62,7 @@ public partial class MainWindow : Window
         _device = device;
         _deviceData = dataService;
 
-        _experimentTimer = new Timer(OnExperimentTimerTick, null, 500, 500);
+        _experimentTimer = new Timer(OnExperimentTimerTick, null, 400, 400);
 
         _csvDumpFilename = FilePaths.CsvDumpFilename;
         _csvDumpFilename.CreateFoldersForRelativeFilename();
