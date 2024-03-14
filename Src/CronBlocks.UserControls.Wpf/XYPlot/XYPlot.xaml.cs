@@ -15,7 +15,7 @@ public class XYPlotModel
 
 public partial class XYPlot : UserControl, INotifyPropertyChanged
 {
-    private static readonly int MAX_NUMBER_OF_VALUES = 250;
+    private static readonly int MAX_NUMBER_OF_VALUES = 500;
 
     private double _xAxisMin;
     private double _xAxisMax;
@@ -81,27 +81,25 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         set
         {
             _xAxisMin = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
-
     public double XAxisMax
     {
         get { return _xAxisMax; }
         set
         {
             _xAxisMax = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
-
     public double XAxisStep
     {
         get { return _xAxisStep; }
         set
         {
             _xAxisStep = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
 
@@ -111,27 +109,25 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         set
         {
             _yAxisMin = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
-
     public double YAxisMax
     {
         get { return _yAxisMax; }
         set
         {
             _yAxisMax = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
-
     public double YAxisStep
     {
         get { return _yAxisStep; }
         set
         {
             _yAxisStep = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
 
@@ -141,17 +137,16 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         set
         {
             _plotVisibility1 = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
-
     public Visibility PlotVisibility2
     {
         get { return _plotVisibility2; }
         set
         {
             _plotVisibility2 = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
 
@@ -161,17 +156,16 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         set
         {
             _xAxisTitle = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
-
     public string YAxisTitle
     {
         get { return _yAxisTitle; }
         set
         {
             _yAxisTitle = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
 
@@ -181,7 +175,7 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         set
         {
             _isAutoRangeEnabled = value;
-            OnPropertyChanged();
+            Notify();
         }
     }
 
@@ -226,7 +220,6 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         if (max > XAxisMax)
             XAxisMax = max;
     }
-
     private void SetYAxisLimits(double min, double max)
     {
         if (min < 0) min -= 1.0;
@@ -239,9 +232,8 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
             YAxisMax = max;
     }
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null!)
+    protected virtual void Notify([CallerMemberName] string propertyName = null!)
     {
-        if (PropertyChanged != null)
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
