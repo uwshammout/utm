@@ -52,11 +52,11 @@ public partial class DigitalValueDisplay : UserControl, INotifyPropertyChanged
 		MaxColor = new SolidColorBrush(Colors.Silver);
 		ButtonBackgroundColor = BackgroundColor;
 		ButtonForegroundColor = new SolidColorBrush(Colors.Silver);
-		HeadingFontSize = 14;
-		UnitFontSize = 9;
+		HeadingFontSize = 16;
+		UnitFontSize = 14;
 		ValueFontSize = 42;
-		MaxFontSize = 24;
-		ButtonFontSize = 10;
+		MaxFontSize = 16;
+		ButtonFontSize = 12;
 		Heading = "--";
 		Unit = "";
 		Value = 0.0;

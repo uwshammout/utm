@@ -18,7 +18,7 @@
             <TextBlock Grid.Row="0"
                    Text="{Binding Heading}" d:Text="Digital Value"
                    Foreground="{Binding HeadingColor}" d:Foreground="FloralWhite"
-                   FontSize="{Binding HeadingFontSize}" d:FontSize="14"
+                   FontSize="{Binding HeadingFontSize}" d:FontSize="16"
                    FontFamily="Arial Rounded MT Bold" FontWeight="Bold"
                    HorizontalAlignment="Left" VerticalAlignment="Center"
                    Margin="5,5,5,3" />
@@ -26,7 +26,7 @@
             <TextBlock Grid.Row="0" Panel.ZIndex="1"
                    Text="{Binding Unit}" d:Text="Digital Value"
                    Foreground="{Binding UnitColor}" d:Foreground="FloralWhite"
-                   FontSize="{Binding UnitFontSize}" d:FontSize="9"
+                   FontSize="{Binding UnitFontSize}" d:FontSize="14"
                    FontFamily="Arial Rounded MT Bold" FontWeight="Bold"
                    HorizontalAlignment="Right" VerticalAlignment="Center"
                    Margin="5,5,5,3" />
@@ -43,12 +43,12 @@
             <StackPanel Grid.Row="2" Orientation="Horizontal" x:Name="MaxValuePanel" Margin="5,3,5,5">
                 <TextBlock Text="Max: "
                        Foreground="{Binding MaxColor}" d:Foreground="Silver"
-                       FontSize="{Binding MaxFontSize}" d:FontSize="24"
+                       FontSize="{Binding MaxFontSize}" d:FontSize="16"
                        FontFamily="Calibri Light" FontWeight="Normal"
                        VerticalAlignment="Center" />
                 <TextBlock Text="{Binding MaxValue, StringFormat={}{0:0.000}}" d:Text="0.000"
                        Foreground="{Binding MaxColor}" d:Foreground="Silver"
-                       FontSize="{Binding MaxFontSize}" d:FontSize="24"
+                       FontSize="{Binding MaxFontSize}" d:FontSize="16"
                        FontFamily="Arial Black" FontWeight="Bold"
                        VerticalAlignment="Center" Margin="5"/>
             </StackPanel>
@@ -58,7 +58,7 @@
                 Visibility="{Binding ButtonVisibility}" d:Visibility="Visible"
                 Foreground="{Binding ButtonForegroundColor}" d:Foreground="Silver"
                 Background="{Binding ButtonBackgroundColor}" d:Background="Black"
-                FontSize="{Binding ButtonFontSize}" d:FontSize="10"
+                FontSize="{Binding ButtonFontSize}" d:FontSize="12"
                 FontFamily="Calibri" FontWeight="Bold"
                 HorizontalAlignment="Right" VerticalAlignment="Center"
                 Margin="5,3,5,5" Padding="12,2"
