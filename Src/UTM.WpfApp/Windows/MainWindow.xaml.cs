@@ -117,6 +117,8 @@ public partial class MainWindow : Window
 
         Dispatcher.Invoke(() =>
         {
+            double time = (DateTime.Now - _experimentStartTime).TotalSeconds;
+
             double sensorDistance = values[0];
             double sensorLoad = values[1];
 
@@ -146,14 +148,14 @@ public partial class MainWindow : Window
                 case PlottingState.None: break;
                 case PlottingState.StressStrain:
                     {
-
+                        
                     }
                     break;
             }
 
             //- Writing to file
 
-            WriteCsvDumpFileValues(_plottingState, currentDistance, currentLoad);
+            WriteCsvDumpFileValues(_plottingState, time, currentDistance, currentLoad);
 
             _lastDistance = currentDistance;
             _lastLoad = currentLoad;
@@ -263,17 +265,17 @@ public partial class MainWindow : Window
             case PlottingState.None: break;
 
             case PlottingState.StressStrain:
-                _csvDumpFile.WriteLine($"Distance (mm), Load (kN)");
+                _csvDumpFile.WriteLine($"Time (sec), Distance (mm), Load (kN)");
                 break;
         }
     }
-    private void WriteCsvDumpFileValues(PlottingState state, double currentDistance, double currentLoad)
+    private void WriteCsvDumpFileValues(PlottingState state, double time, double currentDistance, double currentLoad)
     {
         switch (state)
         {
             case PlottingState.None: break;
             case PlottingState.StressStrain:
-                _csvDumpFile.WriteLine($"{currentDistance:0.000}, {currentLoad:0.000}");
+                _csvDumpFile.WriteLine($"{time:0.000}, {currentDistance:0.000}, {currentLoad:0.000}");
                 break;
         }
     }
