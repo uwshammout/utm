@@ -72,11 +72,13 @@
             </Grid>
             
             <!-- Plot -->
-            <xyPlot:XYPlot x:Name="StressStrainPlot"
+            <xyPlot:XYPlot x:Name="StressStrainPlot" Grid.Row="1" Grid.Column="0"
                            XAxisTitle="Strain, Ɛ" YAxisTitle="Stress, σ"
+                           XAxisMax="10" YAxisMax="10"
                            PlotVisibility2="Hidden"
                            IsAutoRangeEnabled="True"
-                           Grid.Row="1" Grid.Column="0" />
+                           AxesTextColor="#FF5F0253" AxesLinesColor="#FFECA9F3"  PlotColor1="#FF500242"
+                           Background="{Binding Background}" />
         </Grid>
         
         <!-- Right Controls -->
@@ -120,7 +122,7 @@
         </ScrollViewer>
         
         <!-- Message & progress bar -->
-        <StatusBar Grid.Row="2" Grid.RowSpan="2">
+        <StatusBar Grid.Row="2" Grid.ColumnSpan="2">
             <TextBlock x:Name="MessageBar" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </StatusBar>
     </Grid>

@@ -34,7 +34,7 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
     private bool _isAutoRangeEnabled;
 
-    private Brush _axesColor;
+    private Brush _axesTextColor, _axesLinesColor;
     private Brush _plotColor1, _plotColor2;
 
     public XYPlot()
@@ -70,7 +70,8 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         IsAutoRangeEnabled = false;
 
         Background = new SolidColorBrush(Colors.Black);
-        AxesColor = new SolidColorBrush(Colors.White);
+        AxesTextColor = new SolidColorBrush(Colors.White);
+        AxesLinesColor = AxesTextColor;
         PlotColor1 = new SolidColorBrush(Colors.Orange);
         PlotColor2 = new SolidColorBrush(Colors.Cyan);
     }
@@ -187,12 +188,20 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         }
     }
 
-    public Brush AxesColor
+    public Brush AxesTextColor
     {
-        get { return _axesColor; }
+        get { return _axesTextColor; }
         set
         {
-            if (value != _axesColor) { _axesColor = value; Notify(); }
+            if (value != _axesTextColor) { _axesTextColor = value; Notify(); }
+        }
+    }
+    public Brush AxesLinesColor
+    {
+        get { return _axesLinesColor; }
+        set
+        {
+            if (value != _axesLinesColor) { _axesLinesColor = value; Notify(); }
         }
     }
     public Brush PlotColor1
