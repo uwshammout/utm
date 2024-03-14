@@ -116,11 +116,13 @@ public partial class MainWindow : Window
             {
                 _zeroDistanceValue = sensorDistance;
                 _isSetZeroDistanceRequested = false;
+                DistanceDisplay.Reset();
             }
             if (_isSetZeroLoadRequested)
             {
                 _zeroLoadValue = sensorLoad;
                 _isSetZeroLoadRequested = false;
+                LoadDisplay.Reset();
             }
 
             double currentDistance = sensorDistance - _zeroDistanceValue;
