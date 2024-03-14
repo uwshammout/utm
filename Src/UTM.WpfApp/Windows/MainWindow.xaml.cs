@@ -43,7 +43,7 @@ public partial class MainWindow : Window
     private PlottingState _plottingState;
     private PlottingState _lastPlottingState;
 
-    private readonly string _stopText = "STOP";
+    private readonly string _startText, _stopText = "STOP";
     private readonly Brush _initialBgColor = null!;
 
     public MainWindow(
@@ -54,6 +54,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        _startText = (string)CompressionTestStartButton.Content;
         _initialBgColor = AreaOverrideValue.Background;
 
         _app = app;
@@ -195,6 +196,7 @@ public partial class MainWindow : Window
             switch (state)
             {
                 case PlottingState.None:
+                    CompressionTestStartButton.Content = _startText;
                     if (_csvDumpFile != null)
                     {
                         _csvDumpFile.Flush();
@@ -220,6 +222,9 @@ public partial class MainWindow : Window
                             return;
                         }
                     }
+
+                    CompressionTestStartButton.Content = _stopText;
+
                     _lastDistance = 0.0;
                     _lastLoad = 0.0;
                     StressStrainPlot.ClearData();
