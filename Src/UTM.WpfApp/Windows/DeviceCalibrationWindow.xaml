@@ -511,6 +511,223 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Load Cell Calibration">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Values' Display -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <luc:DigitalValueDisplay x:Name="LoadScaledValue"
+                                 Heading="Scaled Value" Unit="mm"
+                                 Margin="3"
+                                 BackgroundColor="#FF022C50"/>
+                        <luc:DigitalValueDisplay x:Name="LoadCalibratedValue" Grid.Column="1"
+                                 Heading="Calibrated Value" Unit="mm"
+                                 Margin="3"
+                                 BackgroundColor="#FF234201"/>
+                    </Grid>
+
+                    <!-- Calibration Data Display -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="180" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- The calibration data -->
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="MinHeight" Value="32" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                        <Setter Property="Margin" Value="4,2" />
+                                    </Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Margin" Value="8,3" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput01" />
+                                    <TextBox x:Name="LoadCalibrationOutput01" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput02" />
+                                    <TextBox x:Name="LoadCalibrationOutput02" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput03" />
+                                    <TextBox x:Name="LoadCalibrationOutput03" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput04" />
+                                    <TextBox x:Name="LoadCalibrationOutput04" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput05" />
+                                    <TextBox x:Name="LoadCalibrationOutput05" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput06" />
+                                    <TextBox x:Name="LoadCalibrationOutput06" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput07" />
+                                    <TextBox x:Name="LoadCalibrationOutput07" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput08" />
+                                    <TextBox x:Name="LoadCalibrationOutput08" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput09" />
+                                    <TextBox x:Name="LoadCalibrationOutput09" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput10" />
+                                    <TextBox x:Name="LoadCalibrationOutput10" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput11" />
+                                    <TextBox x:Name="LoadCalibrationOutput11" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput12" />
+                                    <TextBox x:Name="LoadCalibrationOutput12" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput13" />
+                                    <TextBox x:Name="LoadCalibrationOutput13" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput14" />
+                                    <TextBox x:Name="LoadCalibrationOutput14" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput15" />
+                                    <TextBox x:Name="LoadCalibrationOutput15" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput16" />
+                                    <TextBox x:Name="LoadCalibrationOutput16" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput17" />
+                                    <TextBox x:Name="LoadCalibrationOutput17" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput18" />
+                                    <TextBox x:Name="LoadCalibrationOutput18" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput19" />
+                                    <TextBox x:Name="LoadCalibrationOutput19" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="LoadCalibrationInput20" />
+                                    <TextBox x:Name="LoadCalibrationOutput20" Grid.Column="1" />
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- Information -->
+                        <TextBlock Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Top"
+                                   Text="INFO: Provide calibration data and press the Update button for the data to take effect. For the calibration to take effect, you need to provide at least 02 points. Any scaled values within the left-hand calibration range shall be linearly interpolated according to the values provided in the right-hand fields."/>
+                    </Grid>
+
+                    <Button x:Name="LoadCalibrationUpdateButton"
+                            Grid.Row="2" HorizontalAlignment="Right" Margin="5" Padding="15,6"
+                            Click="CalibrationUpdateButton_Click"
+                            Content="Update" />
+                </Grid>
             </TabItem>
             <TabItem Header="Password Update">
                 <Grid Margin="5,15">

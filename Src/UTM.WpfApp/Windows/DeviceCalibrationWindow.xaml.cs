@@ -24,6 +24,7 @@ public partial class DeviceCalibrationWindow : Window
     private readonly TextBox[] _offInputs;
     private readonly TextBlock[] _scaledOutputs;
     private readonly TextBox[] _distanceCalInputs, _distanceCalOutputs;
+    private readonly TextBox[] _loadCalInputs, _loadCalOutputs;
 
     private readonly Brush _originalTextBoxBg;
 
@@ -80,6 +81,23 @@ public partial class DeviceCalibrationWindow : Window
             DistanceCalibrationOutput17, DistanceCalibrationOutput18, DistanceCalibrationOutput19, DistanceCalibrationOutput20,
             ];
 
+        _loadCalInputs =
+            [
+            LoadCalibrationInput01, LoadCalibrationInput02, LoadCalibrationInput03, LoadCalibrationInput04,
+            LoadCalibrationInput05, LoadCalibrationInput06, LoadCalibrationInput07, LoadCalibrationInput08,
+            LoadCalibrationInput09, LoadCalibrationInput10, LoadCalibrationInput11, LoadCalibrationInput12,
+            LoadCalibrationInput13, LoadCalibrationInput14, LoadCalibrationInput15, LoadCalibrationInput16,
+            LoadCalibrationInput17, LoadCalibrationInput18, LoadCalibrationInput19, LoadCalibrationInput20,
+            ];
+        _loadCalOutputs =
+            [
+            LoadCalibrationOutput01, LoadCalibrationOutput02, LoadCalibrationOutput03, LoadCalibrationOutput04,
+            LoadCalibrationOutput05, LoadCalibrationOutput06, LoadCalibrationOutput07, LoadCalibrationOutput08,
+            LoadCalibrationOutput09, LoadCalibrationOutput10, LoadCalibrationOutput11, LoadCalibrationOutput12,
+            LoadCalibrationOutput13, LoadCalibrationOutput14, LoadCalibrationOutput15, LoadCalibrationOutput16,
+            LoadCalibrationOutput17, LoadCalibrationOutput18, LoadCalibrationOutput19, LoadCalibrationOutput20,
+            ];
+
         ImmutableList<double> mfs = _modbusScaling.GetMultiplicationFactors();
         for (int i = 0; i < Math.Min(_mfInputs.Length, mfs.Count); i++)
         {
@@ -93,6 +111,7 @@ public partial class DeviceCalibrationWindow : Window
         }
 
         SetDistanceCalibrationData(_modbusCalibration.GetCalibrationValues(0));
+        SetLoadCalibrationData(_modbusCalibration.GetCalibrationValues(1));
 
         _modbus.OperationStateChanged += OnDeviceOperationStateChanged;
         OnDeviceOperationStateChanged(_modbus.OperationState);
@@ -314,6 +333,26 @@ public partial class DeviceCalibrationWindow : Window
             index++;
         }
     }
+    private void SetLoadCalibrationData(ImmutableDictionary<double, double> calData)
+    {
+        foreach (TextBox t in _loadCalInputs)
+        {
+            t.Text = "";
+        }
+        foreach (TextBox t in _loadCalOutputs)
+        {
+            t.Text = "";
+        }
+
+        int index = 0;
+        foreach (KeyValuePair<double, double> item in calData)
+        {
+            _loadCalInputs[index].Text = item.Key.ToString();
+            _loadCalOutputs[index].Text = item.Value.ToString();
+            index++;
+        }
+    }
+
     private ImmutableDictionary<double, double>  ReadDistanceCalibrationData()
     {
         Dictionary<double, double> dict = new();
@@ -331,12 +370,34 @@ public partial class DeviceCalibrationWindow : Window
 
         return dict.ToImmutableDictionary();
     }
+    private ImmutableDictionary<double, double>  ReadLoadCalibrationData()
+    {
+        Dictionary<double, double> dict = new();
+
+        for(int i = 0; i < _loadCalInputs.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(_loadCalInputs[i].Text) &&
+                !string.IsNullOrEmpty(_loadCalOutputs[i].Text) &&
+                double.TryParse(_loadCalInputs[i].Text, out double input) &&
+                double.TryParse(_loadCalOutputs[i].Text, out double output))
+            {
+                dict.Add(input, output);
+            }
+        }
+
+        return dict.ToImmutableDictionary();
+    }
     private void CalibrationUpdateButton_Click(object sender, RoutedEventArgs e)
     {
         if (sender == DistanceCalibrationUpdateButton)
         {
             SetDistanceCalibrationData(
                 _modbusCalibration.SetCalibrationValues(0, ReadDistanceCalibrationData()));
+        }
+        else if (sender == LoadCalibrationUpdateButton)
+        {
+            SetLoadCalibrationData(
+                _modbusCalibration.SetCalibrationValues(1, ReadLoadCalibrationData()));
         }
     }
     #endregion
