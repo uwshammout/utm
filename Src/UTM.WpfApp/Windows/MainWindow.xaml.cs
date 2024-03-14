@@ -28,6 +28,7 @@ public partial class MainWindow : Window
 
     private Mutex _computationMutex = new Mutex(false);
     private double _area = double.NaN;
+    private double _length = double.NaN;
 
     private readonly Timer _experimentTimer;
     private DateTime _experimentStartTime = DateTime.MinValue;
@@ -206,13 +207,16 @@ public partial class MainWindow : Window
                 case PlottingState.StressStrain:
                     lock (_computationMutex)
                     {
-                        if (_area > 0)
-                        {
-                            // Ok
-                        }
+                        if (_area > 0) {  /* Ok */ }
                         else
                         {
                             MessageBox.Show("Invalid cross-sectional area of sample is specified");
+                            return;
+                        }
+                        if (_length > 0) {  /* Ok */ }
+                        else
+                        {
+                            MessageBox.Show("Invalid length of sample is specified");
                             return;
                         }
                     }
@@ -330,7 +334,7 @@ public partial class MainWindow : Window
     {
         if (sender is TextBox tb)
         {
-            if (tb == AreaOverrideValue)
+            if (tb == AreaOverrideValue || tb == LengthOverrideValue)
             {
                 if (double.TryParse(tb.Text, out double v) && v > 0)
                 {
@@ -347,13 +351,14 @@ public partial class MainWindow : Window
     {
         if (e.Key == System.Windows.Input.Key.Enter && sender is TextBox tb)
         {
-            if (tb == AreaOverrideValue)
+            if (tb == AreaOverrideValue || tb == LengthOverrideValue)
             {
                 if (double.TryParse(tb.Text, out double value) && value > 0)
                 {
                     lock (_computationMutex)
                     {
-                        _area = value;
+                        if (tb == AreaOverrideValue) _area = value;
+                        else if (tb == LengthOverrideValue) _length = value;
                     }
 
                     tb.Background = _initialBgColor;
