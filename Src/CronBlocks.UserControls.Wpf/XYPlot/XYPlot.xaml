@@ -26,9 +26,9 @@
                                 PointGeometry="{x:Null}"
                                 LineSmoothness="0"
                                 StrokeThickness="3"
-                                Stroke="#FF2CFD2C"
+                                Stroke="{Binding PlotColor1}"
                                 Visibility="{Binding PlotVisibility1}"
-                                Fill="Transparent"/>
+                                Fill="Transparent" />
 
                 <!-- Series 2 -->
                 <lvc:LineSeries x:Name="Series2"
@@ -36,9 +36,9 @@
                                 PointGeometry="{x:Null}"
                                 LineSmoothness="0"
                                 StrokeThickness="3"
-                                Stroke="#FFF1F961"
+                                Stroke="{Binding PlotColor2}"
                                 Visibility="{Binding PlotVisibility2}"
-                                Fill="Transparent"/>
+                                Fill="Transparent" />
 
             </lvc:CartesianChart.Series>
 
@@ -46,9 +46,8 @@
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis LabelFormatter="{Binding XValueFormatter}"
                           FontSize="16"
-                          Foreground="White"
-                          Title="{Binding XAxisTitle}"
-                          d:Title="X Axis"
+                          Foreground="{Binding AxesColor}"
+                          Title="{Binding XAxisTitle}" d:Title="X Axis"
                           MaxValue="{Binding XAxisMax}" 
                           MinValue="{Binding XAxisMin}">
                     
@@ -63,9 +62,8 @@
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis LabelFormatter="{Binding YValueFormatter}"
                           FontSize="16"
-                          Foreground="White"
-                          Title="{Binding YAxisTitle}"
-                          d:Title="Y Axis"
+                          Foreground="{Binding AxesColor}"
+                          Title="{Binding YAxisTitle}" d:Title="Y Axis"
                           MaxValue="{Binding YAxisMax}"
                           MinValue="{Binding YAxisMin}">
                     

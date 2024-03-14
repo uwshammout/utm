@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CronBlocks.UserControls.Wpf.XYPlot;
 
@@ -33,9 +34,13 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
     private bool _isAutoRangeEnabled;
 
+    private Brush _axesColor;
+    private Brush _plotColor1, _plotColor2;
+
     public XYPlot()
     {
         InitializeComponent();
+        DataContext = this;
 
         var mapper = Mappers.Xy<XYPlotModel>()
             .X(model => model.XValue)
@@ -64,7 +69,10 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
         IsAutoRangeEnabled = false;
 
-        DataContext = this;
+        Background = new SolidColorBrush(Colors.Black);
+        AxesColor = new SolidColorBrush(Colors.White);
+        PlotColor1 = new SolidColorBrush(Colors.Orange);
+        PlotColor2 = new SolidColorBrush(Colors.Cyan);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -176,6 +184,31 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         {
             _isAutoRangeEnabled = value;
             Notify();
+        }
+    }
+
+    public Brush AxesColor
+    {
+        get { return _axesColor; }
+        set
+        {
+            if (value != _axesColor) { _axesColor = value; Notify(); }
+        }
+    }
+    public Brush PlotColor1
+    {
+        get { return _plotColor1; }
+        set
+        {
+            if (value != _plotColor1) { _plotColor1 = value; Notify(); }
+        }
+    }
+    public Brush PlotColor2
+    {
+        get { return _plotColor2; }
+        set
+        {
+            if (value != _plotColor2) { _plotColor2 = value; Notify(); }
         }
     }
 
