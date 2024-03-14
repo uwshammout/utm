@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="150" d:DesignWidth="400">
 
-    <Border Background="{Binding BackgroundColor}" CornerRadius="5">
+    <Border Background="{Binding BackgroundColor}" CornerRadius="5" Padding="5,2">
         <Grid Background="{x:Null}" d:Background="Black">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
