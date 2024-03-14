@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using CronBlocks.SerialPortInterface.Services;
+using CronBlocks.UTM.UserControls;
 
 namespace CronBlocks.UTM.Windows;
 
@@ -348,12 +349,21 @@ public partial class MainWindow : Window
                 }
                 else if (button == SetZeroDistanceButton)
                 {
-                    _isSetZeroDistanceRequested = true;
                 }
                 else if (button == SetZeroLoadButton)
                 {
-                    _isSetZeroLoadRequested = true;
                 }
+            }
+        }
+        else if (sender is DigitalValueDisplay dv)
+        {
+            if (dv == DistanceDisplay)
+            {
+                _isSetZeroDistanceRequested = true;
+            }
+            else if (dv == LoadDisplay)
+            {
+                _isSetZeroLoadRequested = true;
             }
         }
     }
