@@ -347,12 +347,6 @@ public partial class MainWindow : Window
                 {
                     ChangePlottingState(PlottingState.StressStrain);
                 }
-                else if (button == SetZeroDistanceButton)
-                {
-                }
-                else if (button == SetZeroLoadButton)
-                {
-                }
             }
         }
         else if (sender is DigitalValueDisplay dv)

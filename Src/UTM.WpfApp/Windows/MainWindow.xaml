@@ -104,8 +104,6 @@
                 </StackPanel.Resources>
 
                 <Button Content="Start" x:Name="CompressionTestStartButton" Click="OnButtonClicked" />
-                <Button Content="Zeroize Distance" x:Name="SetZeroDistanceButton" Click="OnButtonClicked" />
-                <Button Content="Zeroize Load" x:Name="SetZeroLoadButton" Click="OnButtonClicked" />
 
                 <StackPanel>
                     <TextBlock Text="Area:" />
