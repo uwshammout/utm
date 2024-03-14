@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CronBlocks.UTM.UserControls"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="150" d:DesignWidth="400">
 
     <Border Background="{Binding BackgroundColor}" CornerRadius="5">
         <Grid Background="{x:Null}" d:Background="Black">
