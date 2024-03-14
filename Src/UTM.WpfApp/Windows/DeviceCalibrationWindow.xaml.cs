@@ -124,6 +124,12 @@ public partial class DeviceCalibrationWindow : Window
     {
         Dispatcher.Invoke(() =>
         {
+            if (list.Count >= 2)
+            {
+                DistanceScaledValue.Value = list[0];
+                LoadScaledValue.Value = list[1];
+            }
+
             for (int i = 0; i < Math.Min(list.Count, _scaledOutputs.Length); i++)
             {
                 _scaledOutputs[i].Text = list[i].ToString("0.000");
@@ -134,8 +140,10 @@ public partial class DeviceCalibrationWindow : Window
     {
         Dispatcher.Invoke(() =>
         {
-            for (int i = 0; i < Math.Min(list.Count, _scaledOutputs.Length); i++)
+            if (list.Count >= 2)
             {
+                DistanceCalibratedValue.Value = list[0];
+                LoadCalibratedValue.Value = list[1];
             }
         });
     }
