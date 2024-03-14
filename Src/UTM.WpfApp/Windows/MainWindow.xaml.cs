@@ -99,7 +99,7 @@ public partial class MainWindow : Window
                 case PlottingState.StressStrain:
 
                     double secondsElapsed = (DateTime.Now - _experimentStartTime).TotalSeconds;
-
+                    TimeDisplay.Value = secondsElapsed;
                     break;
             }
         });
