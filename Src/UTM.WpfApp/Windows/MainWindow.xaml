@@ -107,6 +107,7 @@
 
                 <Button Content="Start" x:Name="CompressionTestStartButton" Click="OnButtonClicked" />
 
+                <TextBlock Text="Type value and press enter" TextWrapping="Wrap" Margin="2,5"/>
                 <StackPanel>
                     <TextBlock Text="Area:" />
                     <Grid>
