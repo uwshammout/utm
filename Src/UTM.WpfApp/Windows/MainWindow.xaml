@@ -58,17 +58,16 @@
                     </Grid.ColumnDefinitions>
 
                     <luc:DigitalValueDisplay  x:Name="DistanceDisplay" Grid.Column="0"
-                          Heading="Distance" Unit="mm"
-                          Margin="2"
-                          BackgroundColor="#FF500242" />
+                          Heading="Distance" Unit="mm" EnableMaxValue="True"
+                          ButtonVisibility="Visible" ButtonText="Zero" ButtonClick="OnButtonClicked"
+                          Margin="2" BackgroundColor="#FF500242" />
                     <luc:DigitalValueDisplay  x:Name="LoadDisplay" Grid.Column="1"
-                          Heading="Load" Unit="kN"
-                          Margin="2"
-                          BackgroundColor="#FF500242" />
+                          Heading="Load" Unit="kN" EnableMaxValue="True"
+                          ButtonVisibility="Visible" ButtonText="Zero" ButtonClick="OnButtonClicked"
+                          Margin="2" BackgroundColor="#FF500242" />
                     <luc:DigitalValueDisplay  x:Name="TimeDisplay" Grid.Column="2"
                           Heading="Time" Unit="sec"
-                          Margin="3"
-                          BackgroundColor="#FF504D02" />
+                          Margin="2" BackgroundColor="#FF504D02" />
                 </Grid>
             </Grid>
             
