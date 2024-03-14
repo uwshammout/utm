@@ -112,6 +112,9 @@ public partial class MainWindow : Window
             double currentDistance = values[0];
             double currentLoad = values[1];
 
+            DistanceDisplay.Value = currentDistance;
+            LoadDisplay.Value = currentLoad;
+
             if (_isSetZeroDistanceRequested)
             {
                 _zeroDistanceValue = currentDistance;
