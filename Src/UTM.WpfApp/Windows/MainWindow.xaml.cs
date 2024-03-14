@@ -26,6 +26,9 @@ public partial class MainWindow : Window
     private readonly ISerialModbusClientService _device;
     private readonly ISerialModbusDataCalibrationService _deviceData;
 
+    private Mutex _computationMutex = new Mutex(false);
+    private double _area = double.NaN;
+
     private readonly Timer _experimentTimer;
     private DateTime _experimentStartTime = DateTime.MinValue;
 
@@ -40,6 +43,7 @@ public partial class MainWindow : Window
     private PlottingState _lastPlottingState;
 
     private readonly string _stopText = "STOP";
+    private readonly Brush _initialBgColor = null!;
 
     public MainWindow(
         App app,
@@ -48,6 +52,8 @@ public partial class MainWindow : Window
         ISerialModbusDataCalibrationService dataService)
     {
         InitializeComponent();
+
+        _initialBgColor = AreaOverrideValue.Background;
 
         _app = app;
         _dataExchange = dataExchange;
@@ -136,7 +142,11 @@ public partial class MainWindow : Window
             switch (_plottingState)
             {
                 case PlottingState.None: break;
-                case PlottingState.StressStrain: break;
+                case PlottingState.StressStrain:
+                    {
+
+                    }
+                    break;
             }
 
             //- Writing to file
@@ -194,6 +204,18 @@ public partial class MainWindow : Window
                     break;
 
                 case PlottingState.StressStrain:
+                    lock (_computationMutex)
+                    {
+                        if (_area > 0)
+                        {
+                            // Ok
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid cross-sectional area of sample is specified");
+                            return;
+                        }
+                    }
                     _lastDistance = 0.0;
                     _lastLoad = 0.0;
                     StressStrainPlot.ClearData();
@@ -310,9 +332,9 @@ public partial class MainWindow : Window
         {
             if (tb == AreaOverrideValue)
             {
-                if (double.TryParse(tb.Text, out double _))
+                if (double.TryParse(tb.Text, out double v) && v > 0)
                 {
-                    //tb.Background = _currentOverrideValueInitialColor;
+                    tb.Background = _initialBgColor;
                 }
                 else
                 {
@@ -321,15 +343,20 @@ public partial class MainWindow : Window
             }
         }
     }
-
     private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         if (e.Key == System.Windows.Input.Key.Enter && sender is TextBox tb)
         {
             if (tb == AreaOverrideValue)
             {
-                if (double.TryParse(tb.Text, out double value))
+                if (double.TryParse(tb.Text, out double value) && value > 0)
                 {
+                    lock (_computationMutex)
+                    {
+                        _area = value;
+                    }
+
+                    tb.Background = _initialBgColor;
                 }
                 else
                 {
