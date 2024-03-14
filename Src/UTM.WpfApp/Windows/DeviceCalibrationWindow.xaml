@@ -307,7 +307,7 @@
             <TabItem Header="Distance Calibration">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="100" />
+                        <RowDefinition Height="120" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
