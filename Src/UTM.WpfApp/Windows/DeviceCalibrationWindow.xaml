@@ -46,7 +46,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <!-- Password Input -->
-        <Grid x:Name="PasswordInputPanel" Panel.ZIndex="0" Background="AliceBlue" Grid.RowSpan="2">
+        <Grid x:Name="PasswordInputPanel" Panel.ZIndex="1" Background="AliceBlue" Grid.RowSpan="2">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Margin" Value="3" />
