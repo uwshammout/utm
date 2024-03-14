@@ -525,11 +525,11 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <luc:DigitalValueDisplay x:Name="LoadScaledValue"
-                                 Heading="Scaled Value" Unit="mm"
+                                 Heading="Scaled Value" Unit="kN"
                                  Margin="3"
                                  BackgroundColor="#FF022C50"/>
                         <luc:DigitalValueDisplay x:Name="LoadCalibratedValue" Grid.Column="1"
-                                 Heading="Calibrated Value" Unit="mm"
+                                 Heading="Calibrated Value" Unit="kN"
                                  Margin="3"
                                  BackgroundColor="#FF234201"/>
                     </Grid>
