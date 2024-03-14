@@ -279,5 +279,14 @@ public partial class DeviceCalibrationWindow : Window
 			MessageBox.Show("Invalid operation", "Password not provided", MessageBoxButton.OK);
 		}
 	}
+    #endregion
+    #region Calibration data handling
+    private void CalibrationUpdateButton_Click(object sender, RoutedEventArgs e)
+    {
+		if (sender == DistanceCalibrationUpdateButton)
+		{
+
+		}
+    }
 	#endregion
 }

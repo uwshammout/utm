@@ -41,8 +41,12 @@
     </Window.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
         <!-- Password Input -->
-        <Grid x:Name="PasswordInputPanel" Panel.ZIndex="0" Background="AliceBlue">
+        <Grid x:Name="PasswordInputPanel" Panel.ZIndex="0" Background="AliceBlue" Grid.RowSpan="2">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Margin" Value="3" />
@@ -86,22 +90,14 @@
             <TabItem Header="Device Registers">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="42"/>
-                        <!-- Ax -->
-                        <ColumnDefinition Width="68"/>
-                        <!-- /1000x -->
-                        <ColumnDefinition Width="*"/>
-                        <!-- Factor -->
-                        <ColumnDefinition Width="20"/>
-                        <!-- + -->
-                        <ColumnDefinition Width="*"/>
-                        <!-- Factor -->
-                        <ColumnDefinition Width="90"/>
-                        <!-- Value -->
-                        <ColumnDefinition Width="70"/>
-                        <!-- Unit -->
-                        <ColumnDefinition Width="3.5*"/>
-                        <!-- Remarks -->
+                        <ColumnDefinition Width="42"/> <!-- Ax -->
+                        <ColumnDefinition Width="68"/> <!-- /1000x -->
+                        <ColumnDefinition Width="*"/>  <!-- Factor -->
+                        <ColumnDefinition Width="20"/> <!-- + -->
+                        <ColumnDefinition Width="*"/>  <!-- Factor -->
+                        <ColumnDefinition Width="90"/> <!-- Value -->
+                        <ColumnDefinition Width="70"/> <!-- Unit -->
+                        <ColumnDefinition Width="3.5*"/> <!-- Remarks -->
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <!-- Headings -->
@@ -123,8 +119,6 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-                        <!-- Message bar -->
-                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
 
                     <!-- Borders / Backgrounds -->
@@ -295,13 +289,6 @@
                     <Label Grid.Row="14" Grid.Column="7" Content="-- RESERVED --" />
                     <Label Grid.Row="15" Grid.Column="7" Content="-- RESERVED --" />
                     <Label Grid.Row="16" Grid.Column="7" Content="-- RESERVED --" />
-
-                    <!-- Information bar -->
-                    <StatusBar Grid.Row="17" Grid.ColumnSpan="8">
-                        <TextBlock x:Name="StatusMessage"
-                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                   FontWeight="Normal" Margin="1" />
-                    </StatusBar>
                 </Grid>
             </TabItem>
             <TabItem Header="Distance Calibration">
@@ -311,13 +298,9 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                    
                     <!-- Values' Display -->
-                    <Grid Grid.ColumnSpan="3">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -331,6 +314,200 @@
                                                  Margin="3"
                                                  BackgroundColor="#FF234201"/>
                     </Grid>
+                    
+                    <!-- Calibration Data Display -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="180" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- The calibration data -->
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="MinHeight" Value="32" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                        <Setter Property="Margin" Value="4,2" />
+                                    </Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Margin" Value="8,3" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput01" />
+                                    <TextBox x:Name="DistanceCalibrationOutput01" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput02" />
+                                    <TextBox x:Name="DistanceCalibrationOutput02" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput03" />
+                                    <TextBox x:Name="DistanceCalibrationOutput03" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput04" />
+                                    <TextBox x:Name="DistanceCalibrationOutput04" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput05" />
+                                    <TextBox x:Name="DistanceCalibrationOutput05" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput06" />
+                                    <TextBox x:Name="DistanceCalibrationOutput06" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput07" />
+                                    <TextBox x:Name="DistanceCalibrationOutput07" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput08" />
+                                    <TextBox x:Name="DistanceCalibrationOutput08" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput09" />
+                                    <TextBox x:Name="DistanceCalibrationOutput09" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput10" />
+                                    <TextBox x:Name="DistanceCalibrationOutput10" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput11" />
+                                    <TextBox x:Name="DistanceCalibrationOutput11" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput12" />
+                                    <TextBox x:Name="DistanceCalibrationOutput12" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput13" />
+                                    <TextBox x:Name="DistanceCalibrationOutput13" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput14" />
+                                    <TextBox x:Name="DistanceCalibrationOutput14" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput15" />
+                                    <TextBox x:Name="DistanceCalibrationOutput15" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput16" />
+                                    <TextBox x:Name="DistanceCalibrationOutput16" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput17" />
+                                    <TextBox x:Name="DistanceCalibrationOutput17" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput18" />
+                                    <TextBox x:Name="DistanceCalibrationOutput18" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput19" />
+                                    <TextBox x:Name="DistanceCalibrationOutput19" Grid.Column="1" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DistanceCalibrationInput20" />
+                                    <TextBox x:Name="DistanceCalibrationOutput20" Grid.Column="1" />
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+                        
+                        <!-- Information -->
+                        <TextBlock Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Top"
+                               Text="INFO: Provide calibration data and press the Update button for the data to take effect. For the calibration to take effect, you need to provide at least 02 points. Any scaled values within the left-hand calibration range shall be linearly interpolated according to the values provided in the right-hand fields."/>
+                    </Grid>
+
+                    <Button x:Name="DistanceCalibrationUpdateButton"
+                            Grid.Row="2" HorizontalAlignment="Right" Margin="5" Padding="15,6"
+                            Click="CalibrationUpdateButton_Click"
+                            Content="Update" />
                 </Grid>
             </TabItem>
             <TabItem Header="Load Cell Calibration">
@@ -387,5 +564,12 @@
                 </Grid>
             </TabItem>
         </TabControl>
+
+        <!-- Information bar -->
+        <StatusBar Grid.Row="1">
+            <TextBlock x:Name="StatusMessage"
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                   FontWeight="Normal" Margin="1" />
+        </StatusBar>
     </Grid>
 </Window>
