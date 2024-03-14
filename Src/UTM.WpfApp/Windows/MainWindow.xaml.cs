@@ -148,17 +148,19 @@ public partial class MainWindow : Window
                 case PlottingState.None: break;
                 case PlottingState.StressStrain:
                     {
-                        
+                        double stress = (currentLoad * 1000) / _area;
+                        double strain = (currentDistance - _lastDistance) / _length;
+                        _length = _length - currentDistance - _lastDistance;
+                        LengthOverrideValue.Text = _length.ToString();
+
+                        //- Writing to file
+                        WriteCsvDumpFileValues(_plottingState, time, currentDistance, currentLoad);
+
+                        _lastDistance = currentDistance;
+                        _lastLoad = currentLoad;
                     }
                     break;
             }
-
-            //- Writing to file
-
-            WriteCsvDumpFileValues(_plottingState, time, currentDistance, currentLoad);
-
-            _lastDistance = currentDistance;
-            _lastLoad = currentLoad;
         });
     }
 
