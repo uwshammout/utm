@@ -150,17 +150,26 @@ public partial class MainWindow : Window
                     {
                         double stress = (currentLoad * 1000) / _area;
                         double strain = (currentDistance - _lastDistance) / _length;
-                        _length = _length - currentDistance - _lastDistance;
-                        LengthOverrideValue.Text = _length.ToString();
+
+                        StressStrainPlot.Update(strain, stress, 0, 0);
 
                         //- Writing to file
-                        WriteCsvDumpFileValues(_plottingState, time, currentDistance, currentLoad);
+                        WriteCsvDumpFileValues(
+                            _plottingState,
+                            time,
+                            currentDistance, currentLoad,
+                            _area, stress, _length, strain);
 
-                        _lastDistance = currentDistance;
-                        _lastLoad = currentLoad;
+                        //- The length has changed
+                        _length = _length - currentDistance - _lastDistance;
+                        LengthOverrideValue.Text = _length.ToString();
                     }
                     break;
             }
+
+            //- Storing for next iteration
+            _lastDistance = currentDistance;
+            _lastLoad = currentLoad;
         });
     }
 
@@ -267,17 +276,23 @@ public partial class MainWindow : Window
             case PlottingState.None: break;
 
             case PlottingState.StressStrain:
-                _csvDumpFile.WriteLine($"Time (sec), Distance (mm), Load (kN)");
+                _csvDumpFile.WriteLine(
+                    $"Time (sec), Distance (mm), Load (kN), Area (m²), Stress, Length (mm), Strain");
                 break;
         }
     }
-    private void WriteCsvDumpFileValues(PlottingState state, double time, double currentDistance, double currentLoad)
+    private void WriteCsvDumpFileValues(PlottingState state,
+        double time,
+        double currentDistance, double currentLoad,
+        double area, double stress, double length, double strain)
     {
         switch (state)
         {
             case PlottingState.None: break;
             case PlottingState.StressStrain:
-                _csvDumpFile.WriteLine($"{time:0.000}, {currentDistance:0.000}, {currentLoad:0.000}");
+                _csvDumpFile.WriteLine(
+                    $"{time:0.000}, {currentDistance:0.000}, {currentLoad:0.000}," +
+                    $" {area:0.000}, {stress:0.000}, {length:0.000}, {strain:0.000}");
                 break;
         }
     }
