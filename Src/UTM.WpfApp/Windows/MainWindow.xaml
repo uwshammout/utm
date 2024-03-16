@@ -57,8 +57,8 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <luc:DigitalValueDisplay  x:Name="DistanceDisplay" Grid.Column="0"
-                          Heading="Distance" Unit="mm" EnableMaxValue="True"
+                    <luc:DigitalValueDisplay  x:Name="DisplacementDisplay" Grid.Column="0"
+                          Heading="Displacement" Unit="mm" EnableMaxValue="True"
                           ButtonVisibility="Visible" ButtonText="Zero" ButtonClick="OnButtonClicked"
                           Margin="2" BackgroundColor="#FF500242" />
                     <luc:DigitalValueDisplay  x:Name="LoadDisplay" Grid.Column="1"

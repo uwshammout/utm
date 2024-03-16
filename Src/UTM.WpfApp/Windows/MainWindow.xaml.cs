@@ -33,9 +33,9 @@ public partial class MainWindow : Window
     private readonly Timer _experimentTimer;
     private DateTime _experimentStartTime = DateTime.MinValue;
 
-    private bool _isSetZeroDistanceRequested = false, _isSetZeroLoadRequested = false;
-    private double _lastDistance = 0.0, _lastLoad = 0.0;
-    private double _zeroDistanceValue = 0.0, _zeroLoadValue = 0.0;
+    private bool _isSetZeroDisplacementRequested = false, _isSetZeroLoadRequested = false;
+    private double _lastDisplacement = 0.0, _lastLoad = 0.0;
+    private double _zeroDisplacementValue = 0.0, _zeroLoadValue = 0.0;
 
     private readonly string _csvDumpFilename;
     private StreamWriter _csvDumpFile = null!;
@@ -119,14 +119,14 @@ public partial class MainWindow : Window
         {
             double time = (DateTime.Now - _experimentStartTime).TotalSeconds;
 
-            double sensorDistance = values[0];
+            double sensorDisplacement = values[0];
             double sensorLoad = values[1];
 
-            if (_isSetZeroDistanceRequested)
+            if (_isSetZeroDisplacementRequested)
             {
-                _zeroDistanceValue = sensorDistance;
-                _isSetZeroDistanceRequested = false;
-                DistanceDisplay.Reset();
+                _zeroDisplacementValue = sensorDisplacement;
+                _isSetZeroDisplacementRequested = false;
+                DisplacementDisplay.Reset();
             }
             if (_isSetZeroLoadRequested)
             {
@@ -135,10 +135,10 @@ public partial class MainWindow : Window
                 LoadDisplay.Reset();
             }
 
-            double currentDistance = sensorDistance - _zeroDistanceValue;
+            double currentDisplacement = sensorDisplacement - _zeroDisplacementValue;
             double currentLoad = sensorLoad - _zeroLoadValue;
 
-            DistanceDisplay.Value = currentDistance;
+            DisplacementDisplay.Value = currentDisplacement;
             LoadDisplay.Value = currentLoad;
 
             //- Plotting
@@ -149,7 +149,7 @@ public partial class MainWindow : Window
                 case PlottingState.StressStrain:
                     {
                         double stress = (currentLoad * 1000) / _area;
-                        double strain = (currentDistance - _lastDistance) / _length;
+                        double strain = (currentDisplacement - _lastDisplacement) / _length;
 
                         StressStrainPlot.Update(strain, stress, 0, 0);
 
@@ -157,18 +157,18 @@ public partial class MainWindow : Window
                         WriteCsvDumpFileValues(
                             _plottingState,
                             time,
-                            currentDistance, currentLoad,
+                            currentDisplacement, currentLoad,
                             _area, stress, _length, strain);
 
                         //- The length has changed
-                        _length = _length - currentDistance - _lastDistance;
+                        _length = _length - currentDisplacement - _lastDisplacement;
                         LengthOverrideValue.Text = _length.ToString();
                     }
                     break;
             }
 
             //- Storing for next iteration
-            _lastDistance = currentDistance;
+            _lastDisplacement = currentDisplacement;
             _lastLoad = currentLoad;
         });
     }
@@ -238,7 +238,7 @@ public partial class MainWindow : Window
 
                     CompressionTestStartButton.Content = _stopText;
 
-                    _lastDistance = 0.0;
+                    _lastDisplacement = 0.0;
                     _lastLoad = 0.0;
                     StressStrainPlot.ClearData();
                     break;
@@ -277,13 +277,13 @@ public partial class MainWindow : Window
 
             case PlottingState.StressStrain:
                 _csvDumpFile.WriteLine(
-                    $"Time (sec), Distance (mm), Load (kN), Area (m²), Stress, Length (mm), Strain");
+                    $"Time (sec), Displacement (mm), Load (kN), Area (m²), Stress, Length (mm), Strain");
                 break;
         }
     }
     private void WriteCsvDumpFileValues(PlottingState state,
         double time,
-        double currentDistance, double currentLoad,
+        double currentDisplacement, double currentLoad,
         double area, double stress, double length, double strain)
     {
         switch (state)
@@ -291,7 +291,7 @@ public partial class MainWindow : Window
             case PlottingState.None: break;
             case PlottingState.StressStrain:
                 _csvDumpFile.WriteLine(
-                    $"{time:0.000}, {currentDistance:0.000}, {currentLoad:0.000}," +
+                    $"{time:0.000}, {currentDisplacement:0.000}, {currentLoad:0.000}," +
                     $" {area:0.000}, {stress:0.000}, {length:0.000}, {strain:0.000}");
                 break;
         }
@@ -415,9 +415,9 @@ public partial class MainWindow : Window
         }
         else if (sender is DigitalValueDisplay dv)
         {
-            if (dv == DistanceDisplay)
+            if (dv == DisplacementDisplay)
             {
-                _isSetZeroDistanceRequested = true;
+                _isSetZeroDisplacementRequested = true;
             }
             else if (dv == LoadDisplay)
             {

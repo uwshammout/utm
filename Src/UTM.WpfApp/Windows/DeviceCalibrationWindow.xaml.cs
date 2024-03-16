@@ -23,7 +23,7 @@ public partial class DeviceCalibrationWindow : Window
     private readonly TextBox[] _mfInputs;
     private readonly TextBox[] _offInputs;
     private readonly TextBlock[] _scaledOutputs;
-    private readonly TextBox[] _distanceCalInputs, _distanceCalOutputs;
+    private readonly TextBox[] _displacementCalInputs, _displacementCalOutputs;
     private readonly TextBox[] _loadCalInputs, _loadCalOutputs;
 
     private readonly Brush _originalTextBoxBg;
@@ -64,21 +64,21 @@ public partial class DeviceCalibrationWindow : Window
             ProcessedValueA13,  ProcessedValueA14,  ProcessedValueA15,  ProcessedValueA16
             ];
 
-        _distanceCalInputs =
+        _displacementCalInputs =
             [
-            DistanceCalibrationInput01, DistanceCalibrationInput02, DistanceCalibrationInput03, DistanceCalibrationInput04,
-            DistanceCalibrationInput05, DistanceCalibrationInput06, DistanceCalibrationInput07, DistanceCalibrationInput08,
-            DistanceCalibrationInput09, DistanceCalibrationInput10, DistanceCalibrationInput11, DistanceCalibrationInput12,
-            DistanceCalibrationInput13, DistanceCalibrationInput14, DistanceCalibrationInput15, DistanceCalibrationInput16,
-            DistanceCalibrationInput17, DistanceCalibrationInput18, DistanceCalibrationInput19, DistanceCalibrationInput20,
+            DisplacementCalibrationInput01, DisplacementCalibrationInput02, DisplacementCalibrationInput03, DisplacementCalibrationInput04,
+            DisplacementCalibrationInput05, DisplacementCalibrationInput06, DisplacementCalibrationInput07, DisplacementCalibrationInput08,
+            DisplacementCalibrationInput09, DisplacementCalibrationInput10, DisplacementCalibrationInput11, DisplacementCalibrationInput12,
+            DisplacementCalibrationInput13, DisplacementCalibrationInput14, DisplacementCalibrationInput15, DisplacementCalibrationInput16,
+            DisplacementCalibrationInput17, DisplacementCalibrationInput18, DisplacementCalibrationInput19, DisplacementCalibrationInput20,
             ];
-        _distanceCalOutputs =
+        _displacementCalOutputs =
             [
-            DistanceCalibrationOutput01, DistanceCalibrationOutput02, DistanceCalibrationOutput03, DistanceCalibrationOutput04,
-            DistanceCalibrationOutput05, DistanceCalibrationOutput06, DistanceCalibrationOutput07, DistanceCalibrationOutput08,
-            DistanceCalibrationOutput09, DistanceCalibrationOutput10, DistanceCalibrationOutput11, DistanceCalibrationOutput12,
-            DistanceCalibrationOutput13, DistanceCalibrationOutput14, DistanceCalibrationOutput15, DistanceCalibrationOutput16,
-            DistanceCalibrationOutput17, DistanceCalibrationOutput18, DistanceCalibrationOutput19, DistanceCalibrationOutput20,
+            DisplacementCalibrationOutput01, DisplacementCalibrationOutput02, DisplacementCalibrationOutput03, DisplacementCalibrationOutput04,
+            DisplacementCalibrationOutput05, DisplacementCalibrationOutput06, DisplacementCalibrationOutput07, DisplacementCalibrationOutput08,
+            DisplacementCalibrationOutput09, DisplacementCalibrationOutput10, DisplacementCalibrationOutput11, DisplacementCalibrationOutput12,
+            DisplacementCalibrationOutput13, DisplacementCalibrationOutput14, DisplacementCalibrationOutput15, DisplacementCalibrationOutput16,
+            DisplacementCalibrationOutput17, DisplacementCalibrationOutput18, DisplacementCalibrationOutput19, DisplacementCalibrationOutput20,
             ];
 
         _loadCalInputs =
@@ -110,7 +110,7 @@ public partial class DeviceCalibrationWindow : Window
             _offInputs[i].Text = ofs[i].ToString();
         }
 
-        SetDistanceCalibrationData(_modbusCalibration.GetCalibrationValues(0));
+        SetDisplacementCalibrationData(_modbusCalibration.GetCalibrationValues(0));
         SetLoadCalibrationData(_modbusCalibration.GetCalibrationValues(1));
 
         _modbus.OperationStateChanged += OnDeviceOperationStateChanged;
@@ -126,7 +126,7 @@ public partial class DeviceCalibrationWindow : Window
         {
             if (list.Count >= 2)
             {
-                DistanceScaledValue.Value = list[0];
+                DisplacementScaledValue.Value = list[0];
                 LoadScaledValue.Value = list[1];
             }
 
@@ -142,7 +142,7 @@ public partial class DeviceCalibrationWindow : Window
         {
             if (list.Count >= 2)
             {
-                DistanceCalibratedValue.Value = list[0];
+                DisplacementCalibratedValue.Value = list[0];
                 LoadCalibratedValue.Value = list[1];
             }
         });
@@ -322,13 +322,13 @@ public partial class DeviceCalibrationWindow : Window
     }
     #endregion
     #region Calibration data handling
-    private void SetDistanceCalibrationData(ImmutableDictionary<double, double> calData)
+    private void SetDisplacementCalibrationData(ImmutableDictionary<double, double> calData)
     {
-        foreach (TextBox t in _distanceCalInputs)
+        foreach (TextBox t in _displacementCalInputs)
         {
             t.Text = "";
         }
-        foreach (TextBox t in _distanceCalOutputs)
+        foreach (TextBox t in _displacementCalOutputs)
         {
             t.Text = "";
         }
@@ -336,8 +336,8 @@ public partial class DeviceCalibrationWindow : Window
         int index = 0;
         foreach (KeyValuePair<double, double> item in calData)
         {
-            _distanceCalInputs[index].Text = item.Key.ToString();
-            _distanceCalOutputs[index].Text = item.Value.ToString();
+            _displacementCalInputs[index].Text = item.Key.ToString();
+            _displacementCalOutputs[index].Text = item.Value.ToString();
             index++;
         }
     }
@@ -361,16 +361,16 @@ public partial class DeviceCalibrationWindow : Window
         }
     }
 
-    private ImmutableDictionary<double, double>  ReadDistanceCalibrationData()
+    private ImmutableDictionary<double, double> ReadDisplacementCalibrationData()
     {
         Dictionary<double, double> dict = new();
 
-        for(int i = 0; i < _distanceCalInputs.Length; i++)
+        for(int i = 0; i < _displacementCalInputs.Length; i++)
         {
-            if (!string.IsNullOrEmpty(_distanceCalInputs[i].Text) &&
-                !string.IsNullOrEmpty(_distanceCalOutputs[i].Text) &&
-                double.TryParse(_distanceCalInputs[i].Text, out double input) &&
-                double.TryParse(_distanceCalOutputs[i].Text, out double output))
+            if (!string.IsNullOrEmpty(_displacementCalInputs[i].Text) &&
+                !string.IsNullOrEmpty(_displacementCalOutputs[i].Text) &&
+                double.TryParse(_displacementCalInputs[i].Text, out double input) &&
+                double.TryParse(_displacementCalOutputs[i].Text, out double output))
             {
                 dict.Add(input, output);
             }
@@ -397,10 +397,10 @@ public partial class DeviceCalibrationWindow : Window
     }
     private void CalibrationUpdateButton_Click(object sender, RoutedEventArgs e)
     {
-        if (sender == DistanceCalibrationUpdateButton)
+        if (sender == DisplacementCalibrationUpdateButton)
         {
-            SetDistanceCalibrationData(
-                _modbusCalibration.SetCalibrationValues(0, ReadDistanceCalibrationData()));
+            SetDisplacementCalibrationData(
+                _modbusCalibration.SetCalibrationValues(0, ReadDisplacementCalibrationData()));
         }
         else if (sender == LoadCalibrationUpdateButton)
         {
