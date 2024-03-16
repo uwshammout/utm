@@ -218,16 +218,23 @@ public partial class MainWindow : Window
                 case PlottingState.StressStrain:
                     lock (_computationMutex)
                     {
+                        if (_device.OperationState != OperationState.Running)
+                        {
+                            MessageBox.Show("Connect the device for starting measurements", "Device Not Connected");
+                            return;
+                        }
                         if (_area_sqm > 0) {  /* Ok */ }
                         else
                         {
-                            MessageBox.Show("Invalid cross-sectional area of sample is specified");
+                            MessageBox.Show("Input the cross-sectional area of sample and press ENTER", "Area Invalid");
+                            AreaOverrideValue.Focus();
                             return;
                         }
                         if (_length_mm > 0) {  /* Ok */ }
                         else
                         {
-                            MessageBox.Show("Invalid length of sample is specified");
+                            MessageBox.Show("Input the length of sample and press ENTER", "Length Invalid");
+                            LengthOverrideValue.Focus();
                             return;
                         }
                     }
