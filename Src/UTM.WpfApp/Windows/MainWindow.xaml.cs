@@ -27,14 +27,14 @@ public partial class MainWindow : Window
     private readonly ISerialModbusDataCalibrationService _deviceData;
 
     private Mutex _computationMutex = new Mutex(false);
-    private double _area = double.NaN;
-    private double _length = double.NaN;
+    private double _area_sqm = double.NaN;
+    private double _length_mm = double.NaN;
 
     private readonly Timer _experimentTimer;
     private DateTime _experimentStartTime = DateTime.MinValue;
 
     private bool _isSetZeroDisplacementRequested = false, _isSetZeroLoadRequested = false;
-    private double _lastDisplacement = 0.0, _lastLoad = 0.0;
+    private double _lastDisplacement_mm = 0.0, _lastLoad_kN = 0.0;
     private double _zeroDisplacementValue = 0.0, _zeroLoadValue = 0.0;
 
     private readonly string _csvDumpFilename;
@@ -117,8 +117,6 @@ public partial class MainWindow : Window
 
         Dispatcher.Invoke(() =>
         {
-            double time = (DateTime.Now - _experimentStartTime).TotalSeconds;
-
             double sensorDisplacement = values[0];
             double sensorLoad = values[1];
 
@@ -135,11 +133,11 @@ public partial class MainWindow : Window
                 LoadDisplay.Reset();
             }
 
-            double currentDisplacement = sensorDisplacement - _zeroDisplacementValue;
-            double currentLoad = sensorLoad - _zeroLoadValue;
+            double displacement_mm = sensorDisplacement - _zeroDisplacementValue;
+            double load_kN = sensorLoad - _zeroLoadValue;
 
-            DisplacementDisplay.Value = currentDisplacement;
-            LoadDisplay.Value = currentLoad;
+            DisplacementDisplay.Value = displacement_mm;
+            LoadDisplay.Value = load_kN;
 
             //- Plotting
 
@@ -148,28 +146,26 @@ public partial class MainWindow : Window
                 case PlottingState.None: break;
                 case PlottingState.StressStrain:
                     {
-                        double stress = (currentLoad * 1000) / _area;
-                        double strain = (currentDisplacement - _lastDisplacement) / _length;
+                        double time_sec = (DateTime.Now - _experimentStartTime).TotalSeconds;
+                        double stress = (load_kN * 1000) / _area_sqm;
+                        double strain = displacement_mm / _length_mm;
 
+                        LoadDisplacementPlot.Update(displacement_mm, load_kN * 1000, 0, 0);
                         StressStrainPlot.Update(strain, stress, 0, 0);
 
                         //- Writing to file
                         WriteCsvDumpFileValues(
                             _plottingState,
-                            time,
-                            currentDisplacement, currentLoad,
-                            _area, stress, _length, strain);
-
-                        //- The length has changed
-                        _length = _length - currentDisplacement - _lastDisplacement;
-                        LengthOverrideValue.Text = _length.ToString();
+                            time_sec,
+                            displacement_mm, load_kN,
+                            _area_sqm, stress, _length_mm, strain);
                     }
                     break;
             }
 
             //- Storing for next iteration
-            _lastDisplacement = currentDisplacement;
-            _lastLoad = currentLoad;
+            _lastDisplacement_mm = displacement_mm;
+            _lastLoad_kN = load_kN;
         });
     }
 
@@ -222,13 +218,13 @@ public partial class MainWindow : Window
                 case PlottingState.StressStrain:
                     lock (_computationMutex)
                     {
-                        if (_area > 0) {  /* Ok */ }
+                        if (_area_sqm > 0) {  /* Ok */ }
                         else
                         {
                             MessageBox.Show("Invalid cross-sectional area of sample is specified");
                             return;
                         }
-                        if (_length > 0) {  /* Ok */ }
+                        if (_length_mm > 0) {  /* Ok */ }
                         else
                         {
                             MessageBox.Show("Invalid length of sample is specified");
@@ -238,8 +234,9 @@ public partial class MainWindow : Window
 
                     CompressionTestStartButton.Content = _stopText;
 
-                    _lastDisplacement = 0.0;
-                    _lastLoad = 0.0;
+                    _lastDisplacement_mm = 0.0;
+                    _lastLoad_kN = 0.0;
+                    LoadDisplacementPlot.ClearData();
                     StressStrainPlot.ClearData();
                     break;
             }
@@ -282,17 +279,17 @@ public partial class MainWindow : Window
         }
     }
     private void WriteCsvDumpFileValues(PlottingState state,
-        double time,
-        double currentDisplacement, double currentLoad,
-        double area, double stress, double length, double strain)
+        double time_sec,
+        double displacement_mm, double load_kN,
+        double area_sqm, double stress, double length_mm, double strain)
     {
         switch (state)
         {
             case PlottingState.None: break;
             case PlottingState.StressStrain:
                 _csvDumpFile.WriteLine(
-                    $"{time:0.000}, {currentDisplacement:0.000}, {currentLoad:0.000}," +
-                    $" {area:0.000}, {stress:0.000}, {length:0.000}, {strain:0.000}");
+                    $"{time_sec:0.000}, {displacement_mm:0.000}, {load_kN:0.000}," +
+                    $" {area_sqm:0.000}, {stress:0.000}, {length_mm:0.000}, {strain:0.000}");
                 break;
         }
     }
@@ -381,8 +378,8 @@ public partial class MainWindow : Window
                 {
                     lock (_computationMutex)
                     {
-                        if (tb == AreaOverrideValue) _area = value;
-                        else if (tb == LengthOverrideValue) _length = value;
+                        if (tb == AreaOverrideValue) _area_sqm = value;
+                        else if (tb == LengthOverrideValue) _length_mm = value;
                     }
 
                     tb.Background = _initialBgColor;
