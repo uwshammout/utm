@@ -35,7 +35,7 @@ public partial class MainWindow : Window
 
     private bool _isSetZeroDisplacementRequested = false, _isSetZeroLoadRequested = false;
     private double _lastDisplacement_mm = 0.0, _lastLoad_kN = 0.0;
-    private double _zeroDisplacementValue = 0.0, _zeroLoadValue = 0.0;
+    private double _zeroDisplacementValue_mm = 0.0, _zeroLoadValue_kN = 0.0;
 
     private readonly string _csvDumpFilename;
     private StreamWriter _csvDumpFile = null!;
@@ -117,24 +117,24 @@ public partial class MainWindow : Window
 
         Dispatcher.Invoke(() =>
         {
-            double sensorDisplacement = values[0];
-            double sensorLoad = values[1];
+            double sensorDisplacement_mm = values[0];
+            double sensorLoad_kN = values[1];
 
             if (_isSetZeroDisplacementRequested)
             {
-                _zeroDisplacementValue = sensorDisplacement;
+                _zeroDisplacementValue_mm = sensorDisplacement_mm;
                 _isSetZeroDisplacementRequested = false;
                 DisplacementDisplay.Reset();
             }
             if (_isSetZeroLoadRequested)
             {
-                _zeroLoadValue = sensorLoad;
+                _zeroLoadValue_kN = sensorLoad_kN;
                 _isSetZeroLoadRequested = false;
                 LoadDisplay.Reset();
             }
 
-            double displacement_mm = sensorDisplacement - _zeroDisplacementValue;
-            double load_kN = sensorLoad - _zeroLoadValue;
+            double displacement_mm = sensorDisplacement_mm - _zeroDisplacementValue_mm;
+            double load_kN = sensorLoad_kN - _zeroLoadValue_kN;
 
             DisplacementDisplay.Value = displacement_mm;
             LoadDisplay.Value = load_kN;
