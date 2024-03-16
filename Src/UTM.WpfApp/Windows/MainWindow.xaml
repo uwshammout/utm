@@ -33,7 +33,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="Save CSV" x:Name="SaveCsvMenuItem" IsEnabled="False" Click="OnMenuItemClicked" />
             </MenuItem>
-            <MenuItem Header="Connect" Click="OnMenuItemClicked" />
+            <MenuItem Header="Connect" x:Name="ConnectMenuItem" Click="OnMenuItemClicked" />
             <MenuItem Header="Settings">
                 <MenuItem Header="Measurement Settings" Click="OnMenuItemClicked" />
                 <MenuItem Header="Calibration" Click="OnMenuItemClicked" />

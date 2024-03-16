@@ -221,6 +221,7 @@ public partial class MainWindow : Window
                         if (_device.OperationState != OperationState.Running)
                         {
                             MessageBox.Show("Connect the device for starting measurements", "Device Not Connected");
+                            OnMenuItemClicked(ConnectMenuItem, null!);
                             return;
                         }
                         if (_area_sqm > 0) {  /* Ok */ }
