@@ -334,10 +334,12 @@ public partial class DeviceCalibrationWindow : Window
         }
 
         int index = 0;
-        foreach (KeyValuePair<double, double> item in calData)
+        List<double> ks = calData.Keys.ToList();
+        ks.Sort();
+        foreach (double k in ks)
         {
-            _displacementCalInputs[index].Text = item.Key.ToString();
-            _displacementCalOutputs[index].Text = item.Value.ToString();
+            _displacementCalInputs[index].Text = k.ToString();
+            _displacementCalOutputs[index].Text = calData[k].ToString();
             index++;
         }
     }
@@ -353,10 +355,12 @@ public partial class DeviceCalibrationWindow : Window
         }
 
         int index = 0;
-        foreach (KeyValuePair<double, double> item in calData)
+        List<double> ks = calData.Keys.ToList();
+        ks.Sort();
+        foreach (double k in ks)
         {
-            _loadCalInputs[index].Text = item.Key.ToString();
-            _loadCalOutputs[index].Text = item.Value.ToString();
+            _loadCalInputs[index].Text = k.ToString();
+            _loadCalOutputs[index].Text = calData[k].ToString();
             index++;
         }
     }
