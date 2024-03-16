@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using CronBlocks.SerialPortInterface.Services;
 using CronBlocks.UTM.UserControls;
+using System.Windows.Input;
 
 namespace CronBlocks.UTM.Windows;
 
@@ -420,6 +421,7 @@ public partial class MainWindow : Window
                     }
 
                     tb.Background = _initialBgColor;
+                    tb.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
                 }
                 else
                 {
