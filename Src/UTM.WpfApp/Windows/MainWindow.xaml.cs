@@ -264,7 +264,17 @@ public partial class MainWindow : Window
                     _lastDisplacement_mm = 0.0;
                     _lastLoad_kN = 0.0;
                     LoadDisplacementPlot.ClearData();
+                    LoadDisplacementPlot.XAxisMin = 0;
+                    LoadDisplacementPlot.XAxisMax = 10;
+                    LoadDisplacementPlot.YAxisMin = 0;
+                    LoadDisplacementPlot.YAxisMax = 10000;
+                    LoadDisplacementPlot.YAxisStep = 1000;
                     StressStrainPlot.ClearData();
+                    StressStrainPlot.XAxisMin = 0;
+                    StressStrainPlot.XAxisMax = 10;
+                    StressStrainPlot.YAxisMin = 0;
+                    StressStrainPlot.YAxisMax = 5000;
+                    StressStrainPlot.YAxisStep = 500;
                     break;
             }
 
