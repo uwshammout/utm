@@ -162,17 +162,16 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 			if (cd != null && cd.Count > 1)
 			{
 				List<double> inp = cd.Keys.ToList();
+				inp.Sort();
 
 				for (int i = 1; i < inp.Count; i++)
 				{
 					double x1 = inp[i - 1], x2 = inp[i];
-					double minx = Math.Min(x1, x2);
-					double maxx = Math.Max(x1, x2);
 
-					if (scaledValue >= minx && scaledValue <= maxx)
+					if (scaledValue >= x1 && scaledValue <= x2)
 					{
-						double y1 = cd[minx], y2 = cd[maxx];
-						return y1 + (y2 - y1) / (maxx - minx) * (scaledValue - minx);
+						double y1 = cd[x1], y2 = cd[x2];
+						return y1 + (y2 - y1) / (x2 - x1) * (scaledValue - x1);
 					}
 				}
 			}
