@@ -345,7 +345,7 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
         if (IsAutoRangeEnabled && _xAxisStepsToBeMaintained > 0)
         {
-            XAxisStep = CalcStepSize(XAxisMax, XAxisMin, XAxisStep, _xAxisStepsToBeMaintained, .50, 1.5);
+            XAxisStep = CalcStepSize(XAxisMax, XAxisMin, XAxisStep, _xAxisStepsToBeMaintained, .50, 1.2);
         }
     }
     private void SetYAxisLimits(double min, double max)
@@ -361,7 +361,7 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
         if (IsAutoRangeEnabled && _yAxisStepsToBeMaintained > 0)
         {
-            YAxisStep = CalcStepSize(YAxisMax, YAxisMin, YAxisStep, _yAxisStepsToBeMaintained, .50, 1.5);
+            YAxisStep = CalcStepSize(YAxisMax, YAxisMin, YAxisStep, _yAxisStepsToBeMaintained, .50, 1.2);
         }
     }
 
