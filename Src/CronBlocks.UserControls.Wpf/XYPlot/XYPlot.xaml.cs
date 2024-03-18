@@ -18,13 +18,13 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 {
     private static readonly int MAX_NUMBER_OF_VALUES = 500;
 
-    private double _xAxisMin;
-    private double _xAxisMax;
-    private double _xAxisStep;
+    private double _xAxisMin = double.NaN;
+    private double _xAxisMax = double.NaN;
+    private double _xAxisStep = double.NaN;
 
-    private double _yAxisMin;
-    private double _yAxisMax;
-    private double _yAxisStep;
+    private double _yAxisMin = double.NaN;
+    private double _yAxisMax = double.NaN;
+    private double _yAxisStep = double.NaN;
 
     private Visibility _plotVisibility1;
     private Visibility _plotVisibility2;
@@ -89,8 +89,12 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         get { return _xAxisMin; }
         set
         {
-            _xAxisMin = value;
-            Notify();
+            if (_xAxisMin != value)
+            {
+                _xAxisMin = value;
+                Notify();
+                UpdateXAxisStepsCalc();
+            }
         }
     }
     public double XAxisMax
@@ -98,8 +102,12 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         get { return _xAxisMax; }
         set
         {
-            _xAxisMax = value;
-            Notify();
+            if (_xAxisMax != value)
+            {
+                _xAxisMax = value;
+                Notify();
+                UpdateXAxisStepsCalc();
+            }
         }
     }
     public double XAxisStep
@@ -107,8 +115,12 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         get { return _xAxisStep; }
         set
         {
-            _xAxisStep = value;
-            Notify();
+            if (_xAxisStep != value)
+            {
+                _xAxisStep = value;
+                Notify();
+                UpdateXAxisStepsCalc();
+            }
         }
     }
 
@@ -117,8 +129,12 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         get { return _yAxisMin; }
         set
         {
-            _yAxisMin = value;
-            Notify();
+            if (_yAxisMin != value)
+            {
+                _yAxisMin = value;
+                Notify();
+                UpdateYAxisStepsCalc();
+            }
         }
     }
     public double YAxisMax
@@ -126,8 +142,12 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         get { return _yAxisMax; }
         set
         {
-            _yAxisMax = value;
-            Notify();
+            if (_yAxisMax != value)
+            {
+                _yAxisMax = value;
+                Notify();
+                UpdateYAxisStepsCalc();
+            }
         }
     }
     public double YAxisStep
@@ -135,8 +155,12 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         get { return _yAxisStep; }
         set
         {
-            _yAxisStep = value;
-            Notify();
+            if (_yAxisStep != value)
+            {
+                _yAxisStep = value;
+                Notify();
+                UpdateYAxisStepsCalc();
+            }
         }
     }
 
@@ -223,6 +247,8 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
     public void Update(double valueX1, double valueY1, double valueX2, double valueY2)
     {
+        _enableUpdatingStepsToBeMaintained = false; // no updates when receiving values
+
         PlotValues1.Add(new XYPlotModel
         {
             XValue = valueX1,
@@ -247,8 +273,63 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
     public void ClearData()
     {
+        _enableUpdatingStepsToBeMaintained = true; // now we can update again
         PlotValues1.Clear();
         PlotValues2.Clear();
+    }
+
+    private bool _enableUpdatingStepsToBeMaintained = false;
+    private int _xAxisStepsToBeMaintained = int.MinValue, _yAxisStepsToBeMaintained = int.MinValue;
+    private int CalcStepCount(double max, double min, double stepSize)
+    {
+        return (int)Math.Ceiling(Math.Abs((max - min) / stepSize));
+    }
+    private double CalcStepSize(double max, double min, double stepSize, int requiredSteps, double variationPercentage, double incRate)
+    {
+        int currentSteps = CalcStepCount(max, min, stepSize);
+        int maxStepsAllowed = (int)Math.Ceiling(Math.Abs(requiredSteps + requiredSteps * variationPercentage));
+
+        if (currentSteps < maxStepsAllowed)
+        {
+            return stepSize;
+        }
+        else
+        {
+            double newCount;
+            do
+            {
+                stepSize *= incRate;
+                newCount = CalcStepCount(max, min, stepSize);
+            }
+            while (newCount > maxStepsAllowed);
+            return stepSize;
+        }
+    }
+    private void UpdateXAxisStepsCalc()
+    {
+        if (_enableUpdatingStepsToBeMaintained == false) return;
+
+        if (XAxisMax != double.NaN && XAxisMin != double.NaN && XAxisStep != double.NaN && XAxisStep != 0)
+        {
+            _xAxisStepsToBeMaintained = CalcStepCount(XAxisMax, XAxisMin, XAxisStep);
+        }
+        else
+        {
+            _xAxisStepsToBeMaintained = int.MinValue;
+        }
+    }
+    private void UpdateYAxisStepsCalc()
+    {
+        if (_enableUpdatingStepsToBeMaintained == false) return;
+
+        if (YAxisMax != double.NaN && YAxisMin != double.NaN && YAxisStep != double.NaN && YAxisStep != 0)
+        {
+            _yAxisStepsToBeMaintained = CalcStepCount(YAxisMax, YAxisMin, YAxisStep);
+        }
+        else
+        {
+            _yAxisStepsToBeMaintained = int.MinValue;
+        }
     }
 
     private void SetXAxisLimits(double min, double max)
@@ -261,6 +342,11 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
         if (max > XAxisMax)
             XAxisMax = max;
+
+        if (IsAutoRangeEnabled && _xAxisStepsToBeMaintained > 0)
+        {
+            XAxisStep = CalcStepSize(XAxisMax, XAxisMin, XAxisStep, _xAxisStepsToBeMaintained, .50, 1.5);
+        }
     }
     private void SetYAxisLimits(double min, double max)
     {
@@ -272,6 +358,11 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
         if (max > YAxisMax)
             YAxisMax = max;
+
+        if (IsAutoRangeEnabled && _yAxisStepsToBeMaintained > 0)
+        {
+            YAxisStep = CalcStepSize(YAxisMax, YAxisMin, YAxisStep, _yAxisStepsToBeMaintained, .50, 1.5);
+        }
     }
 
     protected virtual void Notify([CallerMemberName] string propertyName = null!)
