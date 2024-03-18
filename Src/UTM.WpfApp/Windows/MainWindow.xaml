@@ -87,8 +87,8 @@
                                Background="{Binding Background}" />
 
                 <xyPlot:XYPlot x:Name="StressStrainPlot" Grid.Column="1"
-                               XAxisTitle="Strain, Ɛ" YAxisTitle="Stress, σ"
-                               XAxisMax="10" YAxisMax="5000" YAxisStep="500"
+                               XAxisTitle="Strain, Ɛ" YAxisTitle="Stress, σ (N/m²)"
+                               XAxisMax="10" YAxisMax="10000" YAxisStep="1000"
                                PlotVisibility2="Hidden"
                                IsAutoRangeEnabled="True"
                                AxesTextColor="#FF5F0253" AxesLinesColor="#FFECA9F3"  PlotColor1="#FF500242"

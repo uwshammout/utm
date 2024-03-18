@@ -274,8 +274,8 @@ public partial class MainWindow : Window
                     StressStrainPlot.XAxisMin = 0;
                     StressStrainPlot.XAxisMax = 10;
                     StressStrainPlot.YAxisMin = 0;
-                    StressStrainPlot.YAxisMax = 5000;
-                    StressStrainPlot.YAxisStep = 500;
+                    StressStrainPlot.YAxisMax = 10000;
+                    StressStrainPlot.YAxisStep = 1000;
                     break;
             }
 
@@ -312,14 +312,14 @@ public partial class MainWindow : Window
 
             case PlottingState.StressStrain:
                 _csvDumpFile.WriteLine(
-                    $"Time (sec), Displacement (mm), Load (kN), Area (cm²), Stress, Length (mm), Strain");
+                    $"Time (sec), Displacement (mm), Load (kN), Area (cm²), Stress (N/m²), Length (mm), Strain");
                 break;
         }
     }
     private void WriteCsvDumpFileValues(PlottingState state,
         double time_sec,
         double displacement_mm, double load_kN,
-        double area_sqm, double stress, double length_mm, double strain)
+        double area_sqm, double stress_N_sqm, double length_mm, double strain)
     {
         switch (state)
         {
@@ -327,7 +327,7 @@ public partial class MainWindow : Window
             case PlottingState.StressStrain:
                 _csvDumpFile.WriteLine(
                     $"{time_sec:0.000}, {displacement_mm:0.000}, {load_kN:0.000}," +
-                    $" {area_sqm*10000:0.000}, {stress:0.000}, {length_mm:0.000}, {strain:0.000}");
+                    $" {area_sqm*10000:0.000}, {stress_N_sqm:0.000}, {length_mm:0.000}, {strain:0.000}");
                 break;
         }
     }
