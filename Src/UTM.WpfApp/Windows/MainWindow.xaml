@@ -131,7 +131,7 @@
                             <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
                         <TextBox x:Name="AreaOverrideValue" Text="" KeyDown="OnKeyDown" TextChanged="OnTextChanged" />
-                        <TextBlock Text="m²" Grid.Column="1" HorizontalAlignment="Center" />
+                        <TextBlock Text="cm²" Grid.Column="1" HorizontalAlignment="Center" />
                     </Grid>
 
                     <TextBlock Text="Length:" />

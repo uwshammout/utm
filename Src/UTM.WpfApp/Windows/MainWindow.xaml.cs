@@ -416,7 +416,7 @@ public partial class MainWindow : Window
                 {
                     lock (_computationMutex)
                     {
-                        if (tb == AreaOverrideValue) _area_sqm = value;
+                        if (tb == AreaOverrideValue) _area_sqm = value / 10000;
                         else if (tb == LengthOverrideValue) _length_mm = value;
                     }
 
