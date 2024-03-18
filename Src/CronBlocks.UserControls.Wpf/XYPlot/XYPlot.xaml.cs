@@ -338,10 +338,10 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         if (max > 0) max += 1.0;
 
         if (min < XAxisMin)
-            XAxisMin = min;
+            XAxisMin = Math.Floor(min);
 
         if (max > XAxisMax)
-            XAxisMax = max;
+            XAxisMax = Math.Ceiling(max);
 
         if (IsAutoRangeEnabled && _xAxisStepsToBeMaintained > 0)
         {
@@ -354,10 +354,10 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
         if (max > 0) max += 1.0;
 
         if (min < YAxisMin)
-            YAxisMin = min;
+            YAxisMin = Math.Floor(min);
 
         if (max > YAxisMax)
-            YAxisMax = max;
+            YAxisMax = Math.Ceiling(max);
 
         if (IsAutoRangeEnabled && _yAxisStepsToBeMaintained > 0)
         {
