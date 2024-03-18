@@ -312,7 +312,7 @@ public partial class MainWindow : Window
 
             case PlottingState.StressStrain:
                 _csvDumpFile.WriteLine(
-                    $"Time (sec), Displacement (mm), Load (kN), Area (m²), Stress, Length (mm), Strain");
+                    $"Time (sec), Displacement (mm), Load (kN), Area (cm²), Stress, Length (mm), Strain");
                 break;
         }
     }
@@ -327,7 +327,7 @@ public partial class MainWindow : Window
             case PlottingState.StressStrain:
                 _csvDumpFile.WriteLine(
                     $"{time_sec:0.000}, {displacement_mm:0.000}, {load_kN:0.000}," +
-                    $" {area_sqm:0.000}, {stress:0.000}, {length_mm:0.000}, {strain:0.000}");
+                    $" {area_sqm*10000:0.000}, {stress:0.000}, {length_mm:0.000}, {strain:0.000}");
                 break;
         }
     }
