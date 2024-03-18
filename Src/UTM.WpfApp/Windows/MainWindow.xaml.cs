@@ -154,25 +154,6 @@ public partial class MainWindow : Window
                         LoadDisplacementPlot.Update(displacement_mm, load_kN * 1000, 0, 0);
                         StressStrainPlot.Update(strain, stress, 0, 0);
 
-                        //- Let's rescale the charts if values go out of bounds
-                        if (displacement_mm >= 15 && LoadDisplacementPlot.XAxisStep == 1) LoadDisplacementPlot.XAxisStep = 2;
-                        if (displacement_mm >= 30 && LoadDisplacementPlot.XAxisStep == 2) LoadDisplacementPlot.XAxisStep = 5;
-                        if (displacement_mm >= 75 && LoadDisplacementPlot.XAxisStep == 5) LoadDisplacementPlot.XAxisStep = 10;
-                        if (displacement_mm >= 150 && LoadDisplacementPlot.XAxisStep == 10) LoadDisplacementPlot.XAxisStep = 20;
-                        if (displacement_mm >= 300 && LoadDisplacementPlot.XAxisStep == 20) LoadDisplacementPlot.XAxisStep = 40;
-                        if (displacement_mm >= 600 && LoadDisplacementPlot.XAxisStep == 40) LoadDisplacementPlot.XAxisStep = 60;
-                        if (displacement_mm >= 900 && LoadDisplacementPlot.XAxisStep == 60) LoadDisplacementPlot.XAxisStep = 100;
-                        if (displacement_mm >= 1500 && LoadDisplacementPlot.XAxisStep == 100) LoadDisplacementPlot.XAxisStep = 1000;
-
-                        if (strain >= 15 && StressStrainPlot.XAxisStep == 1) StressStrainPlot.XAxisStep = 2;
-                        if (strain >= 30 && StressStrainPlot.XAxisStep == 2) StressStrainPlot.XAxisStep = 5;
-                        if (strain >= 75 && StressStrainPlot.XAxisStep == 5) StressStrainPlot.XAxisStep = 10;
-                        if (strain >= 150 && StressStrainPlot.XAxisStep == 10) StressStrainPlot.XAxisStep = 20;
-                        if (strain >= 300 && StressStrainPlot.XAxisStep == 20) StressStrainPlot.XAxisStep = 40;
-                        if (strain >= 600 && StressStrainPlot.XAxisStep == 40) StressStrainPlot.XAxisStep = 60;
-                        if (strain >= 900 && StressStrainPlot.XAxisStep == 60) StressStrainPlot.XAxisStep = 100;
-                        if (strain >= 1500 && StressStrainPlot.XAxisStep == 100) StressStrainPlot.XAxisStep = 1000;
-
                         //- Writing to file
                         WriteCsvDumpFileValues(
                             _plottingState,
