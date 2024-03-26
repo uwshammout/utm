@@ -26,6 +26,9 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
     private double _yAxisMax = double.NaN;
     private double _yAxisStep = double.NaN;
 
+    private int _lineSmoothness1;
+    private int _lineSmoothness2;
+
     private Visibility _plotVisibility1;
     private Visibility _plotVisibility2;
 
@@ -66,6 +69,9 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
         _xAxisTitle = "";
         _yAxisTitle = "";
+
+        LineSmoothness1 = 0;
+        LineSmoothness2 = 0;
 
         IsAutoRangeEnabled = false;
 
@@ -160,6 +166,31 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
                 _yAxisStep = value;
                 Notify();
                 UpdateYAxisStepsCalc();
+            }
+        }
+    }
+
+    public int LineSmoothness1
+    {
+        get { return _lineSmoothness1; }
+        set
+        {
+            if (_lineSmoothness1 != value)
+            {
+                _lineSmoothness1 = value;
+                Notify();
+            }
+        }
+    }
+    public int LineSmoothness2
+    {
+        get { return _lineSmoothness2; }
+        set
+        {
+            if (_lineSmoothness2 != value)
+            {
+                _lineSmoothness2 = value;
+                Notify();
             }
         }
     }
