@@ -121,7 +121,7 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
             }
         }
     }
-    public double XAxisMaxPointIncrement { get; set; } = 1.0;
+    public double XAxisMaxPointOffset { get; set; } = 1.0;
 
     public double YAxisMin
     {
@@ -162,7 +162,7 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
             }
         }
     }
-    public double YAxisMaxPointIncrement { get; set; } = 1.0;
+    public double YAxisMaxPointOffset { get; set; } = 1.0;
 
     public int LineSmoothness1
     {
@@ -359,8 +359,8 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 
     private void SetXAxisLimits(double min, double max)
     {
-        if (min < 0) min -= XAxisMaxPointIncrement;
-        if (max > 0) max += XAxisMaxPointIncrement;
+        if (min < 0) min -= XAxisMaxPointOffset;
+        if (max > 0) max += XAxisMaxPointOffset;
 
         if (min < XAxisMin)
             XAxisMin = Math.Floor(min);
@@ -375,8 +375,8 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
     }
     private void SetYAxisLimits(double min, double max)
     {
-        if (min < 0) min -= YAxisMaxPointIncrement;
-        if (max > 0) max += YAxisMaxPointIncrement;
+        if (min < 0) min -= YAxisMaxPointOffset;
+        if (max > 0) max += YAxisMaxPointOffset;
 
         if (min < YAxisMin)
             YAxisMin = Math.Floor(min);
