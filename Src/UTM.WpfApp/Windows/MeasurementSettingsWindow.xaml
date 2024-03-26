@@ -31,7 +31,7 @@
                 <TextBlock Text="Acquisition Interval" />
                 <Slider Minimum="{Binding AcquisitionIntervalMinimum}" Maximum="{Binding AcquisitionIntervalMaximum}"
                         Value="{Binding AcquisitionIntervalValue}"
-                        SmallChange="1" LargeChange="10" x:Name="AcquisitionInterval"
+                        SmallChange="5" LargeChange="25" x:Name="AcquisitionInterval"
                         ValueChanged="OnSliderValueChanged" />
                 <TextBlock Text="{Binding ElementName=AcquisitionInterval, Path=Value, StringFormat={}{0:0 Milliseconds}}" TextAlignment="Center" />
             </StackPanel>
