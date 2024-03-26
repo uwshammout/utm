@@ -18,22 +18,14 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
 {
     private static readonly int MAX_NUMBER_OF_VALUES = 500;
 
-    private double _xAxisMin = double.NaN;
-    private double _xAxisMax = double.NaN;
-    private double _xAxisStep = double.NaN;
+    private double _xAxisMin = double.NaN, _xAxisMax = double.NaN, _xAxisStep = double.NaN;
+    private double _yAxisMin = double.NaN, _yAxisMax = double.NaN, _yAxisStep = double.NaN;
 
-    private double _yAxisMin = double.NaN;
-    private double _yAxisMax = double.NaN;
-    private double _yAxisStep = double.NaN;
+    private int _lineSmoothness1, _lineSmoothness2;
 
-    private int _lineSmoothness1;
-    private int _lineSmoothness2;
+    private Visibility _plotVisibility1, _plotVisibility2;
 
-    private Visibility _plotVisibility1;
-    private Visibility _plotVisibility2;
-
-    private string _xAxisTitle;
-    private string _yAxisTitle;
+    private string _xAxisTitle, _yAxisTitle;
 
     private bool _isAutoRangeEnabled;
 
