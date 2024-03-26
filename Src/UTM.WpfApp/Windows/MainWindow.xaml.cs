@@ -253,8 +253,8 @@ public partial class MainWindow : Window
                     LoadDisplacementPlot.YAxisStep = 10;
                     StressStrainPlot.ClearData();
                     StressStrainPlot.XAxisMin = 0;
-                    StressStrainPlot.XAxisMax = 1;
-                    StressStrainPlot.XAxisStep = 0.1;
+                    StressStrainPlot.XAxisMax = 0.15;
+                    StressStrainPlot.XAxisStep = 0.015;
                     StressStrainPlot.YAxisMin = 0;
                     StressStrainPlot.YAxisMax = 100;
                     StressStrainPlot.YAxisStep = 10;
