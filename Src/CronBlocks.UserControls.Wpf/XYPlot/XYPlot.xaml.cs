@@ -332,7 +332,7 @@ public partial class XYPlot : UserControl, INotifyPropertyChanged
     {
         if (_enableUpdatingStepsToBeMaintained == false) return;
 
-        if (XAxisMax != double.NaN && XAxisMin != double.NaN && XAxisStep != double.NaN && XAxisStep != 0)
+        if (!double.IsNaN(XAxisMax) && !double.IsNaN(XAxisMin) && !double.IsNaN(XAxisStep) && XAxisStep != 0)
         {
             _xAxisStepsToBeMaintained = CalcStepCount(XAxisMax, XAxisMin, XAxisStep);
         }
