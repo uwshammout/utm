@@ -12,7 +12,7 @@
         MaxHeight="750" MaxWidth="900"
         Height="650" Width="700">
 
-    <ScrollViewer>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <StackPanel>
             <StackPanel.Resources>
                 <Style TargetType="StackPanel">
