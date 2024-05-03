@@ -12,9 +12,8 @@ internal static class ConfigureServices
 {
     public static void ConfigureAppServices(this IServiceCollection services, App app)
     {
-        //- Overall
-        services.AddSingleton((_) => app);
-        services.AddSingleton((_) => services);
+        services.AddSingleton(_ => app);
+        services.AddSingleton(_ => services);
 
         //- Serial Port Services
         services.AddSingleton<ISerialPortsDiscoveryService, SerialPortsDiscoveryService>();
