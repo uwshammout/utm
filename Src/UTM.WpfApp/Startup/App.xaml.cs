@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CronBlocks.UTM.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 
@@ -21,7 +22,7 @@ public partial class App : Application
     {
         await AppHost.StartAsync();
 
-        GetInstance<Windows.MainWindow>().Show();
+        GetInstance<MainWindow>().Show();
 
         base.OnStartup(e);
     }
