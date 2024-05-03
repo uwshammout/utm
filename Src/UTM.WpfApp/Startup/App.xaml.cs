@@ -22,7 +22,7 @@ public partial class App : Application
     {
         await AppHost.StartAsync();
 
-        GetInstance<MainWindow>().Show();
+        Get<MainWindow>().Show();
 
         base.OnStartup(e);
     }
@@ -33,7 +33,7 @@ public partial class App : Application
         base.OnExit(e);
     }
 
-    public T GetInstance<T>() where T : class
+    public T Get<T>() where T : class
     {
         return AppHost.Services.GetRequiredService<T>();
     }

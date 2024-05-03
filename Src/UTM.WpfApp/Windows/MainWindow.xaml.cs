@@ -345,19 +345,19 @@ public partial class MainWindow : Window
                     break;
 
                 case "Connect":
-                    window = _app.GetInstance<DeviceConnectionWindow>();
+                    window = _app.Get<DeviceConnectionWindow>();
                     break;
 
                 case "Measurement Settings":
-                    window = _app.GetInstance<MeasurementSettingsWindow>();
+                    window = _app.Get<MeasurementSettingsWindow>();
                     break;
 
                 case "Calibration":
-                    window = _app.GetInstance<DeviceCalibrationWindow>();
+                    window = _app.Get<DeviceCalibrationWindow>();
                     break;
 
                 case "About":
-                    window = _app.GetInstance<AboutWindow>();
+                    window = _app.Get<AboutWindow>();
                     break;
             }
 
