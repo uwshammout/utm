@@ -13,10 +13,7 @@ public partial class App : Application
         InitializeComponent();
 
         AppHost = Host.CreateDefaultBuilder()
-            .ConfigureServices(services =>
-            {
-                services.ConfigureAppServices(this);
-            })
+            .ConfigureServices(services => services.ConfigureAppServices(this))
             .Build();
     }
 
