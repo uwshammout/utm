@@ -21,8 +21,7 @@ public partial class App : Application
     {
         await AppHost.StartAsync();
 
-        var startupWindow = GetInstance<Windows.MainWindow>();
-        startupWindow.Show();
+        GetInstance<Windows.MainWindow>().Show();
 
         base.OnStartup(e);
     }
