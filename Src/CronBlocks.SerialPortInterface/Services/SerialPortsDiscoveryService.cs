@@ -7,6 +7,8 @@ namespace CronBlocks.SerialPortInterface.Services;
 
 public class SerialPortsDiscoveryService : ISerialPortsDiscoveryService
 {
+    private readonly object _lockObject = new();
+
     private bool _isRunning = false;
     private Timer _timer;
     private List<string> _foundPortsList;
@@ -36,7 +38,7 @@ public class SerialPortsDiscoveryService : ISerialPortsDiscoveryService
     #region Starting and Stopping the Ports' Discovery
     public void StartPortsDiscovery()
     {
-        lock (this)
+        lock (_lockObject)
         {
             if (_isRunning == false)
             {
@@ -53,7 +55,7 @@ public class SerialPortsDiscoveryService : ISerialPortsDiscoveryService
 
     public void StopPortsDiscovery()
     {
-        lock (this)
+        lock (_lockObject)
         {
             _isRunning = false;
 
@@ -73,7 +75,7 @@ public class SerialPortsDiscoveryService : ISerialPortsDiscoveryService
             OperationStateChanged?.Invoke(_operationState);
         }
 
-        lock (this)
+        lock (_lockObject)
         {
             List<string> systemPorts = new List<string>(SerialPort.GetPortNames());
             List<string> portsToBeRemoved = new List<string>();
@@ -106,7 +108,7 @@ public class SerialPortsDiscoveryService : ISerialPortsDiscoveryService
 
         bool stillRunning = false;
 
-        lock (this)
+        lock (_lockObject)
         {
             stillRunning = _isRunning;
 
