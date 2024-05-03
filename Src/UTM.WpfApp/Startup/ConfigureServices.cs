@@ -5,6 +5,7 @@ using CronBlocks.SerialPortInterface.Interfaces;
 using CronBlocks.SerialPortInterface.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using CronBlocks.UTM.Windows;
 
 namespace CronBlocks.UTM.Startup;
 
@@ -17,7 +18,7 @@ internal static class ConfigureServices
 
         //- Serial Port Services
         services.AddSingleton<ISerialPortsDiscoveryService, SerialPortsDiscoveryService>();
-        services.AddSingleton<ISerialModbusClientService, SerialModbusClientService>((sp) =>
+        services.AddSingleton<ISerialModbusClientService>(sp =>
         {
             return new SerialModbusClientService(
                 sp.GetRequiredService<ILogger<SerialModbusClientService>>(),
@@ -26,7 +27,7 @@ internal static class ConfigureServices
                     sp.GetRequiredService<ILogger<IniConfigIO>>()));
         });
         services.AddSingleton<ISerialOptionsService, SerialOptionsService>();
-        services.AddSingleton<ISerialModbusDataScalingService>((sp) =>
+        services.AddSingleton<ISerialModbusDataScalingService>(sp =>
         {
             return new SerialModbusDataScalingService(
                 sp.GetRequiredService<ILogger<SerialModbusDataScalingService>>(),
@@ -34,7 +35,7 @@ internal static class ConfigureServices
                 FilePaths.DataScalingFilename,
                 sp.GetRequiredService<ILogger<IniConfigIO>>());
         });
-        services.AddSingleton<ISerialModbusDataCalibrationService>((sp) =>
+        services.AddSingleton<ISerialModbusDataCalibrationService>(sp =>
         {
             return new SerialModbusDataCalibrationService(
                 sp.GetRequiredService<ISerialModbusDataScalingService>(),
@@ -42,7 +43,7 @@ internal static class ConfigureServices
                 FilePaths.DataCalibrationFilename,
                 sp.GetRequiredService<ILogger<IniConfigIO>>());
         });
-        services.AddSingleton((sp) =>
+        services.AddSingleton(sp =>
         {
             return new DataExchangeService(
                 new IniConfigIO(
@@ -51,11 +52,11 @@ internal static class ConfigureServices
         });
 
         //- Windows
-        services.AddSingleton<Windows.MainWindow>();
-        services.AddTransient<Windows.DeviceConnectionWindow>();
-        services.AddTransient<Windows.DeviceCalibrationWindow>((sp) =>
+        services.AddSingleton<MainWindow>();
+        services.AddTransient<DeviceConnectionWindow>();
+        services.AddTransient(sp =>
         {
-            return new Windows.DeviceCalibrationWindow(
+            return new DeviceCalibrationWindow(
                 sp.GetRequiredService<ISerialModbusClientService>(),
                 sp.GetRequiredService<ISerialModbusDataScalingService>(),
                 sp.GetRequiredService<ISerialModbusDataCalibrationService>(),
@@ -65,7 +66,7 @@ internal static class ConfigureServices
                     sp.GetRequiredService<ILogger<IniConfigIO>>())
                 );
         });
-        services.AddTransient<Windows.MeasurementSettingsWindow>();
-        services.AddTransient<Windows.AboutWindow>();
+        services.AddTransient<MeasurementSettingsWindow>();
+        services.AddTransient<AboutWindow>();
     }
 }
