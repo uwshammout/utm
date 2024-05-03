@@ -10,6 +10,8 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 {
 	public event Action<List<double>>? NewValuesReceived;
 
+	private readonly object _lockObject = new();
+
 	private readonly ISerialModbusDataScalingService _scalingService;
 	private readonly ILogger<SerialModbusDataCalibrationService> _logger;
 	private readonly string _filename;
@@ -54,7 +56,7 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 	{
 		if (_iniConfig != null)
 		{
-			lock (this)
+			lock (_lockObject)
 			{
 				for (int portIndex = 0; portIndex < _calibrationData.Count; portIndex++)
 				{
@@ -92,7 +94,7 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 	{
 		if (_iniConfig != null)
 		{
-			lock (this)
+			lock (_lockObject)
 			{
 				int portIndex = 0;
 				foreach (Dictionary<double, double> portCalibrationData in _calibrationData)
@@ -154,7 +156,7 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 	{
 		if (portIndex < 0 || portIndex >= _calibrationData.Count) return scaledValue;
 
-		lock (this)
+		lock (_lockObject)
 		{
 			Dictionary<double, double> cd = _calibrationData[portIndex];
 
@@ -182,7 +184,7 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 
 	public ImmutableDictionary<double, double> GetCalibrationValues(int portIndex)
 	{
-		lock (this)
+		lock (_lockObject)
 		{
 			return _calibrationData[portIndex].ToImmutableDictionary();
 		}
@@ -190,7 +192,7 @@ public class SerialModbusDataCalibrationService : ISerialModbusDataCalibrationSe
 
 	public ImmutableDictionary<double, double> SetCalibrationValues(int portIndex, ImmutableDictionary<double, double> calibrationPoints)
 	{
-		lock (this)
+		lock (_lockObject)
 		{
 			_calibrationData[portIndex].Clear();
 			if (calibrationPoints != null && calibrationPoints.Count > 0)
