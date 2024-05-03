@@ -15,6 +15,8 @@ public class SerialModbusClientService : ISerialModbusClientService
 
     public OperationState OperationState { get { return _operationState; } }
 
+    private readonly object _lockObject = new();
+
     private readonly ILogger<SerialModbusClientService> _logger;
     private readonly IniConfigIO _configFile;
 
@@ -99,7 +101,7 @@ public class SerialModbusClientService : ISerialModbusClientService
 
     public void SetComSettings(SerialModbusClientSettings portSettings)
     {
-        lock (this)
+        lock (_lockObject)
         {
             if (_isRunning || _client != null)
             {
@@ -165,7 +167,7 @@ public class SerialModbusClientService : ISerialModbusClientService
     #region Start / Stop Acquisition
     public void StartAcquisition()
     {
-        lock (this)
+        lock (_lockObject)
         {
             if (_isRunning || _client != null)
             {
@@ -194,7 +196,7 @@ public class SerialModbusClientService : ISerialModbusClientService
 
     public void StopAcquisition()
     {
-        lock (this)
+        lock (_lockObject)
         {
             if (_isRunning)
             {
@@ -304,7 +306,7 @@ public class SerialModbusClientService : ISerialModbusClientService
 
         bool stillRunning = false;
 
-        lock (this)
+        lock (_lockObject)
         {
             stillRunning = _isRunning;
 
